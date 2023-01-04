@@ -70,7 +70,13 @@
             </div>
            
             <div class="contenedor_login_body_body">
-            <!--  -->
+            <?php 
+                $session = session();
+                if($session->getFlashdata('error') != '')
+                {
+                  echo $session->getFlashdata('error');;
+                }
+              ?>
               <input type="hidden" id="base_url" value="<?=base_url()?>">
                 <form  action="<?php echo base_url();?>/auth/validaCaptcha" method="post">
                         <div class="input-container">

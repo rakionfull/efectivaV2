@@ -5,7 +5,7 @@ namespace App\Controllers;
 use CodeIgniter\API\ResponseTrait;
 use CodeIgniter\HTTP\ResponseInterface;
 use App\Controllers\BaseController;
-use App\Models\UserModel;
+use App\Models\Muser;
 
 class Register extends BaseController
 {
@@ -17,7 +17,7 @@ class Register extends BaseController
         $rules = [
             'email' => [
                 'label' => 'email',
-                'rules' => 'required|min_length[4]|max_length[255]|valid_email|is_unique[users.email]',
+                'rules' => 'required|min_length[4]|max_length[255]|valid_email|is_unique[tb_users.email_us]',
                 'errors' => [
                     'is_unique' => 'El campo de {field} debe ser único'
                 ]
@@ -40,27 +40,43 @@ class Register extends BaseController
                 ResponseInterface::HTTP_CONFLICT
             );
         }else{
-             $userModel = new UserModel();
+             $Muser = new Muser();
 //            helper('tools');
             $data = array(
-                'email' => $this->request->getVar('email'),
+                'docident_us' => $this->request->getVar('doc_ident'),
+                'nombres_us' => $this->request->getVar('nombres'),
+                'apepat_us' => $this->request->getVar('apepat'),
+                'apemat_us' => $this->request->getVar('apemat'),
+                'email_us' => $this->request->getVar('email'),
                 // 'password' => password_hash($this->request->getVar('password'), PASSWORD_DEFAULT)
-                'password' => hashPass($this->request->getVar('password')),
-                'created_at' => date('Y-m-d H:i:s'),
-                'update_at' => date('Y-m-d H:i:s'),
-                'delete_at' => date('Y-m-d H:i:s'),
+                'usuario_us' => $this->request->getVar('usuario'),
+                'creacion_us' => date('Y-m-d H:i:s'),
+                'estado_us' => '1',
+                'change_pass' => '0',
+                
             );
-
-            $user = $userModel->saveUser($data);
-           
-            // $user = $userModel->save($data);
+            $user = $Muser->saveUser($data);
+           if($user){
+        
+            $datos = array(
+                'creacion_cl' => date('Y-m-d H:i:s'),
+                'pass_cl' => hashPass($this->request->getVar('password')),
+                'expiracion_cl' => time() + (24*3600*45),
+                'id_us' =>$Muser->lastid(),
+            );
+                $result = $Muser->savePass($datos);
+           }
+          
+           if($result){
             return $this->respond(
                 [
                     'message' => 'Regristro completado correctamente',
-                    'user' => $user
+                    'user' => $result
                 ],
                 ResponseInterface::HTTP_OK // 200
             );
+           }
+           
         }
     }
 }

@@ -40,6 +40,8 @@ $routes->get('/', 'Home::index');
 $routes->post('/login', 'Login::index');
 // http://localhost:8080/captcha
 $routes->post('/newcaptcha', 'Login::newCaptcha');
+// http://localhost:8080/captcha
+$routes->post('/validaCaptcha', 'Login::validaCaptcha');
 // http://localhost:8080/register
 $routes->post('/register', 'Register::register');
 

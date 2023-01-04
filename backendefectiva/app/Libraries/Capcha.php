@@ -67,7 +67,7 @@ public function CreaCaptcha($img_width,$img_height,$expiration){
     $fonts = [dirname(__FILE__).'\fonts\Ubuntu-BoldItalic.ttf', dirname(__FILE__).'\fonts\Merriweather-BoldItalic.ttf', dirname(__FILE__).'\fonts\PlayfairDisplay-BoldItalic.ttf'];
  
     $string_length = 6;
-    $permitted_chars  = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    $permitted_chars  = '1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
     $captcha_string = generate_string($permitted_chars, $string_length);
    
     for($i = 0; $i < $string_length; $i++) {
