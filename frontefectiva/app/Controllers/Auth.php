@@ -46,9 +46,34 @@ class Auth extends BaseController {
           $get_endpoint = '/validaCaptcha';
           // $request_data = (array("username" => $this->request->getPost('username'), "password" => $this->request->getPost('pass')));
            $request_data = (array("captcha" => $this->request->getPost('captcha')));
-           $response = perform_http_request('POST', REST_API_URL . $get_endpoint,$request_data);
+           $response = json_decode(perform_http_request('POST', REST_API_URL . $get_endpoint,$request_data));
           
-          var_dump($response);
+          if($response->msg == 1 ){
+            $post_endpoint = '/login';
+            $request_data = (array("username" => $this->request->getPost('username'), "password" => $this->request->getPost('pass')));
+            $response = json_decode(perform_http_request('POST', REST_API_URL . $post_endpoint,$request_data));
+           
+            if($response->msg == 1){
+                return redirect()->to(base_url('/inicio'));
+            }else{
+              $session->setFlashdata('error','<div class="alert alert-danger alert-dismissible fade show" role="alert">
+              '.$response->error.'
+               <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                   <span aria-hidden="true">&times;</span>
+               </button>
+             </div>');
+              return redirect()->to(base_url('/login'));
+            }
+          }else{
+            $session->setFlashdata('error','<div class="alert alert-danger alert-dismissible fade show" role="alert">
+            '.$response->error.'
+             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                 <span aria-hidden="true">&times;</span>
+             </button>
+           </div>');
+            return redirect()->to(base_url('/login'));
+          }
+          
         }
          
           //opteniendo el cpatcha

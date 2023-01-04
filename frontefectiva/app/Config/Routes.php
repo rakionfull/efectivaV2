@@ -37,6 +37,7 @@ $routes->set404Override();
 // route since we don't have to scan directories.
 $routes->get('/', 'Home::index');
 $routes->get('/login', 'Auth::index');
+$routes->get('/inicio', 'Main::index');
 $routes->get('auth/getNewCaptcha', 'Auth::getNewCaptcha');
 $routes->post('auth/validaCaptcha', 'Auth::validaCaptcha');
 /*
