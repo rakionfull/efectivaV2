@@ -13,18 +13,7 @@
     <link href="http://www.jqueryscript.net/css/jquerysctipttop.css" rel="stylesheet" type="text/css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <link href="<?=base_url('public/assets/css/myCss.css')?>" rel="stylesheet">
-    
-    <div class="jquery-script-ads">
-      <script type="text/javascript"><!--
-      google_ad_client = "ca-pub-2783044520727903";
-      /* jQuery_demo */
-      google_ad_slot = "2780937993";
-      google_ad_width = 728;
-      google_ad_height = 90;
-      //-->
-          </script>
    
-    </div>
  <script>
     function getNewCaptcha() {
       event.preventDefault() 
@@ -71,7 +60,7 @@
            
             <div class="contenedor_login_body_body">
             <?php 
-                $session = session();
+              $session = session();
                 if($session->getFlashdata('error') != '')
                 {
                   echo $session->getFlashdata('error');;
@@ -100,7 +89,7 @@
                                 class="text-input"
                                 autocomplete="off"
                                 placeholder=""
-                                readonly
+                                
                             />
                             <label class="label" for="pass">Password</label>
                            

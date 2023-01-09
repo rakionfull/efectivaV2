@@ -36,10 +36,35 @@ class Muser extends Model
         return $query;
     }
     public function getUser($username){
-        $Usuario = $this->db->table('tb_users');
-        $Usuario->join("tb_historial_claves", "tb_historial_claves.id_us = tb_users.id_us");
-        $Usuario->where('tb_users.usuario_us',$username);
-        return $Usuario->get()->getResultArray();
+
+        $Usuario = $this->db->query("SELECT TOP 1 * FROM  tb_users as TU INNER JOIN tb_historial_claves AS TH
+        on TU.id_us=TH.id_us WHERE TU.usuario_us= '{$username}' ORDER BY TH.id_cl DESC");
+       
+        return $Usuario->getRow();
+    }
+    // public function findUserByEmailAddress(string $emailAddress)
+    // {
+    //     $Usuario = $this->db->table('tb_users');
+    //     $Usuario->where('email_us',$emailAddress);
+    //     $Usuario->get()->getResultArray();
+    //     // $Usuario->first();
+    //     // $user = $this
+    //     //     ->asArray()
+    //     //     ->where(['email' => $emailAddress])
+    //     //     ->first();
+
+    //     if (!$Usuario) 
+    //         throw new Exception('User does not exist for specified email address');
+
+    //     return $Usuario;
+    // }
+   
+    public function changePass($data){
+        // return $data;
+        $query=$this->db->query("UPDATE tb_users SET change_pass = 1 
+        where id_us = $data") ;
+            
+        return $query;
     }
 }
 

@@ -38,6 +38,11 @@ $routes->set404Override();
 $routes->get('/', 'Home::index');
 $routes->get('/login', 'Auth::index');
 $routes->get('/inicio', 'Main::index');
+$routes->get('/listUsers', 'Main::listUsers');
+$routes->get('/configPass', 'Main::configPass');
+$routes->get('/logout', 'Auth::logout');
+$routes->get('/change_pass', 'Auth::change_pass');
+$routes->post('/updatePass', 'Auth::updatePass');
 $routes->get('auth/getNewCaptcha', 'Auth::getNewCaptcha');
 $routes->post('auth/validaCaptcha', 'Auth::validaCaptcha');
 /*

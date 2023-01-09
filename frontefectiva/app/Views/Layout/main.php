@@ -1,5 +1,7 @@
 
-<?=$this->include('Layout/header')?>
+<?=$this->include('Layout/header');
+
+$session = session();?>
     
 <body data-sidebar="dark">
             <header id="page-topbar">
@@ -34,14 +36,14 @@
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="color:#fff">
                                 <img class="rounded-circle header-profile-user" src="<?=base_url('public/images/avatar_login.png') ?>"
                                     alt="Header Avatar">
-                                <span class="d-none d-xl-inline-block ml-1" >Miguel</span>
+                                <span class="d-none d-xl-inline-block ml-1" ><?=$session->user?></span>
                                 <i class="mdi mdi-chevron-down d-none d-xl-inline-block"></i>
                             </button>
                             <div class="dropdown-menu dropdown-menu-right">
                                 <!-- item-->
                                 <a class="dropdown-item" href=""><i class="ri-user-line align-middle mr-1"></i> Perfil</a>
                                 <div class="dropdown-divider"></div>
-                                <a class="dropdown-item text-danger" href="<?=base_url()?>auth/logout"><i class="ri-shut-down-line align-middle mr-1 text-danger"></i> Logout</a>
+                                <a class="dropdown-item text-danger" href="<?=base_url()?>/logout"><i class="ri-shut-down-line align-middle mr-1 text-danger"></i> Logout</a>
                             </div>
                         </div>
 
@@ -71,12 +73,14 @@
                             <li>
                                 <a href="javascript: void(0);" class="has-arrow waves-effect">
                                     <i class="fas fa-list-alt"></i>
-                                    <span>opcion1</span>
+                                    <span>Accesos</span>
                                 </a>
-                                <ul class="sub-menu" aria-expanded="false">
-                                  
+                                <ul class="sub-menu" aria-expanded="false">  
+                                    <li><a href="<?=base_url('listUsers') ?>">Usuarios</a></li>
                                     
-                                    <li><a href="<?=base_url('eventos') ?>">sub opcion</a></li>
+                                </ul>
+                                <ul class="sub-menu" aria-expanded="false">  
+                                    <li><a href="<?=base_url('configPass') ?>">Conf. Password</a></li>
                                     
                                 </ul>
                             </li>

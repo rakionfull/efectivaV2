@@ -39,18 +39,17 @@ $routes->get('/', 'Home::index');
 // http://localhost:8080/login
 $routes->post('/login', 'Login::index');
 // http://localhost:8080/captcha
-$routes->post('/newcaptcha', 'Login::newCaptcha');
+$routes->get('/newcaptcha', 'Login::newCaptcha');
 // http://localhost:8080/captcha
 $routes->post('/validaCaptcha', 'Login::validaCaptcha');
 // http://localhost:8080/register
-$routes->post('/register', 'Register::register');
+$routes->post('/register', 'Register::register', ['filter' => 'authFilter']);
+
 
 // http://localhost:8080/api/
 $routes->group('/api',['namespace' => 'App\Controllers'], function ($routes) {
-    // http://localhost:8080/api/users
-    $routes->get('ventas', 'Ventas::index');
-    // $routes->get('users', 'User::index');
-    $routes->get('users', 'User::index', ['filter' => 'authFilter']);
+    $routes->post('change_pass', 'Login::change_pass',['filter' => 'authFilter']);
+
     // http://localhost:8080/api/photos/*
     // $routes->resource('photos', ['controller' => 'Photo', 'only' => 'new']);
 });

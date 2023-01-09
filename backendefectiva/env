@@ -141,3 +141,10 @@
 # curlrequest.shareOptions = true
 
 #--------------------------------------------------------------------
+# JWT
+#--------------------------------------------------------------------
+
+#JWT_SECRET_KEY key is the secret key used by the application to sign JWTS. Pick a stronger one for production.
+JWT_SECRET_KEY=enMB8ms2Nh8RNz7nRKrGTiMRG9aRPp8G5d 
+#JWT_TIME_TO_LIVE indicates the validity period of a signed JWT (in milliseconds)
+JWT_TIME_TO_LIVE=3600
