@@ -3,7 +3,7 @@
 namespace App\Controllers;
 
 class Main extends BaseController {
-  
+  protected $error;
     public function inicio() {
       if($this->session->logged_in){
         $get_endpoint = '/api/dashboard';
@@ -45,7 +45,29 @@ class Main extends BaseController {
       }
       public function createUser(){
         if($this->session->logged_in){
-          return view('accesos/createUser');
+          $datos=[
+            'docident_us' => "",
+            'nombres_us' => "",
+            'apepat_us' => "",
+            'apemat_us' => "",
+            'email_us' => "",
+            'usuario_us' => "",
+          ];
+          $error = new  \stdClass;
+          $error->docident_us = '';
+          $error->nombres_us = '';
+          $error->apepat_us = '';
+          $error->apemat_us = '';
+          $error->email_us = '';
+          $error->usuario_us = '';
+         
+          $data = [
+             'data' => $datos,
+             'error'   =>  $error
+             
+          ];
+      
+          return view('accesos/createUser',$data);
         }else{
           return redirect()->to(base_url('/login'));
         }
@@ -84,23 +106,39 @@ class Main extends BaseController {
               // $request_data = (array("username" => $this->request->getPost('username'), "password" => $this->request->getPost('pass')));
               $request_data = $this->request->getPost();
               $response = (perform_http_request('POST', REST_API_URL . $post_endpoint,$request_data));
-              if($response->user ){
-                     $this->session->setFlashdata('error','<div class="alert alert-success alert-dismissible fade show" role="alert">
-                Usuario creado correctamente
-                 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                     <span aria-hidden="true">&times;</span>
-                 </button>
-               </div>');
-                return redirect()->to(base_url('/listUsers'));
+              // var_dump($response);
+              if($response->error = 'valida'){
+                $datos=[
+                  'data' => $request_data,
+                  'error' => $response->datos,
+                ];
+                return view('accesos/createUser',$datos);
               }else{
-                  $this->session->setFlashdata('error','<div class="alert alert-danger alert-dismissible fade show" role="alert">
-                  Error al registrar
-                   <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                       <span aria-hidden="true">&times;</span>
-                   </button>
-                 </div>');
-                  return redirect()->to(base_url('/listUsers'));
+
               }
+              // var_dump($response);
+              // if($response->error = 400 ){
+              //   $data["datos"] = $request_data;
+              //   $data["errors"] = $response->datos;
+              //   return view('accesos/createUser',$data);
+              // }
+              // if($response->user ){
+              //        $this->session->setFlashdata('error','<div class="alert alert-success alert-dismissible fade show" role="alert">
+              //   Usuario creado correctamente
+              //    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+              //        <span aria-hidden="true">&times;</span>
+              //    </button>
+              //  </div>');
+              //   return redirect()->to(base_url('/listUsers'));
+              // }else{
+              //     $this->session->setFlashdata('error','<div class="alert alert-danger alert-dismissible fade show" role="alert">
+              //     Error al registrar
+              //      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+              //          <span aria-hidden="true">&times;</span>
+              //      </button>
+              //    </div>');
+              //     return redirect()->to(base_url('/listUsers'));
+              // }
           
              
             

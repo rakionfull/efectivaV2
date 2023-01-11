@@ -35,7 +35,7 @@ abstract class BaseController extends Controller
      *
      * @var array
      */
-    protected $helpers = ['curl'];
+    protected $helpers = ['curl','form'];
 
     /**
      * Constructor.
@@ -46,7 +46,7 @@ abstract class BaseController extends Controller
         parent::initController($request, $response, $logger);
       
             $this->session = \Config\Services::session();
-    
+            $this->validation = \Config\Services::validation();
         // Preload any models, libraries, etc, here.
       
        

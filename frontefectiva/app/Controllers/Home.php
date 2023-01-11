@@ -7,7 +7,7 @@ class Home extends BaseController {
         $this->session = \Config\Services::session();
       }
     public function index() {
-	
+      return view('welcome_message');
     }
 	
 }

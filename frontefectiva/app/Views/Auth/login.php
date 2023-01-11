@@ -76,7 +76,7 @@
                                 class="text-input"
                                 autocomplete="off"
                                 placeholder=""
-                                
+                                oninput="this.value = this.value.replace(/[^a-zA-Z0-9]/,'')"
                             />
                             <label class="label" for="username">Username</label>
                         </div>
@@ -114,9 +114,9 @@
                                 class="text-input"
                                 autocomplete="off"
                                 placeholder=""
-                                
+                                oninput="this.value = this.value.replace(/[^a-zA-Z0-9]/,'')"
                             />
-                            <label class="label" for="captcha">Código de Seguridad</label>
+                            <label class="label" for="captcha" >Código de Seguridad</label>
                         </div>
                         <div class="col-lg-12">
                           <button type="submit" class="btn btn-primary" style="width:100%">Acceder</button>

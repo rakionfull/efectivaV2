@@ -1,6 +1,7 @@
 <?=$this->extend('Layout/main')?> 
 <?=$this->section('content');
-$session = session();?> 
+$session = session();
+?> 
 
             <div class="row">
                             <div class="col-12">
@@ -14,52 +15,56 @@ $session = session();?>
                                     
                                     </div>
                                     <div class="card-body">
+                                  
+                                 
+                               
                                     <form  action="<?php echo base_url();?>/main/addUser" method="post">
                        
                                            
                                             <div class="row">
                                                 <div class="col-lg-6">
                                                     <div class="form-group">
-                                                        <span>Dni (*):</span>
-                                                        <input type="text" id="docident_us" name="docident_us" class="form-control form-control-sm" value=""  onKeyPress="return soloNumero(event);">
-                                                        <?php //echo form_error('dni', '<div class="error">', '</div>'); ?>
+                                                        <span>Doc. Identidad (*):</span>
+                                                        <input type="text" id="docident_us" name="docident_us" class="form-control form-control-sm" value="<?=$data['docident_us'] ?>"  onKeyPress="return soloNumero(event);">
+                                                        <?php if(isset($error->docident_us)) echo'<div class="error">'.$error->docident_us.'</div>';
+                                                        ?>
                                                     </div>
                                                 </div>
                                                 
                                                 <div class="col-lg-12">
                                                     <div class="form-group">
                                                         <span>Nombres (*):</span>
-                                                        <input type="text" id="nombres_us" name="nombres_us" class="form-control form-control-sm" value="" onkeyup="this.value = this.value.toUpperCase();" onKeyPress="return soloLetra(event);">
-                                                        <?php //echo form_error('nombres', '<div class="error">', '</div>'); ?>
+                                                        <input type="text" id="nombres_us" name="nombres_us" class="form-control form-control-sm" value="<?=$data['nombres_us'] ?>" onkeyup="this.value = this.value.toUpperCase();" onKeyPress="return soloLetra(event);">
+                                                        <?php if(isset($error->nombres_us)) echo'<div class="error">'.$error->nombres_us.'</div>' ?>
                                                     </div>
                                                 </div>
                                                 <div class="col-lg-6">
                                                     <div class="form-group">
                                                         <span>Apellido Paterno (*):</span>
-                                                        <input type="text" id="apepat_us" name="apepat_us" class="form-control form-control-sm" value="" onkeyup="this.value = this.value.toUpperCase();" onKeyPress="return soloLetra(event);">
-                                                        <?php //echo form_error('apepat', '<div class="error">', '</div>'); ?>
+                                                        <input type="text" id="apepat_us" name="apepat_us" class="form-control form-control-sm" value="<?=$data['apepat_us'] ?>" onkeyup="this.value = this.value.toUpperCase();" onKeyPress="return soloLetra(event);">
+                                                        <?php if(isset($error->apepat_us)) echo'<div class="error">'.$error->apepat_us.'</div>' ?>
                                                     </div>
                                                 </div>
                                                 <div class="col-lg-6">
                                                     <div class="form-group">
                                                         <span>Apellido Materno (*):</span>
-                                                        <input type="text" id="apemat_us" name="apemat_us" class="form-control form-control-sm" value="" onkeyup="this.value = this.value.toUpperCase();" onKeyPress="return soloLetra(event);">
-                                                        <?php //echo form_error('apemat', '<div class="error">', '</div>'); ?>
+                                                        <input type="text" id="apemat_us" name="apemat_us" class="form-control form-control-sm" value="<?=$data['apemat_us'] ?>" onkeyup="this.value = this.value.toUpperCase();" onKeyPress="return soloLetra(event);">
+                                                        <?php if(isset($error->apemat_us)) echo'<div class="error">'.$error->apemat_us.'</div>' ?>
                                                     </div>
                                                 </div>
                                                 <div class="col-lg-12">
                                                     <div class="form-group">
                                                         <span>Correo (*):</span>
-                                                        <input type="email" id="email_us" name="email_us" class="form-control form-control-sm " value="">
-                                                        <?php //echo form_error('email', '<div class="error">', '</div>'); ?>
+                                                        <input type="email" id="email_us" name="email_us" class="form-control form-control-sm " value="<?=$data['email_us'] ?>">
+                                                        <?php if(isset($error->email_us)) echo'<div class="error">'.$error->email_us.'</div>' ?>
                                                     </div>
                                                 </div>
                                                 
                                                 <div class="col-lg-6">
                                                     <div class="form-group">
                                                         <span>Usuario (*):</span>
-                                                        <input type="text" id="usuario_us" name="usuario_us" class="form-control form-control-sm" value="" oninput="this.value = this.value.replace(/[^a-zA-Z0-9]/,'')">
-                                                        <?php //echo form_error('user', '<div class="error">', '</div>'); ?>
+                                                        <input type="text" id="usuario_us" name="usuario_us" class="form-control form-control-sm" value="<?=$data['usuario_us'] ?>" oninput="this.value = this.value.replace(/[^a-zA-Z0-9]/,'')">
+                                                        <?php if(isset($error->usuario_us)) echo'<div class="error">'.$error->usuario_us.'</div>' ?>
                                                     </div>
                                                 </div>
                                                 <div class="col-lg-6">
@@ -85,8 +90,8 @@ $session = session();?>
                                                     ?>   
                                                 </div>
                                             </div>
-                                     
-                                    </form> 
+                               
+                                    <!-- </form>  -->
                                     </div>
                                 </div>
                             </div> <!-- end col -->

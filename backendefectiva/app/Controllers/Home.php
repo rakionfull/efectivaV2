@@ -71,17 +71,53 @@ class Home extends BaseController
     public function addUser()
     {
         $rules = [
-            'email_us' => 'required|min_length[6]|max_length[50]|valid_email|is_unique[tb_users.email_us]',
+            'docident_us' => 'required|min_length[6]|max_length[50]|is_unique[tb_users.docident_us]',
+            'nombres_us' => 'required|min_length[6]|max_length[50]',
+            'apepat_us' => 'required|min_length[6]|max_length[50]',
+            'apemat_us' => 'required|min_length[6]|max_length[50]',
+            'email_us' => 'min_length[6]|max_length[50]|valid_email|is_unique[tb_users.email_us]',
             'usuario_us' => 'required|min_length[6]|max_length[50]|is_unique[tb_users.usuario_us]',
         ];
-
+        $errors = [
+            'docident_us' => [
+                'required' => 'Debe ingresar DNI',
+                'is_unique' => 'El campo {field} debe ser único'
+            ],
+            'nombres_us' => [
+                'required' => 'Debe ingresar Nombres',
+              
+            ],
+            'apemat_us' => [
+                'required' => 'Debe ingresar Apellido Paterno',
+              
+            ],
+            
+            'email_us' => [
+                'required' => 'Debe ingresar Correo',
+                'is_unique' => 'El campo {field} debe ser único'
+            ],
+            'usuario_us' => [
+                'required' => 'Debe ingresar Usuario',
+                'is_unique' => 'El campo {field} debe ser único'
+            ],
+            'pass' => [
+                'required' => 'Debe ingresar Contraseña',
+                
+            ]
+        ];
+        
         $input = $this->getRequestInput($this->request);
 
-        if (!$this->validateRequest($input, $rules)) {
-            return $this->getResponse(
-                    $this->validator->getErrors(),
-                    ResponseInterface::HTTP_OK
-                );
+        if (!$this->validateRequest($input, $rules, $errors)) {
+            $error = [
+                'error' => 'valida',
+                'datos' => $this->validator->getErrors()
+            ];
+            return ($this->getResponse($error,ResponseInterface::HTTP_OK));
+            // return $this->getResponse(
+            //         $this->validator->getErrors(),
+            //         ResponseInterface::HTTP_OK
+            //     );
         }
 
         $model = new Muser();
