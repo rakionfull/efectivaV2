@@ -25,6 +25,7 @@
   
         <script src="<?=base_url('public/assets/libs/datatables.net-responsive-bs4/js/responsive.bootstrap4.min.js'); ?>"></script>
         <script src="<?=base_url('public/assets/js/app.js'); ?>"></script>
+        <script src="<?=base_url('public/assets/js/main_das.js'); ?>"></script>
         <script src="<?=base_url('public/assets/libs/sweetalert2/sweetalert2.min.js'); ?>"></script>
        
           <!-- twitter-bootstrap-wizard js -->
@@ -34,6 +35,6 @@
         <script src="<?=base_url('public/assets/js/pages/form-wizard.init.js'); ?>"></script>
         <script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.11.1/jquery.validate.min.js"></script>
 		<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-        <script src="<?=base_url('public/assets/js/dashboard.js'); ?>"></script>
+    
     
            

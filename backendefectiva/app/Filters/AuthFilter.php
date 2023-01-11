@@ -1,13 +1,13 @@
 <?php
 
 namespace App\Filters;
-use CodeIgniter\API\ResponseTrait;
 use CodeIgniter\Filters\FilterInterface;
 use CodeIgniter\HTTP\RequestInterface;
 use CodeIgniter\HTTP\ResponseInterface;
 use Exception;
 use Firebase\JWT\JWT;
 use Firebase\JWT\Key;
+
 
 class AuthFilter implements FilterInterface
 {
@@ -26,19 +26,21 @@ class AuthFilter implements FilterInterface
      *
      * @return mixed
      */
-    use ResponseTrait;
+    // use ResponseTrait;
 
     public function __construct()
     {
         // initialize
-        helper('jwt');
+       
     }
     public function before(RequestInterface $request, $arguments = null)
     {
-        //$key = getenv('JWT_SECRET');
+
+       
+        // $key = getenv('JWT_SECRET');
         $key = JWT_SECRET;
         $header = $request->getServer('HTTP_AUTHORIZATION');
-        // $header = $HTTP_AUTHORIZATION;
+        // // $header = $HTTP_AUTHORIZATION;
         $token = null;
        
         if(!empty($header)){
@@ -55,28 +57,16 @@ class AuthFilter implements FilterInterface
         }
 
         try{
-            $decoded = JWT::decode($token, new Key($key, 'HS256'));
+           $decoded = JWT::decode($token, new Key($key, 'HS256'));
+            
         }catch(Exception $e){
-            $response = service('response');
-            $response->setBody('Access denied');
-            $response->setStatusCode(401);
-            return $response;
+            // $response = service('response');
+            // $response->setBody('Access denied');
+            // $response->setStatusCode(401);
+          
+            // return $response;
         }
-        // $authenticationHeader = $request->getServer('HTTP_AUTHORIZATION');
-        // try {
-        //     $encodedToken = getJWTFromRequest($authenticationHeader);
-        //     validateJWTFromRequest($encodedToken);
-        //     return 'hola';
-        // } 
-        // catch (Exception $ex) {
-        //     return Services::response()
-        //         ->setJSON(
-        //             [
-        //                 'error' => $ex->getMessage()
-        //             ]
-        //         )
-        //         ->setStatusCode(ResponseInterface::HTTP_UNAUTHORIZED);
-        // }
+        
     }
 
     /**

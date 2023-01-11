@@ -41,7 +41,7 @@ class Register extends BaseController
             );
         }else{
              $Muser = new Muser();
-//            helper('tools');
+
             $data = array(
                 'docident_us' => $this->request->getVar('doc_ident'),
                 'nombres_us' => $this->request->getVar('nombres'),

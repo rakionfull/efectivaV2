@@ -65,7 +65,15 @@ File: Main Css File
   background-color: #165094;
   -webkit-box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
           box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08); }
-
+.table-responsive table tbody tr{
+            height: auto;
+}
+.table-responsive table tbody tr td{
+ font-size: 10pt;
+}
+.table-responsive table thead{
+  font-size: 10pt;
+ }
 .navbar-header {
   display: -webkit-box;
   display: -ms-flexbox;

@@ -5,7 +5,7 @@
                     <div class="card">
                         <div class="card-body">
                            
-                            <h2>Bienvenido al dashboard</h2>
+                            <h2><?=$mensaje?> </h2>
 
                            
                         </div>

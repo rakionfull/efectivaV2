@@ -69,17 +69,12 @@ class Login extends BaseController
         $expiration = time() - 3*60; //limite de 2 minutos
         $ip = $this->request->getIPAddress(); //ip del usuario
         $captcha = $this->request->getVar('captcha'); //captcha introducido por el user
-        //$captcha2 = $this->request->getServer('HTTP_AUTHORIZATION');
         //eliminanos los captcha con mas de 2 mintos de vida
         $Mcaptcha->deleteOldCaptcha($expiration);
 
         //comprobamos si es correcta la imagen introducida
         $last = $Mcaptcha->check($ip,$expiration,$captcha);
-            // $response = [
-            //     '0' => $captcha,
-            //     '1' => $captcha2
-            // ];
-            // return $this->respond($response, ResponseInterface::HTTP_OK);
+
        // validacion del capcha
         if(count($last) == 1)
         {
@@ -128,9 +123,7 @@ class Login extends BaseController
         //guardo la nueva clave
         $userModel = new Muser();
         $datos = array(
-            'creacion_cl' => date('Y-m-d H:i:s'),
             'pass_cl' => hashPass($input['passw']),
-            'expiracion_cl' => time() + (24*3600*45),
             'id_us' =>$input['id_us'],
         );
         $userModel->savePass($datos);
@@ -181,5 +174,6 @@ class Login extends BaseController
                 );
         }
     }
+   
 }
 

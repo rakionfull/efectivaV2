@@ -49,9 +49,14 @@ $routes->post('/register', 'Register::register', ['filter' => 'authFilter']);
 // http://localhost:8080/api/
 $routes->group('/api',['namespace' => 'App\Controllers'], function ($routes) {
     $routes->post('change_pass', 'Login::change_pass',['filter' => 'authFilter']);
+    $routes->get('dashboard', 'Home::dashboard',['filter' => 'authFilter']);
+    $routes->post('addUser', 'Home::addUser',['filter' => 'authFilter']);
+    $routes->put('updateUser/(:num)', 'Home::updateUser/$1', ['filter' => 'authFilter']);
+    $routes->delete('deleteUser/(:num)', 'Home::deleteUser/$1', ['filter' => 'authFilter']);
+    $routes->get('getUsers', 'Home::getUsers',['filter' => 'authFilter']);
+    $routes->get('getUser/(:num)', 'Home::getUser/$1',['filter' => 'authFilter']);
 
-    // http://localhost:8080/api/photos/*
-    // $routes->resource('photos', ['controller' => 'Photo', 'only' => 'new']);
+
 });
 
 /*

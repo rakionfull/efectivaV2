@@ -63,7 +63,7 @@ $session = session();?>
                         <ul class="metismenu list-unstyled" id="side-menu">
                            
                             <li>
-                                <a href="<?=base_url('home') ?>" class="waves-effect">
+                                <a href="<?=base_url('inicio') ?>" class="waves-effect">
                                     <i class=" fas fa-home"></i>
                                     <span>Inicio</span>
                                 </a>
@@ -77,12 +77,9 @@ $session = session();?>
                                 </a>
                                 <ul class="sub-menu" aria-expanded="false">  
                                     <li><a href="<?=base_url('listUsers') ?>">Usuarios</a></li>
-                                    
-                                </ul>
-                                <ul class="sub-menu" aria-expanded="false">  
                                     <li><a href="<?=base_url('configPass') ?>">Conf. Password</a></li>
-                                    
                                 </ul>
+                                
                             </li>
                 
                             <li>
