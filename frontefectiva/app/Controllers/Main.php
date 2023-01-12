@@ -107,38 +107,33 @@ class Main extends BaseController {
               $request_data = $this->request->getPost();
               $response = (perform_http_request('POST', REST_API_URL . $post_endpoint,$request_data));
               // var_dump($response);
-              if($response->error = 'valida'){
+              if(isset($response->error)){
                 $datos=[
                   'data' => $request_data,
                   'error' => $response->datos,
                 ];
                 return view('accesos/createUser',$datos);
               }else{
-
+                if($response->user ){
+                  $this->session->setFlashdata('error','<div class="alert alert-success alert-dismissible fade show" role="alert">
+                    Usuario creado correctamente
+                      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                      </button>
+                    </div>');
+                    return redirect()->to(base_url('/listUsers'));
+                  }else{
+                      $this->session->setFlashdata('error','<div class="alert alert-danger alert-dismissible fade show" role="alert">
+                      Error al registrar
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                      </div>');
+                      return redirect()->to(base_url('/listUsers'));
+                  }
               }
-              // var_dump($response);
-              // if($response->error = 400 ){
-              //   $data["datos"] = $request_data;
-              //   $data["errors"] = $response->datos;
-              //   return view('accesos/createUser',$data);
-              // }
-              // if($response->user ){
-              //        $this->session->setFlashdata('error','<div class="alert alert-success alert-dismissible fade show" role="alert">
-              //   Usuario creado correctamente
-              //    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-              //        <span aria-hidden="true">&times;</span>
-              //    </button>
-              //  </div>');
-              //   return redirect()->to(base_url('/listUsers'));
-              // }else{
-              //     $this->session->setFlashdata('error','<div class="alert alert-danger alert-dismissible fade show" role="alert">
-              //     Error al registrar
-              //      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-              //          <span aria-hidden="true">&times;</span>
-              //      </button>
-              //    </div>');
-              //     return redirect()->to(base_url('/listUsers'));
-              // }
+             
+              
           
              
             

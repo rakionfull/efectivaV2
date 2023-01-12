@@ -56,11 +56,13 @@
                                 class="text-input"
                                 autocomplete="off"
                                 placeholder=""
-                                
+                               
                             />
+                         
                             <label class="label" for="passw">Password</label>
                                                                                        
                           </div>
+                         
                         </div>
 
                         <div class="input-container">
@@ -72,12 +74,14 @@
                                 class="text-input"
                                 autocomplete="off"
                                 placeholder=""
+                               
                                 
                             />
                             <label class="label" for="repassw">Confirmar Password</label>
                                
                             
                           </div>
+                        
                         </div>
                         
                        

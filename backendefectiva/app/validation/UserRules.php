@@ -19,5 +19,45 @@ class UserRules
             return false;
         }
     }
+    public function validatePass(string $str, string $fields, array $data): bool
+    {
+        
+        $password = trim($data['passw']);
+
+		$regex_lowercase = '/[a-z]/';
+		$regex_uppercase = '/[A-Z]/';
+		$regex_number = '/[0-9]/';
+		$regex_special = '/[!@#$%^&*()\-_=+{};:,<.>ยง~]/';
+	
+			if (preg_match_all($regex_lowercase, $password) < 1)
+			{
+				
+				return FALSE;
+			}
+	
+			if (preg_match_all($regex_uppercase, $password) < 1)
+			{
+				
+				return FALSE;
+			}
+	
+		
+		
+		    if (preg_match_all($regex_number, $password) < 1)
+			{
+				
+				return FALSE;
+			}
+		
+		
+			if (preg_match_all($regex_special, $password) < 1)
+			{
+			
+				return FALSE;
+			}
+		
+		return TRUE;
+      
+    }
    
 }

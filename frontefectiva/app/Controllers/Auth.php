@@ -110,10 +110,27 @@ class Auth extends BaseController {
               "repassw" => $this->request->getPost('repassw'),
               "id_us"=> $this->session->id)
              );
-         
+            
            $response = (perform_http_request('POST', REST_API_URL . $post_endpoint,$request_data));
+             var_dump($response);
+            if(isset($response->error)){
+              $this->session->setFlashdata('error','<div class="alert alert-danger alert-dismissible fade show" role="alert">
+             '.$response->error.'
+              <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+              </button>
+            </div>');
+            return redirect()->to(base_url('/change_pass'));
+           }else{
+            $this->session->setFlashdata('error','<div class="alert alert-success alert-dismissible fade show" role="alert">
+            Clave Modificada Correctamente
+             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                 <span aria-hidden="true">&times;</span>
+             </button>
+           </div>');
+            return redirect()->to(base_url('/login'));
+           }
            
-           return redirect()->to(base_url('/login'));
            
         }else{
           return redirect()->to(base_url('/login'));
@@ -124,6 +141,7 @@ class Auth extends BaseController {
     }
     public function change_pass(){
       if($this->session->logged_in){
+       
         return view('auth/change_pass');
       }else{
         return redirect()->to(base_url('/login'));

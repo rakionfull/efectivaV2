@@ -71,12 +71,12 @@ $session = session();
                                                     <span>Clave (*):</span>
                                                         <div class="form-group">
                                                             <div class="input-group-append">
-                                                            <input type="password" id="pass" name="pass" class="form-control form-control-sm" value="">
+                                                            <input type="password" id="passw" name="passw" class="form-control form-control-sm" value="">
                                                             
                                                                 <button id="show_password" class="btn btn-primary" type="button" title="Mostrar Clave"> <span class="fa fa-eye-slash icon"></span> </button>
                                                             </div>
                                                         </div>
-                                                        <?php //echo form_error('pass', '<div class="error">', '</div>'); ?>
+                                                        <?php if(isset($error->passw)) echo'<div class="error">'.$error->passw.'</div>' ?>
                                                 </div>
                                             </div>
                                             <div class="form-group mb-0">

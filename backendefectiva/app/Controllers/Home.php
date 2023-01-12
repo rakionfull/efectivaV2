@@ -71,12 +71,13 @@ class Home extends BaseController
     public function addUser()
     {
         $rules = [
-            'docident_us' => 'required|min_length[6]|max_length[50]|is_unique[tb_users.docident_us]',
-            'nombres_us' => 'required|min_length[6]|max_length[50]',
-            'apepat_us' => 'required|min_length[6]|max_length[50]',
-            'apemat_us' => 'required|min_length[6]|max_length[50]',
-            'email_us' => 'min_length[6]|max_length[50]|valid_email|is_unique[tb_users.email_us]',
-            'usuario_us' => 'required|min_length[6]|max_length[50]|is_unique[tb_users.usuario_us]',
+            'docident_us' => 'required|min_length[8]|max_length[8]|is_unique[tb_users.docident_us]',
+            'nombres_us' => 'required|min_length[2]|max_length[50]',
+            'apepat_us' => 'required|min_length[2]|max_length[50]',
+            'apemat_us' => 'required|min_length[2]|max_length[50]',
+            'email_us' => 'min_length[2]|max_length[50]|valid_email|is_unique[tb_users.email_us]',
+            'usuario_us' => 'required|min_length[5]|max_length[50]|is_unique[tb_users.usuario_us]',
+            'passw' => 'required|min_length[8]|validatePass[passw]',
         ];
         $errors = [
             'docident_us' => [
@@ -100,9 +101,10 @@ class Home extends BaseController
                 'required' => 'Debe ingresar Usuario',
                 'is_unique' => 'El campo {field} debe ser único'
             ],
-            'pass' => [
-                'required' => 'Debe ingresar Contraseña',
-                
+            'passw' => [
+                'required' => 'Debe ingresar Contraseña',     
+                'min_length' => 'La clave debe tener como minimo 8 carácteres',  
+                'validatePass' => 'La clave debe contener 1 May, 1 Min , 1 Núm y 1 Caract. especial',  
             ]
         ];
         
@@ -124,7 +126,7 @@ class Home extends BaseController
         $result = $model->saveUser($input);
         $id=$model->lastid();
         $datos = array(
-            'pass_cl' => hashPass($input['pass']),
+            'pass_cl' => hashPass($input['passw']),
             'id_us' =>$id,
         );
         $model->savePass($datos);
