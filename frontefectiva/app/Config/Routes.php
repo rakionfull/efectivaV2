@@ -49,7 +49,17 @@ $routes->get('/logout', 'Auth::logout');
 $routes->get('/change_pass', 'Auth::change_pass');
 $routes->post('/updatePass', 'Auth::updatePass');
 $routes->get('auth/getNewCaptcha', 'Auth::getNewCaptcha');
+$routes->get('perfiles', 'Main::perfiles');
+$routes->get('main/getPerfiles', 'Main::getPerfiles');
+$routes->get('main/getDetPerfil/(:num)', 'Main::getDetPerfil/$1');
+$routes->post('/main/addPerfil', 'Main::addPerfil');
+$routes->post('/main/updatePerfil', 'Main::updatePerfil');
 $routes->post('auth/validaCaptcha', 'Auth::validaCaptcha');
+
+$routes->post('/main/updateView', 'Main::updateView');
+$routes->post('/main/updateCreate', 'Main::updateCreate');
+$routes->post('/main/updateUpdate', 'Main::updateUpdate');
+$routes->post('/main/updateDelete', 'Main::updateDelete');
 /*
  * --------------------------------------------------------------------
  * Additional Routing

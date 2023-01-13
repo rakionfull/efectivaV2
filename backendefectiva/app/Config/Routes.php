@@ -55,8 +55,15 @@ $routes->group('/api',['namespace' => 'App\Controllers'], function ($routes) {
     $routes->delete('deleteUser/(:num)', 'Home::deleteUser/$1', ['filter' => 'authFilter']);
     $routes->get('getUsers', 'Home::getUsers',['filter' => 'authFilter']);
     $routes->get('getUser/(:num)', 'Home::getUser/$1',['filter' => 'authFilter']);
-
-
+    $routes->get('getPerfiles', 'Home::getPerfiles',['filter' => 'authFilter']);
+    $routes->post('addPerfil', 'Home::addPerfil',['filter' => 'authFilter']);
+    $routes->post('updatePerfil', 'Home::updatePerfil',['filter' => 'authFilter']);
+    $routes->get('getDetPerfil/(:num)', 'Home::getDetPerfil/$1',['filter' => 'authFilter']);
+   
+    $routes->post('updateView', 'Home::updateView',['filter' => 'authFilter']);
+    $routes->post('updateCreate', 'Home::updateCreate',['filter' => 'authFilter']);
+    $routes->post('updateUpdate', 'Home::updateUpdate',['filter' => 'authFilter']);
+    $routes->post('updateDelete', 'Home::updateDelete',['filter' => 'authFilter']);
 });
 
 /*

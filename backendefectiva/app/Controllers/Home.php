@@ -4,6 +4,7 @@ namespace App\Controllers;
 use App\Controllers\BaseController;
 use CodeIgniter\API\ResponseTrait;
 use App\Models\Muser;
+use App\Models\Mperfil;
 use App\Models\Mcaptcha;
 use CodeIgniter\HTTP\Response;
 use CodeIgniter\HTTP\ResponseInterface;
@@ -172,5 +173,153 @@ class Home extends BaseController
                 'user' =>  $result
             ]
         );
+    }
+    public function getPerfiles(){
+
+        try {
+            $model = new Mperfil();
+                $response = [
+                    'data' =>  $model->getPerfiles()
+                ];
+                return $this->respond($response, ResponseInterface::HTTP_OK);
+        
+        } catch (Exception $ex) {
+            return $this->getResponse(
+                    [
+                        'error' => $ex->getMessage(),
+                    ],
+                    ResponseInterface::HTTP_OK
+                );
+        }
+
+           
+    }
+    public function addPerfil()
+    {
+   
+        
+        $input = $this->getRequestInput($this->request);
+
+      
+        $model = new Mperfil();
+        $result = $model->savePerfil($input);
+    
+        return $this->getResponse(
+            [
+                'msg' =>  $result
+            ]
+        );
+      
+        
+    }
+    public function updatePerfil()
+    {
+   
+        
+        $input = $this->getRequestInput($this->request);
+
+      
+        $model = new Mperfil();
+        $result = $model->updatePerfil($input);
+    
+        return $this->getResponse(
+            [
+                'msg' =>  $result
+            ]
+        );
+      
+        
+    }
+    public function getDetPerfil($id){
+
+        try {
+            $model = new Mperfil();
+                $response = [
+                    'data' =>  $model->getDetPerfil($id)
+                ];
+                return $this->respond($response, ResponseInterface::HTTP_OK);
+        
+        } catch (Exception $ex) {
+            return $this->getResponse(
+                    [
+                        'error' => $ex->getMessage(),
+                    ],
+                    ResponseInterface::HTTP_OK
+                );
+        }
+
+           
+    }
+    public function updateView()
+    {
+   
+        
+        $input = $this->getRequestInput($this->request);
+
+      
+        $model = new Mperfil();
+        $result = $model->updateDetPer($input,'view_det');
+    
+        return $this->getResponse(
+            [
+                'msg' =>  $result
+            ]
+        );
+      
+        
+    }
+    public function updateCreate()
+    {
+   
+        
+        $input = $this->getRequestInput($this->request);
+
+      
+        $model = new Mperfil();
+        $result = $model->updateDetPer($input,'create_det');
+    
+        return $this->getResponse(
+            [
+                'msg' =>  $result
+            ]
+        );
+      
+        
+    }
+    public function updateUdate()
+    {
+   
+        
+        $input = $this->getRequestInput($this->request);
+
+      
+        $model = new Mperfil();
+        $result = $model->updateDetPer($input,'update_det');
+    
+        return $this->getResponse(
+            [
+                'msg' =>  $result
+            ]
+        );
+      
+        
+    }
+    public function updateDelete()
+    {
+   
+        
+        $input = $this->getRequestInput($this->request);
+
+      
+        $model = new Mperfil();
+        $result = $model->updateDetPer($input,'delete_det');
+    
+        return $this->getResponse(
+            [
+                'msg' =>  $result
+            ]
+        );
+      
+        
     }
 }

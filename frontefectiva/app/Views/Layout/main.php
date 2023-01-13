@@ -78,6 +78,7 @@ $session = session();?>
                                 <ul class="sub-menu" aria-expanded="false">  
                                     <li><a href="<?=base_url('listUsers') ?>">Usuarios</a></li>
                                     <li><a href="<?=base_url('configPass') ?>">Conf. Password</a></li>
+                                    <li><a href="<?=base_url('perfiles') ?>">Perfiles</a></li>
                                 </ul>
                                 
                             </li>
@@ -94,13 +95,14 @@ $session = session();?>
             </div>
     <div class="main-content">
           
-
+    <input type="hidden" name="" id="base_url" value=<?=base_url()?>>
         <div class="page-content">
             <div class="container-fluid">
+                
             <?=$this->renderSection('content')?>
             </div> <!-- container-fluid -->
         </div>
-        <input type="hidden" name="" id="base_url" value=<?=base_url()?>>
+        
         <?=$this->include('Layout/footer')?>
     </div>  
     </body>

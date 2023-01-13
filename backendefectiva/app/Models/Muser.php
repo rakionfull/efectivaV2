@@ -69,7 +69,7 @@ class Muser extends Model
     public function getUsers(){
 
         $Usuario = $this->db->query("SELECT * FROM  tb_users");
-        return $Usuario->getResultArray();;
+        return $Usuario->getResultArray();
     }
     //actualiza el usuario
     public function updateUser($data,$id){

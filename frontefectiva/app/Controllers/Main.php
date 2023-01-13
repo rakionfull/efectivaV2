@@ -19,7 +19,7 @@ class Main extends BaseController {
     
       
     }
-    public function listUsers(){
+      public function listUsers(){
       
         //opteniendo los datos
         if($this->session->logged_in){
@@ -214,5 +214,225 @@ class Main extends BaseController {
           //opteniendo el cpatcha
         
           // return view('auth/login',$data);
+      }
+      public function perfiles(){
+      
+        //opteniendo los datos
+        if($this->session->logged_in){
+          // $get_endpoint = '/api/getPerfiles';
+
+          // $response =perform_http_request('GET', REST_API_URL . $get_endpoint,[]);
+          // if($response){
+           
+          //   $data["perfiles"]=$response->datos;
+     
+              return view('accesos/perfiles');
+          //}
+        }else{
+          return redirect()->to(base_url('/login'));
+        }
+        
+     
+  
+      }
+      public function getPerfiles(){
+        if($this->session->logged_in){
+          $get_endpoint = '/api/getPerfiles';
+
+          $response =perform_http_request('GET', REST_API_URL . $get_endpoint,[]);
+          if($response){
+           
+            echo json_encode($response);
+          }
+        }
+      }
+      public function addPerfil() {
+        // helper(['curl']);
+        if($this->session->logged_in){
+          if(!$this->request->getPost())
+          {
+            return redirect()->to(base_url('/listUsers'));
+          }else{
+        
+              $post_endpoint = '/api/addPerfil';
+              $request_data = [];
+              // $request_data = (array("username" => $this->request->getPost('username'), "password" => $this->request->getPost('pass')));
+              $request_data = $this->request->getPost();
+             
+              $response = (perform_http_request('POST', REST_API_URL . $post_endpoint,$request_data));
+              // var_dump($response);
+              
+                if($response->msg ){
+                    echo json_encode($response->msg);
+                
+                }else{
+                  echo json_encode(false);
+                }
+             
+              
+          
+             
+            
+          }
+        }
+       
+         
+      }
+      public function updatePerfil() {
+        // helper(['curl']);
+        if($this->session->logged_in){
+          if(!$this->request->getPost())
+          {
+            return redirect()->to(base_url('/listUsers'));
+          }else{
+        
+              $post_endpoint = '/api/updatePerfil';
+              $request_data = [];
+              // $request_data = (array("username" => $this->request->getPost('username'), "password" => $this->request->getPost('pass')));
+              $request_data = $this->request->getPost();
+             
+              $response = (perform_http_request('POST', REST_API_URL . $post_endpoint,$request_data));
+              // var_dump($response);
+              
+                if($response->msg ){
+                    echo json_encode($response->msg);
+                
+                }else{
+                  echo json_encode(false);
+                }
+             
+              
+          
+             
+            
+          }
+        }
+       
+         
+      }
+      public function getDetPerfil($id){
+        if($this->session->logged_in){
+          $get_endpoint = '/api/getDetPerfil/'.$id;
+
+          $response =perform_http_request('GET', REST_API_URL . $get_endpoint,[]);
+          if($response){
+           
+            echo json_encode($response);
+          }
+        }
+      }
+
+      //update del detalle perfil
+      public function updateView() {
+        // helper(['curl']);
+        if($this->session->logged_in){
+          if(!$this->request->getPost())
+          {
+            return redirect()->to(base_url('/listUsers'));
+          }else{
+        
+              $post_endpoint = '/api/updateView';
+              $request_data = [];
+              // $request_data = (array("username" => $this->request->getPost('username'), "password" => $this->request->getPost('pass')));
+              $request_data = $this->request->getPost();
+             
+              $response = (perform_http_request('POST', REST_API_URL . $post_endpoint,$request_data));
+              // var_dump($response);
+              // echo json_encode($request_data);
+                if($response->msg ){
+                    echo json_encode($response->msg);
+                
+                }else{
+                  echo json_encode(false);
+                }
+ 
+          }
+        }
+       
+         
+      }
+      public function updateCreate() {
+        // helper(['curl']);
+        if($this->session->logged_in){
+          if(!$this->request->getPost())
+          {
+            return redirect()->to(base_url('/listUsers'));
+          }else{
+        
+              $post_endpoint = '/api/updateCreate';
+              $request_data = [];
+              // $request_data = (array("username" => $this->request->getPost('username'), "password" => $this->request->getPost('pass')));
+              $request_data = $this->request->getPost();
+             
+              $response = (perform_http_request('POST', REST_API_URL . $post_endpoint,$request_data));
+              // var_dump($response);
+              
+                if($response->msg ){
+                    echo json_encode($response->msg);
+                
+                }else{
+                  echo json_encode(false);
+                }
+ 
+          }
+        }
+       
+         
+      }
+      public function updateUpdate() {
+        // helper(['curl']);
+        if($this->session->logged_in){
+          if(!$this->request->getPost())
+          {
+            return redirect()->to(base_url('/listUsers'));
+          }else{
+        
+              $post_endpoint = '/api/updateUpdate';
+              $request_data = [];
+              // $request_data = (array("username" => $this->request->getPost('username'), "password" => $this->request->getPost('pass')));
+              $request_data = $this->request->getPost();
+             
+              $response = (perform_http_request('POST', REST_API_URL . $post_endpoint,$request_data));
+              // var_dump($response);
+              
+                if($response->msg ){
+                    echo json_encode($response->msg);
+                
+                }else{
+                  echo json_encode(false);
+                }
+ 
+          }
+        }
+       
+         
+      }
+      public function updateDelete() {
+        // helper(['curl']);
+        if($this->session->logged_in){
+          if(!$this->request->getPost())
+          {
+            return redirect()->to(base_url('/listUsers'));
+          }else{
+        
+              $post_endpoint = '/api/updateDelete';
+              $request_data = [];
+              // $request_data = (array("username" => $this->request->getPost('username'), "password" => $this->request->getPost('pass')));
+              $request_data = $this->request->getPost();
+             
+              $response = (perform_http_request('POST', REST_API_URL . $post_endpoint,$request_data));
+              // var_dump($response);
+              
+                if($response->msg ){
+                    echo json_encode($response->msg);
+                
+                }else{
+                  echo json_encode(false);
+                }
+ 
+          }
+        }
+       
+         
       }
 }
