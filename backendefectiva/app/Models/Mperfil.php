@@ -44,17 +44,16 @@ class Mperfil extends Model
     //detalle perfiles}
     public function getDetPerfil($id){
 
-        $query = $this->db->query("SELECT *,O.id_op as opcion,P.id_perfil as perf FROM tb_perfiles as P 
-        INNER JOIN tb_detalle_perfil as DP ON P.id_perfil=DP.id_perfil 
-        INNER JOIN tb_opcion as O on O.id_mod=DP.id_op 
-        inner join tb_modulo as M on O.id_mod=M.id_mod where P.id_perfil=$id" );
+        $query = $this->db->query("SELECT * from tb_detalle_perfil as DP inner join tb_opcion as O on DP.id_op=O.id_op inner join tb_perfiles as P
+        on DP.id_perfil=P.id_perfil inner join tb_modulo as M on O.id_mod=M.id_mod
+         where P.id_perfil=$id" );
         return $query->getResultArray();
     }
     public function updateDetPer($data,$column){
       
         $query=$this->db->query("UPDATE tb_detalle_perfil SET 
         {$column} = {$data['estado']}
-        where id_op = {$data['id_op']}  and id_perfil={$data['id_perfil']}") ;
+        where id_det_per = {$data['id_op']} ") ;
            
         return $query;
     }

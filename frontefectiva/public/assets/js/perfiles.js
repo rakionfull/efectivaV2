@@ -106,10 +106,10 @@ function LoadDetPerfil($id_perfil) {
                         "bSortable": false,
                         "mRender": function(data, type, value) {
                             if (data == 1) {
-                                return  '<input  type="checkbox" id="view_'+value["opcion"]+'_'+value["perf"]+'" onclick="changeView(this, event)" switch="none" checked/><label for="view_'+value["opcion"]+'_'+value["perf"]+'" data-on-label="On"data-off-label="Off"></label>'
+                                return  '<input  type="checkbox" id="view_'+value["id_det_per"]+'" onclick="changeView(this, event)" switch="none" checked/><label for="view_'+value["id_det_per"]+'" data-on-label="On"data-off-label="Off"></label>'
                               
                             }else{
-                                return  '<input type="checkbox" id="view_'+value["opcion"]+'_'+value["perf"]+'" onclick="changeView(this, event)" switch="none" /><label for="view_'+value["opcion"]+'_'+value["perf"]+'" data-on-label="On"data-off-label="Off"></label>'
+                                return  '<input type="checkbox" id="view_'+value["id_det_per"]+'" onclick="changeView(this, event)" switch="none" /><label for="view_'+value["id_det_per"]+'" data-on-label="On"data-off-label="Off"></label>'
                               
                             }
                         }
@@ -118,10 +118,10 @@ function LoadDetPerfil($id_perfil) {
                     "bSortable": false,
                     "mRender": function(data, type, value) {
                         if (data == 1) {
-                            return  '<input  type="checkbox" id="create_'+value["opcion"]+'_'+value["perf"]+'" onclick="changeCreate(this, event)" switch="none" checked/><label for="create_'+value["opcion"]+'_'+value["perf"]+'" data-on-label="On"data-off-label="Off"></label>'
+                            return  '<input  type="checkbox" id="create_'+value["id_det_per"]+'" onclick="changeCreate(this, event)" switch="none" checked/><label for="create_'+value["id_det_per"]+'" data-on-label="On"data-off-label="Off"></label>'
                         
                         }else{
-                            return  '<input type="checkbox" id="create_'+value["opcion"]+'_'+value["perf"]+'" onclick="changeCreate(this, event)" switch="none" /><label for="create_'+value["opcion"]+'_'+value["perf"]+'" data-on-label="On"data-off-label="Off"></label>'
+                            return  '<input type="checkbox" id="create_'+value["id_det_per"]+'" onclick="changeCreate(this, event)" switch="none" /><label for="create_'+value["id_det_per"]+'" data-on-label="On"data-off-label="Off"></label>'
                         
                         }
                     }
@@ -130,10 +130,10 @@ function LoadDetPerfil($id_perfil) {
                     "bSortable": false,
                     "mRender": function(data, type, value) {
                         if (data == 1) {
-                            return  '<input  type="checkbox" id="update_'+value["opcion"]+'_'+value["perf"]+'" onclick="changeUpdate(this, event)" switch="none" checked/><label for="update_'+value["opcion"]+'_'+value["perf"]+'" data-on-label="On"data-off-label="Off"></label>'
+                            return  '<input  type="checkbox" id="update_'+value["id_det_per"]+'" onclick="changeUpdate(this, event)" switch="none" checked/><label for="update_'+value["id_det_per"]+'" data-on-label="On"data-off-label="Off"></label>'
                         
                         }else{
-                            return  '<input type="checkbox" id="update_'+value["opcion"]+'_'+value["perf"]+'" onclick="changeCreate(this, event)" switch="none" /><label for="update_'+value["opcion"]+'_'+value["perf"]+'" data-on-label="On"data-off-label="Off"></label>'
+                            return  '<input type="checkbox" id="update_'+value["id_det_per"]+'" onclick="changeUpdate(this, event)" switch="none" /><label for="update_'+value["id_det_per"]+'" data-on-label="On"data-off-label="Off"></label>'
                         
                         }
                     }
@@ -142,10 +142,10 @@ function LoadDetPerfil($id_perfil) {
                 "bSortable": false,
                 "mRender": function(data, type, value) {
                     if (data == 1) {
-                        return  '<input  type="checkbox" id="delete_'+value["opcion"]+'_'+value["perf"]+'" onclick="changeDelete(this, event)" switch="none" checked/><label for="delete_'+value["opcion"]+'_'+value["perf"]+'" data-on-label="On"data-off-label="Off"></label>'
+                        return  '<input  type="checkbox" id="delete_'+value["id_det_per"]+'" onclick="changeDelete(this, event)" switch="none" checked/><label for="delete_'+value["id_det_per"]+'" data-on-label="On"data-off-label="Off"></label>'
                     
                     }else{
-                        return  '<input type="checkbox" id="delete_'+value["opcion"]+'_'+value["perf"]+'" onclick="changeDelete(this, event)" switch="none" /><label for="delete_'+value["opcion"]+'_'+value["perf"]+'" data-on-label="On"data-off-label="Off"></label>'
+                        return  '<input type="checkbox" id="delete_'+value["id_det_per"]+'" onclick="changeDelete(this, event)" switch="none" /><label for="delete_'+value["id_det_per"]+'" data-on-label="On"data-off-label="Off"></label>'
                     
                     }
                 }
@@ -346,11 +346,11 @@ $('#table_perfiles tbody').on( 'click', 'detPerfil', function(){
 });
 
 //cambiar estado del view
-function EjecutarChangeView(id1,id2,estado){
+function EjecutarChangeView(id1,estado){
     try {
         const postData = { 
             id_op:id1,
-            id_perfil:id2,
+           
             estado:estado,
         };
      
@@ -381,11 +381,11 @@ function EjecutarChangeView(id1,id2,estado){
     
     }
 }
-function EjecutarChangeCreate(id1,id2,estado){
+function EjecutarChangeCreate(id1,estado){
     try {
         const postData = { 
             id_op:id1,
-            id_perfil:id2,
+           
             estado:estado,
         };
        // console.log(postData);
@@ -416,11 +416,11 @@ function EjecutarChangeCreate(id1,id2,estado){
     
     }
 }
-function EjecutarChangeUpdate(id1,id2,estado){
+function EjecutarChangeUpdate(id1,estado){
     try {
         const postData = { 
             id_op:id1,
-            id_perfil:id2,
+        
             estado:estado,
         };
        // console.log(postData);
@@ -451,11 +451,11 @@ function EjecutarChangeUpdate(id1,id2,estado){
     
     }
 }
-function EjecutarChangeDelete(id1,id2,estado){
+function EjecutarChangeDelete(id1,estado){
     try {
         const postData = { 
             id_op:id1,
-            id_perfil:id2,
+        
             estado:estado,
         };
        // console.log(postData);
@@ -490,13 +490,11 @@ function changeView(elemento){
 
                     let usuario = elemento.id.split('_');
                     var dato1 = usuario[1];
-                    var dato2 = usuario[2];
-                    console.log(dato1);
-                    console.log(dato2);
+                   
                     if(elemento.checked){
-                        EjecutarChangeView(dato1,dato2,1);
+                        EjecutarChangeView(dato1,1);
                     }else{
-                        EjecutarChangeView(dato1,dato2,0);
+                        EjecutarChangeView(dato1,0);
                     }
 
 };
@@ -504,11 +502,11 @@ function changeCreate(elemento){
 
     let usuario = elemento.id.split('_');
     var dato1 = usuario[1];
-    var dato2 = usuario[2];
+   
     if(elemento.checked){
-        EjecutarChangeCreate(dato1,dato2,1);
+        EjecutarChangeCreate(dato1,1);
     }else{
-        EjecutarChangeCreate(dato1,dato2,0);
+        EjecutarChangeCreate(dato1,0);
     }
 
 };
@@ -516,11 +514,11 @@ function changeUpdate(elemento){
 
     let usuario = elemento.id.split('_');
     var dato1 = usuario[1];
-    var dato2 = usuario[2];
+   
     if(elemento.checked){
-        EjecutarChangeUpdate(dato1,dato2,1);
+        EjecutarChangeUpdate(dato1,1);
     }else{
-        EjecutarChangeUpdate(dato1,dato2,0);
+        EjecutarChangeUpdate(dato1,0);
     }
 
 };
@@ -528,11 +526,11 @@ function changeDelete(elemento){
 
     let usuario = elemento.id.split('_');
     var dato1 = usuario[1];
-    var dato2 = usuario[2];
+   
     if(elemento.checked){
-        EjecutarChangeDelete(dato1,dato2,1);
+        EjecutarChangeDelete(dato1,1);
     }else{
-        EjecutarChangeDelete(dato1,dato2,0);
+        EjecutarChangeDelete(dato1,0);
     }
 
 };

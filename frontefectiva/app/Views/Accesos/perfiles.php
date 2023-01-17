@@ -129,7 +129,7 @@
                                                 <div class="col-lg-6">
                                                     <div class="form-group">
                                                         <span>Estado: </span>
-                                                        <select name="" id="det_est_perfil" class="form-control form-control-sm" readonly>
+                                                        <select name="" id="det_est_perfil" class="form-control form-control-sm" disabled >
                                                         <option value="">Seleccione</option>
                                                         <option value="1">Activo</option>
                                                         <option value="2">Inactivo</option>

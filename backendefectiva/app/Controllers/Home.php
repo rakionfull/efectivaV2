@@ -6,6 +6,7 @@ use CodeIgniter\API\ResponseTrait;
 use App\Models\Muser;
 use App\Models\Mperfil;
 use App\Models\Mcaptcha;
+use App\Models\Mempresa;
 use CodeIgniter\HTTP\Response;
 use CodeIgniter\HTTP\ResponseInterface;
 use CodeIgniter\RESTful\ResourceController;
@@ -286,7 +287,7 @@ class Home extends BaseController
       
         
     }
-    public function updateUdate()
+    public function updateUpdate()
     {
    
         
@@ -313,6 +314,62 @@ class Home extends BaseController
       
         $model = new Mperfil();
         $result = $model->updateDetPer($input,'delete_det');
+    
+        return $this->getResponse(
+            [
+                'msg' =>  $result
+            ]
+        );
+      
+        
+    }
+    public function getEmpresas(){
+
+        try {
+            $model = new Mempresa();
+                $response = [
+                    'data' =>  $model->getEmpresas()
+                ];
+                return $this->respond($response, ResponseInterface::HTTP_OK);
+        
+        } catch (Exception $ex) {
+            return $this->getResponse(
+                    [
+                        'error' => $ex->getMessage(),
+                    ],
+                    ResponseInterface::HTTP_OK
+                );
+        }
+
+           
+    }
+    public function addEmpresa()
+    {
+   
+        
+        $input = $this->getRequestInput($this->request);
+
+      
+        $model = new Mempresa();
+        $result = $model->saveEmpresa($input);
+    
+        return $this->getResponse(
+            [
+                'msg' =>  $result
+            ]
+        );
+      
+        
+    }
+    public function updateEmpresa()
+    {
+   
+        
+        $input = $this->getRequestInput($this->request);
+
+      
+        $model = new Mempresa();
+        $result = $model->updateEmpresa($input);
     
         return $this->getResponse(
             [

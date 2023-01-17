@@ -435,4 +435,87 @@ class Main extends BaseController {
        
          
       }
+
+      public function activos(){
+       
+        if($this->session->logged_in){
+    
+              return view('parametrizacion/activos');
+         
+        }else{
+          return redirect()->to(base_url('/login'));
+        }
+
+      }
+
+      //funciones para opcion activos
+      public function getEmpresas(){
+        if($this->session->logged_in){
+          $get_endpoint = '/api/getEmpresas';
+
+          $response =perform_http_request('GET', REST_API_URL . $get_endpoint,[]);
+          if($response){
+           
+            echo json_encode($response);
+          }
+        }
+      }
+      public function addEmpresa() {
+        // helper(['curl']);
+        if($this->session->logged_in){
+          if(!$this->request->getPost())
+          {
+            return redirect()->to(base_url('/activos'));
+          }else{
+        
+              $post_endpoint = '/api/addEmpresa';
+              $request_data = [];
+               $request_data = $this->request->getPost();
+             
+              $response = (perform_http_request('POST', REST_API_URL . $post_endpoint,$request_data));
+              // var_dump($response);
+              
+                if($response->msg ){
+                    echo json_encode($response->msg);
+                
+                }else{
+                  echo json_encode(false);
+                }
+             
+              
+          
+             
+            
+          }
+        }
+       
+         
+      }
+      public function updateEmpresa() {
+        // helper(['curl']);
+        if($this->session->logged_in){
+          if(!$this->request->getPost())
+          {
+            return redirect()->to(base_url('/activos'));
+          }else{
+        
+              $post_endpoint = '/api/updateEmpresa';
+              $request_data = [];
+               $request_data = $this->request->getPost();
+             
+              $response = (perform_http_request('POST', REST_API_URL . $post_endpoint,$request_data));
+              // var_dump($response);
+              
+                if($response->msg ){
+                    echo json_encode($response->msg);
+                
+                }else{
+                  echo json_encode(false);
+                }
+
+          }
+        }
+       
+         
+      }
 }

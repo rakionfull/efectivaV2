@@ -84,7 +84,20 @@ $session = session();?>
                             </li>
                 
                             <li>
-                           
+                            <li>
+                                <a href="javascript: void(0);" class="has-arrow waves-effect">
+                                    <i class="fas fa-list-alt"></i>
+                                    <span>Parametrización</span>
+                                </a>
+                                <ul class="sub-menu" aria-expanded="false">  
+                                    <li><a href="<?=base_url('activos') ?>">Activos</a></li>
+                                    <li><a href="<?=base_url('riesgos') ?>">Riesgos SI-C</a></li>
+                                    <li><a href="<?=base_url('controles') ?>">Controles</a></li>
+                                </ul>
+                                
+                            </li>
+                
+                            <li>
 
                            
 

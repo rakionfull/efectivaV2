@@ -64,6 +64,11 @@ $routes->group('/api',['namespace' => 'App\Controllers'], function ($routes) {
     $routes->post('updateCreate', 'Home::updateCreate',['filter' => 'authFilter']);
     $routes->post('updateUpdate', 'Home::updateUpdate',['filter' => 'authFilter']);
     $routes->post('updateDelete', 'Home::updateDelete',['filter' => 'authFilter']);
+    //crud de empresa
+    $routes->get('getEmpresas', 'Home::getEmpresas',['filter' => 'authFilter']);
+    $routes->post('addEmpresa', 'Home::addEmpresa',['filter' => 'authFilter']);
+    $routes->post('updateEmpresa', 'Home::updateEmpresa',['filter' => 'authFilter']);
+  
 });
 
 /*

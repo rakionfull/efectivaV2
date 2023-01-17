@@ -35,9 +35,19 @@ $routes->set404Override();
 
 // We get a performance increase by specifying the default
 // route since we don't have to scan directories.
+
 $routes->get('/', 'Home::index');
+// rutas login
+
 $routes->get('/login', 'Auth::index');
 $routes->get('/inicio', 'Main::inicio');
+$routes->get('/logout', 'Auth::logout');
+$routes->get('/change_pass', 'Auth::change_pass');
+$routes->post('/updatePass', 'Auth::updatePass');
+$routes->get('auth/getNewCaptcha', 'Auth::getNewCaptcha');
+$routes->post('auth/validaCaptcha', 'Auth::validaCaptcha');
+
+// rutas panel principal
 $routes->get('/listUsers', 'Main::listUsers');
 $routes->get('/createUser', 'Main::createUser');
 $routes->get('/modifyUser/(:num)', 'Main::modifyUser/$1');
@@ -45,21 +55,24 @@ $routes->get('/deleteUser/(:num)', 'Main::deleteUser/$1');
 $routes->get('/configPass', 'Main::configPass');
 $routes->post('/main/addUser', 'Main::addUser');
 $routes->post('/updateUser/(:num)', 'Main::updateUser/$1');
-$routes->get('/logout', 'Auth::logout');
-$routes->get('/change_pass', 'Auth::change_pass');
-$routes->post('/updatePass', 'Auth::updatePass');
-$routes->get('auth/getNewCaptcha', 'Auth::getNewCaptcha');
 $routes->get('perfiles', 'Main::perfiles');
 $routes->get('main/getPerfiles', 'Main::getPerfiles');
 $routes->get('main/getDetPerfil/(:num)', 'Main::getDetPerfil/$1');
 $routes->post('/main/addPerfil', 'Main::addPerfil');
 $routes->post('/main/updatePerfil', 'Main::updatePerfil');
-$routes->post('auth/validaCaptcha', 'Auth::validaCaptcha');
-
 $routes->post('/main/updateView', 'Main::updateView');
 $routes->post('/main/updateCreate', 'Main::updateCreate');
 $routes->post('/main/updateUpdate', 'Main::updateUpdate');
 $routes->post('/main/updateDelete', 'Main::updateDelete');
+
+
+// rutas para paremetrizacion
+$routes->get('/activos', 'Main::activos');
+$routes->get('/riesgos', 'Main::riesgos');
+$routes->get('/controles', 'Main::controles');
+$routes->get('main/getEmpresas', 'Main::getEmpresas');
+$routes->post('/main/addEmpresa', 'Main::addEmpresa');
+$routes->post('/main/updateEmpresa', 'Main::updateEmpresa');
 /*
  * --------------------------------------------------------------------
  * Additional Routing
