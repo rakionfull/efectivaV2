@@ -518,4 +518,218 @@ class Main extends BaseController {
        
          
       }
+      //--------------------------------------------------------      
+      public function getValorActivo(){
+        if($this->session->logged_in){
+          $get_endpoint = '/api/getValorActivo';
+
+          $response =perform_http_request('GET', REST_API_URL . $get_endpoint,[]);
+          if($response){
+           
+            echo json_encode($response);
+          }
+        }
+      }
+
+      public function addValorActivo() {
+        // helper(['curl']);
+        if($this->session->logged_in){
+          if(!$this->request->getPost())
+          {
+            return redirect()->to(base_url('/activos'));
+          }else{
+        
+              $post_endpoint = '/api/addValorActivo';
+              $request_data = [];
+               $request_data = $this->request->getPost();
+             
+              $response = (perform_http_request('POST', REST_API_URL . $post_endpoint,$request_data));
+              // var_dump($response);
+              
+                if($response->msg ){
+                    echo json_encode($response->msg);
+                
+                }else{
+                  echo json_encode(false);
+                }
+             
+              
+          
+             
+            
+          }
+        }
+       
+         
+      }
+      public function updateValorActivo() {
+        // helper(['curl']);
+        if($this->session->logged_in){
+          if(!$this->request->getPost())
+          {
+            return redirect()->to(base_url('/activos'));
+          }else{
+        
+              $post_endpoint = '/api/updateValorActivo';
+              $request_data = [];
+               $request_data = $this->request->getPost();
+             
+              $response = (perform_http_request('POST', REST_API_URL . $post_endpoint,$request_data));
+              // var_dump($response);
+              
+                if($response->msg ){
+                    echo json_encode($response->msg);
+                
+                }else{
+                  echo json_encode(false);
+                }
+
+          }
+        }
+       
+         
+      }
+
+      public function getTipoActivo(){
+        if($this->session->logged_in){
+          $get_endpoint = '/api/getTipoActivo';
+
+          $response =perform_http_request('GET', REST_API_URL . $get_endpoint,[]);
+          if($response){
+           
+            echo json_encode($response);
+          }
+        }
+      }
+      public function addTipoActivo() {
+        // helper(['curl']);
+        if($this->session->logged_in){
+          if(!$this->request->getPost())
+          {
+            return redirect()->to(base_url('/activos'));
+          }else{
+        
+              $post_endpoint = '/api/addTipoActivo';
+              $request_data = [];
+               $request_data = $this->request->getPost();
+             
+              $response = (perform_http_request('POST', REST_API_URL . $post_endpoint,$request_data));
+              // var_dump($response);
+              
+                if($response->msg ){
+                    echo json_encode($response->msg);
+                
+                }else{
+                  echo json_encode(false);
+                }
+             
+              
+          
+             
+            
+          }
+        }
+       
+         
+      }
+      public function updateTipoActivo() {
+        // helper(['curl']);
+        if($this->session->logged_in){
+          if(!$this->request->getPost())
+          {
+            return redirect()->to(base_url('/activos'));
+          }else{
+        
+              $post_endpoint = '/api/updateTipoActivo';
+              $request_data = [];
+               $request_data = $this->request->getPost();
+             
+              $response = (perform_http_request('POST', REST_API_URL . $post_endpoint,$request_data));
+              // var_dump($response);
+              
+                if($response->msg ){
+                    echo json_encode($response->msg);
+                
+                }else{
+                  echo json_encode(false);
+                }
+
+          }
+        }
+       
+         
+      }
+
+      public function getClasInformacion(){
+        if($this->session->logged_in){
+          $get_endpoint = '/api/getClasInformacion';
+
+          $response =perform_http_request('GET', REST_API_URL . $get_endpoint,[]);
+          if($response){
+           
+            echo json_encode($response);
+          }
+        }
+      }
+      public function addClasInformacion() {
+        // helper(['curl']);
+        if($this->session->logged_in){
+          if(!$this->request->getPost())
+          {
+            return redirect()->to(base_url('/activos'));
+          }else{
+        
+              $post_endpoint = '/api/addClasInformacion';
+              $request_data = [];
+               $request_data = $this->request->getPost();
+             
+              $response = (perform_http_request('POST', REST_API_URL . $post_endpoint,$request_data));
+              // var_dump($response);
+              
+                if($response->msg ){
+                    echo json_encode($response->msg);
+                
+                }else{
+                  echo json_encode(false);
+                }
+             
+              
+          
+             
+            
+          }
+        }
+       
+         
+      }
+      public function updateClasInformacion() {
+        // helper(['curl']);
+        if($this->session->logged_in){
+          if(!$this->request->getPost())
+          {
+            return redirect()->to(base_url('/activos'));
+          }else{
+        
+              $post_endpoint = '/api/updateClasInformacion';
+              $request_data = [];
+               $request_data = $this->request->getPost();
+             
+              $response = (perform_http_request('POST', REST_API_URL . $post_endpoint,$request_data));
+              // var_dump($response);
+              
+                if($response->msg ){
+                    echo json_encode($response->msg);
+                
+                }else{
+                  echo json_encode(false);
+                }
+
+          }
+        }
+       
+         
+      }
+
+
+      
 }
