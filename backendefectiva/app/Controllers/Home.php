@@ -7,6 +7,9 @@ use App\Models\Muser;
 use App\Models\Mperfil;
 use App\Models\Mcaptcha;
 use App\Models\Mempresa;
+use App\Models\Mvaloractivo;
+use App\Models\Mtipoactivo;
+use App\Models\MclasInformacion;
 use CodeIgniter\HTTP\Response;
 use CodeIgniter\HTTP\ResponseInterface;
 use CodeIgniter\RESTful\ResourceController;
@@ -379,4 +382,182 @@ class Home extends BaseController
       
         
     }
+
+    
+    //------------------------------------------------------------------------------
+
+    public function getValorActivo(){
+
+        try {
+            $model = new Mvaloractivo();
+                $response = [
+                    'data' =>  $model->getValorActivo()
+                ];
+                return $this->respond($response, ResponseInterface::HTTP_OK);
+        
+        } catch (Exception $ex) {
+            return $this->getResponse(
+                    [
+                        'error' => $ex->getMessage(),
+                    ],
+                    ResponseInterface::HTTP_OK
+                );
+        }
+
+           
+    }
+
+    public function addValorActivo()
+    {
+   
+        
+        $input = $this->getRequestInput($this->request);
+
+      
+        $model = new Mvaloractivo();
+        $result = $model->saveValorActivo($input);
+    
+        return $this->getResponse(
+            [
+                'msg' =>  $result
+            ]
+        );
+      
+        
+    }
+    public function updateValorActivo()
+    {
+   
+        
+        $input = $this->getRequestInput($this->request);
+
+      
+        $model = new Mvaloractivo();
+        $result = $model->updateValorActivo($input);
+    
+        return $this->getResponse(
+            [
+                'msg' =>  $result
+            ]
+        );
+      
+        
+    }
+
+    public function getTipoActivo(){
+
+        try {
+            $model = new Mtipoactivo();
+                $response = [
+                    'data' =>  $model->getTipoActivo()
+                ];
+                return $this->respond($response, ResponseInterface::HTTP_OK);
+        
+        } catch (Exception $ex) {
+            return $this->getResponse(
+                    [
+                        'error' => $ex->getMessage(),
+                    ],
+                    ResponseInterface::HTTP_OK
+                );
+        }
+
+           
+    }
+    public function addTipoActivo()
+    {
+   
+        
+        $input = $this->getRequestInput($this->request);
+
+      
+        $model = new Mtipoactivo();
+        $result = $model->saveTipoActivo($input);
+    
+        return $this->getResponse(
+            [
+                'msg' =>  $result
+            ]
+        );
+      
+        
+    }
+    public function updateTipoActivo()
+    {
+   
+        
+        $input = $this->getRequestInput($this->request);
+
+      
+        $model = new Mtipoactivo();
+        $result = $model->updateTipoActivo($input);
+    
+        return $this->getResponse(
+            [
+                'msg' =>  $result
+            ]
+        );
+      
+        
+    }
+
+    public function getClasInformacion(){
+
+        try {
+            $model = new MclasInformacion();
+                $response = [
+                    'data' =>  $model->getClasInformacion()
+                ];
+                return $this->respond($response, ResponseInterface::HTTP_OK);
+        
+        } catch (Exception $ex) {
+            return $this->getResponse(
+                    [
+                        'error' => $ex->getMessage(),
+                    ],
+                    ResponseInterface::HTTP_OK
+                );
+        }
+
+           
+    }
+    public function addClasInformacion()
+    {
+   
+        
+        $input = $this->getRequestInput($this->request);
+
+      
+        $model = new MclasInformacion();
+        $result = $model->saveClasInformacion($input);
+    
+        return $this->getResponse(
+            [
+                'msg' =>  $result
+            ]
+        );
+      
+        
+    }
+    public function updateClasInformacion()
+    {
+   
+        
+        $input = $this->getRequestInput($this->request);
+
+      
+        $model = new MclasInformacion();
+        $result = $model->updateClasInformacion($input);
+    
+        return $this->getResponse(
+            [
+                'msg' =>  $result
+            ]
+        );
+      
+        
+    }
+
+
+
 }
