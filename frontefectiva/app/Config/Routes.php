@@ -73,6 +73,20 @@ $routes->get('/controles', 'Main::controles');
 $routes->get('main/getEmpresas', 'Main::getEmpresas');
 $routes->post('/main/addEmpresa', 'Main::addEmpresa');
 $routes->post('/main/updateEmpresa', 'Main::updateEmpresa');
+
+$routes->get('main/getValorActivo', 'Main::getValorActivo');
+$routes->post('/main/addValorActivo', 'Main::addValorActivo');
+$routes->post('/main/updateValorActivo', 'Main::updateValorActivo');
+
+$routes->get('main/getTipoActivo', 'Main::getTipoActivo');
+$routes->post('/main/addTipoActivo', 'Main::addTipoActivo');
+$routes->post('/main/updateTipoActivo', 'Main::updateTipoActivo');
+
+$routes->get('main/getClasInformacion', 'Main::getClasInformacion');
+$routes->post('/main/addClasInformacion', 'Main::addClasInformacion');
+$routes->post('/main/updateClasInformacion', 'Main::updateClasInformacion');
+
+
 /*
  * --------------------------------------------------------------------
  * Additional Routing
