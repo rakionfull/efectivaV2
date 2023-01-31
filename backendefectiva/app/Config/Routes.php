@@ -68,6 +68,23 @@ $routes->group('/api',['namespace' => 'App\Controllers'], function ($routes) {
     $routes->get('getEmpresas', 'Home::getEmpresas',['filter' => 'authFilter']);
     $routes->post('addEmpresa', 'Home::addEmpresa',['filter' => 'authFilter']);
     $routes->post('updateEmpresa', 'Home::updateEmpresa',['filter' => 'authFilter']);
+
+    //CRUD Valor Activo
+    $routes->get('getValorActivo', 'Home::getValorActivo',['filter' => 'authFilter']);
+    $routes->post('addValorActivo', 'Home::addValorActivo',['filter' => 'authFilter']);
+    $routes->post('updateValorActivo', 'Home::updateValorActivo',['filter' => 'authFilter']);
+
+    //CRUD Tipo Activo
+    $routes->get('getTipoActivo', 'Home::getTipoActivo',['filter' => 'authFilter']);
+    $routes->post('addTipoActivo', 'Home::addTipoActivo',['filter' => 'authFilter']);
+    $routes->post('updateTipoActivo', 'Home::updateTipoActivo',['filter' => 'authFilter']);
+
+    //CRUD Clasificacion de informacion
+    $routes->get('getClasInformacion', 'Home::getClasInformacion',['filter' => 'authFilter']);
+    $routes->post('addClasInformacion', 'Home::addClasInformacion',['filter' => 'authFilter']);
+    $routes->post('updateClasInformacion', 'Home::updateClasInformacion',['filter' => 'authFilter']);
+  
+
   
 });
 
