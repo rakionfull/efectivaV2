@@ -37,8 +37,10 @@
         <script src="<?=base_url('public/assets/libs/datatables.net-responsive/js/dataTables.responsive.min.js'); ?>"></script>
         <!-- https://cdn.datatables.net/fixedcolumns/4.1.0/js/dataTables.fixedColumns.min.js -->
         <link href="<?=base_url('public/assets/libs/sweetalert2/sweetalert2.min.css'); ?>" rel="stylesheet" type="text/css" />
-
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.0/jquery-confirm.min.css">
        <!-- twitter-bootstrap-wizard css -->
        <link rel="stylesheet" href="<?=base_url('public/assets/libs/twitter-bootstrap-wizard/prettify.css'); ?>">
+       <!-- <link href="//cdn.jsdelivr.net/npm/@sweetalert2/theme-dark@4/dark.css" rel="stylesheet"> -->
+      <script src="//cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.js"></script>
 		<script src="https://kit.fontawesome.com/bbc732d875.js" crossorigin="anonymous"></script>
     </head>

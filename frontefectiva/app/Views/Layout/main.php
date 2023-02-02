@@ -3,7 +3,7 @@
 
 $session = session();?>
     
-<body data-sidebar="dark">
+<body data-sidebar="dark" id="body" class="body">
             <header id="page-topbar">
                 <div class="navbar-header">
                     <div class="d-flex">
@@ -43,7 +43,7 @@ $session = session();?>
                                 <!-- item-->
                                 <a class="dropdown-item" href=""><i class="ri-user-line align-middle mr-1"></i> Perfil</a>
                                 <div class="dropdown-divider"></div>
-                                <a class="dropdown-item text-danger" href="<?=base_url()?>/logout"><i class="ri-shut-down-line align-middle mr-1 text-danger"></i> Logout</a>
+                                <a class="dropdown-item text-danger" id="btn_Logout" href=""><i class="ri-shut-down-line align-middle mr-1 text-danger"></i> Logout</a>
                             </div>
                         </div>
 

@@ -1,13 +1,10 @@
 <?php
 
-use App\Models\Muser;
+use App\Models\Msesiones;
 use Config\Services;
 use Firebase\JWT\JWT;
 
-
-
-
-function getSignedJWTForUser(string $user)
+function getSignedJWTForUser(string $user,$id_user)
 {
     $issuedAtTime = time();
     // $tokenTimeToLive = getenv('JWT_TIME_TO_LIVE');
@@ -24,10 +21,13 @@ function getSignedJWTForUser(string $user)
         'exp' => $tokenExpiration,
         "data" => array(
             'user' => $user,
+            'id' => $id_user,
         )
     ];
-
-
+   
     $jwt = JWT::encode($payload, $pvtKey , 'HS256');
+    $model = new Msesiones();
+    $result = $model->saveSesion($payload,$id_user);
+   
     return $jwt;
 }

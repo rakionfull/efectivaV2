@@ -9,14 +9,34 @@
                                     <h4 class="card-title">Lista de Perfiles</h4>
                                 </div>
                               
-                                <div class="col-md-4 offset-md-4">
+                                
+                            </div>
+                            <div class="row mt-2 d-flex justify-content-between">
+                                <div class="col-md-6">
                                    
-                                    <!-- <a href="<?=base_url('createUser'); ?>" class="float-right btn btn-primary waves-effect waves-light"><i class=" fas fa-plus-circle align-middle ml-2"></i>  Agregar</a> -->
-                                    <button type="button" id="btnAgregar_perfil" class="float-right btn btn-primary waves-effect waves-light"><i class=" fas fa-plus-circle align-middle mr-2 ml-2"></i> Agregar</button>
+                                    <button type="button" id="btnAgregar_perfil" class=" btn btn-primary waves-effect waves-light"><i class=" fas fa-plus-circle align-middle mr-2 ml-2"></i> Agregar</button>
                                 </div>
-                                <div class="col-md-12" style="margin-top:0.5rem" id="alert_perfil">
+                                <div class="col-md-4">
+                                    <div class="row g-3 d-flex justify-content-end">
+                                        <div class="col-auto">
+                                            <label for="inputPassword6" class="col-form-label">Estado</label>
+                                        </div>
+                                        <div class="col-auto">
+                                            <select name="" id="" class="form-control">
+                                                    <option value="">Activos</option>
+                                                    <option value="">Inactivos</option>
+                                            </select>
+                                        </div>
+                                       
                                     
+                                    </div>
+                                   
+                                    <!-- <a href="<?=base_url('createUser'); ?>" class="float-right btn btn-primary waves-effect waves-light"><i class="fas fa-search align-middle ml-2"></i>  Filtro</a>
+                                 -->
                                 </div>
+                                <div class="col-md-12" style="margin-top:0.5rem" id="alert_formulario">
+                                    
+                                    </div>
                             </div>
                             <?php 
                                 $session = session();

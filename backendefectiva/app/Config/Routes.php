@@ -48,8 +48,12 @@ $routes->post('/register', 'Register::register', ['filter' => 'authFilter']);
 
 // http://localhost:8080/api/
 $routes->group('/api',['namespace' => 'App\Controllers'], function ($routes) {
+    $routes->post('logout/(:num)', 'Login::logout/$1',['filter' => 'authFilter']);
+    
     $routes->post('change_pass', 'Login::change_pass',['filter' => 'authFilter']);
     $routes->get('dashboard', 'Home::dashboard',['filter' => 'authFilter']);
+    $routes->get('getConfigPass', 'Home::getConfigPass',['filter' => 'authFilter']);
+    $routes->post('addConfigPass', 'Home::addConfigPass',['filter' => 'authFilter']);
     $routes->post('addUser', 'Home::addUser',['filter' => 'authFilter']);
     $routes->put('updateUser/(:num)', 'Home::updateUser/$1', ['filter' => 'authFilter']);
     $routes->delete('deleteUser/(:num)', 'Home::deleteUser/$1', ['filter' => 'authFilter']);
@@ -66,9 +70,18 @@ $routes->group('/api',['namespace' => 'App\Controllers'], function ($routes) {
     $routes->post('updateDelete', 'Home::updateDelete',['filter' => 'authFilter']);
     //crud de empresa
     $routes->get('getEmpresas', 'Home::getEmpresas',['filter' => 'authFilter']);
+    $routes->get('getEmpresasByActivo', 'Home::getEmpresasByActivo',['filter' => 'authFilter']);
     $routes->post('addEmpresa', 'Home::addEmpresa',['filter' => 'authFilter']);
     $routes->post('updateEmpresa', 'Home::updateEmpresa',['filter' => 'authFilter']);
-  
+  //crud de area
+  $routes->get('getAreas', 'Home::getAreas',['filter' => 'authFilter']);
+  $routes->post('addArea', 'Home::addArea',['filter' => 'authFilter']);
+  $routes->post('updateArea', 'Home::updateArea',['filter' => 'authFilter']);
+
+  $routes->get('getAreasEmpresa', 'Home::getAreasEmpresa',['filter' => 'authFilter']);
+  $routes->post('addAreaEmpresa', 'Home::addAreaEmpresa',['filter' => 'authFilter']);
+  $routes->post('updateAreaEmpresa', 'Home::updateAreaEmpresa',['filter' => 'authFilter']);
+
 });
 
 /*

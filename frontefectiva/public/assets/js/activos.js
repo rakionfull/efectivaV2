@@ -37,7 +37,7 @@ window.addEventListener("hashchange", () => {
         });
         document.getElementById("apartArea").style.display = "block";
         document.getElementById("area").className = "activado";
-        
+        LoadTableArea();
         window.location.hash = '#';   
         break;
        }    

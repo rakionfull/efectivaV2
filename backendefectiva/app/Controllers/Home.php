@@ -4,9 +4,11 @@ namespace App\Controllers;
 use App\Controllers\BaseController;
 use CodeIgniter\API\ResponseTrait;
 use App\Models\Muser;
+use App\Models\MconfigPass;
 use App\Models\Mperfil;
 use App\Models\Mcaptcha;
 use App\Models\Mempresa;
+use App\Models\Marea;
 use CodeIgniter\HTTP\Response;
 use CodeIgniter\HTTP\ResponseInterface;
 use CodeIgniter\RESTful\ResourceController;
@@ -343,6 +345,26 @@ class Home extends BaseController
 
            
     }
+    public function getEmpresasByActivo(){
+
+        try {
+            $model = new Mempresa();
+                $response = [
+                    'data' =>  $model->getEmpresasByActivo()
+                ];
+                return $this->respond($response, ResponseInterface::HTTP_OK);
+        
+        } catch (Exception $ex) {
+            return $this->getResponse(
+                    [
+                        'error' => $ex->getMessage(),
+                    ],
+                    ResponseInterface::HTTP_OK
+                );
+        }
+
+           
+    }
     public function addEmpresa()
     {
    
@@ -378,5 +400,199 @@ class Home extends BaseController
         );
       
         
+    }
+    public function getAreas(){
+
+        try {
+            $model = new Marea();
+                $response = [
+                    'data' =>  $model->getAreas()
+                ];
+                return $this->respond($response, ResponseInterface::HTTP_OK);
+        
+        } catch (Exception $ex) {
+            return $this->getResponse(
+                    [
+                        'error' => $ex->getMessage(),
+                    ],
+                    ResponseInterface::HTTP_OK
+                );
+        }
+
+           
+    }
+    public function addArea()
+    {
+   
+        
+        $input = $this->getRequestInput($this->request);
+
+      
+        $model = new Marea();
+        $result = $model->saveArea($input);
+    
+        return $this->getResponse(
+            [
+                'msg' =>  $result
+            ]
+        );
+      
+        
+    }
+    public function updateArea()
+    {
+   
+        
+        $input = $this->getRequestInput($this->request);
+
+      
+        $model = new Marea();
+        $result = $model->updateArea($input);
+    
+        return $this->getResponse(
+            [
+                'msg' =>  $result
+            ]
+        );
+      
+        
+    }
+    public function getAreasEmpresa(){
+
+        try {
+            $model = new Marea();
+                $response = [
+                    'data' =>  $model->getAreasEmpresa()
+                ];
+                return $this->respond($response, ResponseInterface::HTTP_OK);
+        
+        } catch (Exception $ex) {
+            return $this->getResponse(
+                    [
+                        'error' => $ex->getMessage(),
+                    ],
+                    ResponseInterface::HTTP_OK
+                );
+        }
+
+           
+    }
+    public function addAreaEmpresa()
+    {
+   
+        
+        $input = $this->getRequestInput($this->request);
+
+      
+        $model = new Marea();
+        $result = $model->saveAreaEmpresa($input);
+    
+        return $this->getResponse(
+            [
+                'msg' =>  $result
+            ]
+        );
+      
+        
+    }
+    public function updateAreaEmpresa()
+    {
+   
+        
+        $input = $this->getRequestInput($this->request);
+
+      
+        $model = new Marea();
+        $result = $model->updateAreaEmpresa($input);
+    
+        return $this->getResponse(
+            [
+                'msg' =>  $result
+            ]
+        );
+      
+        
+    }
+    public function addConfigPass()
+    {
+        $rules = [
+            'duracion' => 'required|is_natural',
+            'sesion' => 'required|is_natural',
+            'inactividad' => 'required|is_natural',
+            'intentos' => 'required|is_natural',
+            'tama_min' => 'required|is_natural',
+            'tama_max' => 'required|is_natural',
+                       
+        ];
+        $errors = [
+            'duracion' => [
+                'required' => 'Debe ingresar valor',
+               
+            ],
+            'sesion' => [
+                'required' =>'Debe ingresar valor',
+              
+            ],
+            'inactividad' => [
+                'required' =>'Debe ingresar valor',
+              
+            ],
+            
+            'intentos' => [
+                'required' => 'Debe ingresar valor',
+             
+            ],
+            'tama_min' => [
+                'required' => 'Debe ingresar valor',
+             
+            ],
+            'tama_max' => [
+                'required' => 'Debe ingresar valor',
+             
+            ],
+        
+            
+        ];
+        
+        $input = $this->getRequestInput($this->request);
+
+        if (!$this->validateRequest($input, $rules, $errors)) {
+            $error = [
+                'error' => 'valida',
+                'datos' => $this->validator->getErrors()
+            ];
+            return ($this->getResponse($error,ResponseInterface::HTTP_OK));
+          
+        }
+
+        $model = new MconfigPass();
+        $result = $model->updateConfigPass($input);
+        return $this->getResponse(
+            [
+                'msg' =>  $result
+            ]
+        );
+      
+        
+    }
+    public function getConfigPass(){
+
+        try {
+            $model = new MconfigPass();
+                $response = [
+                    'data' =>  $model->getConfigPass()
+                ];
+                return $this->respond($response, ResponseInterface::HTTP_OK);
+        
+        } catch (Exception $ex) {
+            return $this->getResponse(
+                    [
+                        'error' => $ex->getMessage(),
+                    ],
+                    ResponseInterface::HTTP_OK
+                );
+        }
+
+           
     }
 }

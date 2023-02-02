@@ -5,6 +5,7 @@ namespace App\Controllers;
 use App\Controllers\BaseController;
 use CodeIgniter\API\ResponseTrait;
 use App\Models\Muser;
+use App\Models\Msesiones;
 use App\Models\Mcaptcha;
 use CodeIgniter\HTTP\Response;
 use CodeIgniter\HTTP\ResponseInterface;
@@ -44,6 +45,7 @@ class Login extends BaseController
                 );
         }
       
+    
         return $this->getJWTForUser($input["username"]);
        
 
@@ -66,7 +68,7 @@ class Login extends BaseController
     public function validaCaptcha(){
         // funcion para validar el captcha 
         $Mcaptcha = new Mcaptcha();   
-        $expiration = time() - 3*60; //limite de 2 minutos
+        $expiration = time() - 3*60; //limite de 3 minutos
         $ip = $this->request->getIPAddress(); //ip del usuario
         $captcha = $this->request->getVar('captcha'); //captcha introducido por el user
         //eliminanos los captcha con mas de 2 mintos de vida
@@ -159,26 +161,43 @@ class Login extends BaseController
     }
     private function getJWTForUser(string $username,int $responseCode = ResponseInterface::HTTP_OK) 
     {
+        //validamos si existe otra sesion activa en otro ordenador
         try {
             $model = new Muser();
             $user = $model->getUser($username);
             unset($user->pass_cl);
+            $iat = time();
+            $modelSesion = new Msesiones();
+            $sesion = $modelSesion->getByIdSesion($user->id_us,$iat);
 
-            helper('jwt');
-            $msg=1;
-            if($user->change_pass == 0){
-                $msg=0;
-            }
-            return $this->getResponse(
+          
+
+            if($sesion){
+                return $this->getResponse(
                     [
-                        'password' => false,
-                        'msg' => 1,
-                        'change' => $msg,
-                        'user' => $user->usuario_us,
-                        'id' => $user->id_us,
-                        'access_token' => getSignedJWTForUser($username)
+                        'password' => 'Hay otra sesión Activa',
+                        'msg' => 0,
                     ]
                 );
+            }else{
+                helper('jwt');
+          
+                $msg=1;
+                if($user->change_pass == 0){
+                    $msg=0;
+                }
+                return $this->getResponse(
+                        [
+                            'password' => false,
+                            'msg' => 1,
+                            'change' => $msg,
+                            'user' => $user->usuario_us,
+                            'id' => $user->id_us,
+                            'access_token' => getSignedJWTForUser($username,$user->id_us)
+                        ]
+                );
+            }
+           
         } catch (Exception $ex) {
             return $this->getResponse(
                     [
@@ -188,6 +207,16 @@ class Login extends BaseController
                 );
         }
     }
-   
+    public function logout($id_us){
+        $modelSesion = new Msesiones();
+      
+        $result=$modelSesion->updateLoged($id_us);
+        $response = [
+            'dato' => $result,
+        ];
+
+        return $this->respond($response, ResponseInterface::HTTP_OK);
+    
+    }
 }
 

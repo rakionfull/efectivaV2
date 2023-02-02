@@ -14,6 +14,11 @@ class Mempresa extends Model
         $query = $this->db->query("SELECT * FROM empresa");
         return $query->getResultArray();
     }
+    public function getEmpresasByActivo(){
+
+        $query = $this->db->query("SELECT * FROM empresa where estado='1'");
+        return $query->getResultArray();
+    }
     public function saveEmpresa($data){
        
 

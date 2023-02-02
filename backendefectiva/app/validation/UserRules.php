@@ -13,7 +13,7 @@ class UserRules
         try {
             $model = new Muser();
             $user = $model->getUser($data['username']);
-          
+			
             return password_verify($data['password'], $user->pass_cl);
         } catch (Exception $ex) {
             return false;

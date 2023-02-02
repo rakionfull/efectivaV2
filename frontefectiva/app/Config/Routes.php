@@ -40,8 +40,9 @@ $routes->get('/', 'Home::index');
 // rutas login
 
 $routes->get('/login', 'Auth::index');
+$routes->post('/login', 'Auth::index');
 $routes->get('/inicio', 'Main::inicio');
-$routes->get('/logout', 'Auth::logout');
+$routes->post('/logout', 'Auth::logout');
 $routes->get('/change_pass', 'Auth::change_pass');
 $routes->post('/updatePass', 'Auth::updatePass');
 $routes->get('auth/getNewCaptcha', 'Auth::getNewCaptcha');
@@ -53,6 +54,7 @@ $routes->get('/createUser', 'Main::createUser');
 $routes->get('/modifyUser/(:num)', 'Main::modifyUser/$1');
 $routes->get('/deleteUser/(:num)', 'Main::deleteUser/$1');
 $routes->get('/configPass', 'Main::configPass');
+$routes->post('/main/addConfigPass', 'Main::addConfigPass');
 $routes->post('/main/addUser', 'Main::addUser');
 $routes->post('/updateUser/(:num)', 'Main::updateUser/$1');
 $routes->get('perfiles', 'Main::perfiles');
@@ -71,8 +73,18 @@ $routes->get('/activos', 'Main::activos');
 $routes->get('/riesgos', 'Main::riesgos');
 $routes->get('/controles', 'Main::controles');
 $routes->get('main/getEmpresas', 'Main::getEmpresas');
+$routes->get('main/getEmpresasByActivo', 'Main::getEmpresasByActivo');
 $routes->post('/main/addEmpresa', 'Main::addEmpresa');
 $routes->post('/main/updateEmpresa', 'Main::updateEmpresa');
+
+//rutas para areas
+$routes->get('main/getAreas', 'Main::getAreas');
+$routes->post('/main/addArea', 'Main::addArea');
+$routes->post('/main/updateArea', 'Main::updateArea');
+$routes->get('main/getAreasEmpresa', 'Main::getAreasEmpresa');
+$routes->post('/main/addAreaEmpresa', 'Main::addAreaEmpresa');
+$routes->post('/main/updateAreaEmpresa', 'Main::updateAreaEmpresa');
+
 /*
  * --------------------------------------------------------------------
  * Additional Routing

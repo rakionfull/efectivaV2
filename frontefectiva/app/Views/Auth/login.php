@@ -13,7 +13,9 @@
     <link href="http://www.jqueryscript.net/css/jquerysctipttop.css" rel="stylesheet" type="text/css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <link href="<?=base_url('public/assets/css/myCss.css')?>" rel="stylesheet">
-   
+    <link href="//cdn.jsdelivr.net/npm/@sweetalert2/theme-bootstrap-4/bootstrap-4.css" rel="stylesheet">
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.js"></script>
+  
  <script>
     function getNewCaptcha() {
       event.preventDefault() 
@@ -59,15 +61,13 @@
             </div>
            
             <div class="contenedor_login_body_body">
-            <?php 
-              $session = session();
-                if($session->getFlashdata('error') != '')
-                {
-                  echo $session->getFlashdata('error');;
-                }
-              ?>
-              <input type="hidden" id="base_url" value="<?=base_url()?>">
-                <form  action="<?php echo base_url();?>/auth/validaCaptcha" method="post">
+           
+              <div class="col-md-12" style="margin-top:0.5rem" id="alert_login">
+                                        
+              </div>
+             
+              <!-- <?php //echo base_url();?>/auth/validaCaptcha -->
+                <form  id="form_login" action="" method="post">
                         <div class="input-container">
                             <input
                                 type="text"
@@ -119,7 +119,7 @@
                             <label class="label" for="captcha" >Código de Seguridad</label>
                         </div>
                         <div class="col-lg-12">
-                          <button type="submit" class="btn btn-primary" style="width:100%">Acceder</button>
+                          <button type="" id="btn_Acceder" class="btn btn-primary" style="width:100%">Acceder</button>
                         </div>
                        
 
@@ -138,7 +138,7 @@
       </div>
       
     </div>
-    
+    <input type="hidden" name="" id="base_url" value=<?=base_url()?>>
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
@@ -148,6 +148,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js" integrity="sha512-aVKKRRi/Q/YV+4mjoKBsE4x3H+BkegoM/em46NNlCqNTmUYADjBbeNefNxYV7giUp0VxICtqdrbqU7iVaeZNXA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
     <script src="<?=base_url('public/assets/js/main.js')?>" crossorigin="anonymous"></script>
+    <script src="<?=base_url('public/assets/js/login.js')?>" crossorigin="anonymous"></script>
    <script src="<?=base_url('public/assets/js/show_pass.js')?>" crossorigin="anonymous"></script>
    <script src="<?=base_url('public/assets/js/softkeys-0.0.1.js')?>" crossorigin="anonymous"></script>
    <script>
