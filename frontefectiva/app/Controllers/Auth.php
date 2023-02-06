@@ -7,20 +7,21 @@ class Auth extends BaseController {
 
     public function index() {
       
-      if(!$this->session->logged_in){
-          //opteniendo el cpatcha
-          $get_endpoint = '/newcaptcha';
-          $response =(perform_http_request('GET', REST_API_URL . $get_endpoint));
-          // var_dump($response);
-          $this->session->remove('captchaword');
-          $this->session->set('captchaword',$response->captcha);
-          $data = [
-              "captcha" => $response->image,
-          ];
-
-          return view('auth/login',$data);
-      }else{
+      if(($this->session->logged_in && !$this->session->change)){
         return redirect()->to(base_url('/inicio'));
+      }else{
+        //opteniendo el cpatcha
+        $get_endpoint = '/newcaptcha';
+        $response =(perform_http_request('GET', REST_API_URL . $get_endpoint));
+        // var_dump($response);
+        $this->session->remove('captchaword');
+        $this->session->set('captchaword',$response->captcha);
+        $data = [
+            "captcha" => $response->image,
+        ];
+
+        return view('auth/login',$data);
+      
       }
           
       
@@ -52,7 +53,7 @@ class Auth extends BaseController {
           'error' => 'Captcha Incorrecto',
          
         ];
-        return json_encode($error);
+        // return json_encode($error);
         }else{
           $get_endpoint = '/validaCaptcha';
            $request_data = [
@@ -64,47 +65,50 @@ class Auth extends BaseController {
             $post_endpoint = '/login';
             $request_data = (array("username" => $this->request->getPost('username'), "password" => $this->request->getPost('pass')));
             $response = perform_http_request('POST', REST_API_URL . $post_endpoint,$request_data);
-          
-          // $this->session->remove('captchaword');
-          // return json_encode($response);
+            
+          //$this->session->remove('captchaword');
+           // return json_encode($response);
             if(!$response->password){
-               $newdata = [
-                'user' => $response->user,
-                'logged_in' => true,
-                'id' => $response->id,
-                'token' => $response->access_token,
-              ];
-          
-              $this->session->set($newdata);
-              
-              return json_encode($response);
-                // if($response->change == 0 ){
-                //   return redirect()->to(base_url('/change_pass'));
-                // }else{
-                
-                //   return redirect()->to(base_url('/inicio'));
-                // }
+              if($response->change == 1 ){
+                $newdata = [
+                  'user' => $response->user,
+                  'logged_in' => true,
+                  'change'=> false,
+                  'id' => $response->id,
+                  'token' => $response->access_token->jwt,
+                ];
                
+              }else{
+                $newdata = [
+                  'logged_in' => true,
+                  'change' => true,
+                  'id' => $response->id,
+                  'token' => $response->access_token->jwt,
+                ];
+                
+              }
+               
+              $this->session->set($newdata);
+              if($response->msg){
+                $this->session->setFlashdata('error','<div class="alert alert-warning alert-dismissible fade show" role="alert">
+                '.$response->msg.'
+                 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                     <span aria-hidden="true">&times;</span>
+                 </button>
+               </div>');
+              }
+             
+              return json_encode($response);
+                
+               
+            }else{
+              return json_encode($response);
             }
-            // else{
-            //   $this->session->setFlashdata('error','<div class="alert alert-danger alert-dismissible fade show" role="alert">
-            //   '.$response->password.'
-            //    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-            //        <span aria-hidden="true">&times;</span>
-            //    </button>
-            //  </div>');
-            //   return redirect()->to(base_url('/login'));
-            // }
+
+
+           
           }
-          // else{
-          //   $this->session->setFlashdata('error','<div class="alert alert-danger alert-dismissible fade show" role="alert">
-          //   '.$response->error.'
-          //    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-          //        <span aria-hidden="true">&times;</span>
-          //    </button>
-          //  </div>');
-          //   return redirect()->to(base_url('/login'));
-          // }
+          
           
         }
          
@@ -144,7 +148,7 @@ class Auth extends BaseController {
              );
             
            $response = (perform_http_request('POST', REST_API_URL . $post_endpoint,$request_data));
-             var_dump($response);
+            // var_dump($response);
             if(isset($response->error)){
               $this->session->setFlashdata('error','<div class="alert alert-danger alert-dismissible fade show" role="alert">
              '.$response->error.'
@@ -161,7 +165,7 @@ class Auth extends BaseController {
              </button>
            </div>');
             return redirect()->to(base_url('/login'));
-           }
+          }
            
            
         }else{
@@ -172,7 +176,7 @@ class Auth extends BaseController {
      
     }
     public function change_pass(){
-      if($this->session->logged_in){
+      if($this->session->logged_in &&  $this->session->change ){
        
         return view('auth/change_pass');
       }else{

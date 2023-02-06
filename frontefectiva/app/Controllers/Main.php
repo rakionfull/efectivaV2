@@ -21,19 +21,66 @@ class Main extends BaseController {
     
       
     }
+    public function cambio_clave(){
+      if($this->session->logged_in){
+       
+        return view('auth/cambio_clave');
+      }else{
+        return redirect()->to(base_url('/login'));
+      }
+     
+
+    }
+    public function updateClave(){
+    
+      if($this->session->logged_in){
+        if($this->request->getPost()){
+          $post_endpoint = '/api/change_pass';
+           $request_data = (array("passw" => $this->request->getPost('passw'),
+              "repassw" => $this->request->getPost('repassw'),
+              "id_us"=> $this->session->id)
+             );
+            
+           $response = (perform_http_request('POST', REST_API_URL . $post_endpoint,$request_data));
+            //  var_dump($response);
+            if(isset($response->error)){
+              $this->session->setFlashdata('error','<div class="alert alert-danger alert-dismissible fade show" role="alert">
+             '.$response->error.'
+              <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+              </button>
+            </div>');
+            return redirect()->to(base_url('/cambio_clave'));
+           }else{
+            $this->session->setFlashdata('error','<div class="alert alert-success alert-dismissible fade show" role="alert">
+            Clave Modificada Correctamente
+             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                 <span aria-hidden="true">&times;</span>
+             </button>
+           </div>');
+            return redirect()->to(base_url('/inicio'));
+          }
+           
+           
+        }else{
+          return redirect()->to(base_url('/login'));
+        }
+      }
+
+     
+    }
     public function listUsers(){
       
         //opteniendo los datos
         if($this->session->logged_in){
-          $get_endpoint = '/api/getUsers';
-
-          $response =perform_http_request('GET', REST_API_URL . $get_endpoint,[]);
-          if($response){
+         
+          // $response =perform_http_request('GET', REST_API_URL . $get_endpoint,[]);
+          // if($response){
      
-            $data["users"]=$response->datos;
+          //   $data["users"]=$response->datos;
      
-              return view('accesos/listUsers',$data);
-          }
+              return view('accesos/listUsers');
+          //}
         }else{
           return redirect()->to(base_url('/login'));
         }
@@ -41,6 +88,19 @@ class Main extends BaseController {
      
   
     }
+    public function getUsers(){
+
+      $get_endpoint = '/api/getUsers';
+
+      $response =perform_http_request('GET', REST_API_URL . $get_endpoint,[]);
+      // var_dump($response);
+      // if($response){
+ 
+       echo json_encode($response);
+
+      // }
+    }
+
     public function configPass(){
 
       if($this->session->logged_in){
@@ -50,20 +110,20 @@ class Main extends BaseController {
               
               $response = (perform_http_request('GET', REST_API_URL . $post_endpoint,$request_data));
               if($response->data){
-                $datos = $response->data;
+                $datos = $response->data[0];
               }else{
-                $datos=[
-                  'duracion' => "",
-                  'sesion' => "",
-                  'inactividad' => "",
-                  'time_intentos' => "",
-                  'tama_min' => "",
-                  'tama_max' => "",
-                  'letras' => 0,
-                  'caracteres' => 0,
-                  'numeros' => 0,
-                  'intentos' => "",
-                ];
+                // $datos=[
+                //   'duracion' => "",
+                //   'sesion' => "",
+                //   'inactividad' => "",
+                //   'time_intentos' => "",
+                //   'tama_min' => "",
+                //   'tama_max' => "",
+                //   'letras' => 0,
+                //   'caracteres' => 0,
+                //   'numeros' => 0,
+                //   'intentos' => "",
+                // ];
               }
               
               $error = new  \stdClass;
@@ -81,12 +141,12 @@ class Main extends BaseController {
                 'error'   =>  $error
                 
               ];
-          
+             
               return view('accesos/configPass',$data);
             }else{
               return redirect()->to(base_url('/login'));
             }
-      }
+    }
       public function addConfigPass() {
         // helper(['curl']);
         if($this->session->logged_in){
@@ -131,7 +191,7 @@ class Main extends BaseController {
                               
               
              $response = (perform_http_request('POST', REST_API_URL . $post_endpoint,$request_data));
-             
+            
               if(isset($response->error)){
                 $datos=[
                   'data' => $request_data,
@@ -177,6 +237,7 @@ class Main extends BaseController {
             'apemat_us' => "",
             'email_us' => "",
             'usuario_us' => "",
+            'perfil_us' => "",
           ];
           $error = new  \stdClass;
           $error->docident_us = '';
@@ -185,10 +246,17 @@ class Main extends BaseController {
           $error->apemat_us = '';
           $error->email_us = '';
           $error->usuario_us = '';
-         
+          $error->perfil_us = '';
+
+          $get_endpoint = '/api/getPerfiles/1';
+
+          $response =perform_http_request('GET', REST_API_URL . $get_endpoint,[]);
+          
+
           $data = [
              'data' => $datos,
-             'error'   =>  $error
+             'error'   =>  $error,
+             'perfiles' =>  $response,
              
           ];
       
@@ -206,7 +274,30 @@ class Main extends BaseController {
               $post_endpoint = '/api/getUser/'.$id;
               $request_data = [];
               $response = (perform_http_request('GET', REST_API_URL . $post_endpoint,$request_data));
-              $data["user"]=$response->datos;
+
+              //traigo los perfiles
+              $get_endpoint = '/api/getPerfiles/1';
+
+              $perfiles =perform_http_request('GET', REST_API_URL . $get_endpoint,[]);
+
+              
+              $error = new  \stdClass;
+              $error->docident_us = '';
+              $error->nombres_us = '';
+              $error->apepat_us = '';
+              $error->apemat_us = '';
+              $error->email_us = '';
+              $error->usuario_us = '';
+              $error->perfil_us = '';
+              $error->estado_us = '';
+
+              $data = [
+                'user' => $response->datos,
+                'error'   =>  $error,
+                'perfiles' =>  $perfiles,
+                
+             ];
+      
               return view('accesos/updateUser',$data);
             }else{
               return redirect()->to(base_url('/listUsers'));
@@ -233,9 +324,14 @@ class Main extends BaseController {
               $response = (perform_http_request('POST', REST_API_URL . $post_endpoint,$request_data));
               // var_dump($response);
               if(isset($response->error)){
+                $get_endpoint = '/api/getPerfiles/1';
+
+                $getPerfiles =perform_http_request('GET', REST_API_URL . $get_endpoint,[]);
+
                 $datos=[
                   'data' => $request_data,
                   'error' => $response->datos,
+                  'perfiles' =>  $getPerfiles,
                 ];
                 return view('accesos/createUser',$datos);
               }else{
@@ -280,23 +376,25 @@ class Main extends BaseController {
               
               $response = perform_http_request('PUT', REST_API_URL . $post_endpoint,$request_data);
              
-              if($response->user ){
-                     $this->session->setFlashdata('error','<div class="alert alert-success alert-dismissible fade show" role="alert">
-                Usuario modificado correctamente
-                 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                     <span aria-hidden="true">&times;</span>
-                 </button>
-               </div>');
-                return redirect()->to(base_url('/listUsers'));
-              }else{
-                  $this->session->setFlashdata('error','<div class="alert alert-danger alert-dismissible fade show" role="alert">
-                  Error al modificar
-                   <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                       <span aria-hidden="true">&times;</span>
-                   </button>
-                 </div>');
-                  return redirect()->to(base_url('/listUsers'));
-              }
+                if($response->user ){
+                  $this->session->setFlashdata('error','<div class="alert alert-success alert-dismissible fade show" role="alert">
+                    Usuario modificado correctamente
+                      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                      </button>
+                    </div>');
+                    return redirect()->to(base_url('/listUsers'));
+                  }else{
+                      $this->session->setFlashdata('error','<div class="alert alert-danger alert-dismissible fade show" role="alert">
+                      Error al modificar
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                      </div>');
+                      return redirect()->to(base_url('/listUsers'));
+                  }
+              
+             
           
              
             

@@ -13,7 +13,7 @@ document.getElementById("btn_Acceder").addEventListener("click",function(){
                     captcha:$captcha
                     
                 };
-               console.log(postData);
+          
                 try {
 
                     $.ajax({
@@ -23,7 +23,7 @@ document.getElementById("btn_Acceder").addEventListener("click",function(){
                         dataType: "JSON"
                     })
                     .done(function(respuesta) {
-                       
+                        console.log(respuesta);
                         if(respuesta.error){
                             
                             document.getElementById("form_login").reset();
@@ -39,16 +39,28 @@ document.getElementById("btn_Acceder").addEventListener("click",function(){
                         }else{
                             if (!respuesta.password) 
                             {
+                                if(respuesta.change==0){
+                                    Swal.fire(
+                                        'Cambio de clave!!',
+                                         respuesta.msg,
+                                        'warning'
+                                      );
+                                    setTimeout( function() { window.location.href = BASE_URL+"/change_pass"; }, 3000 );
+                                   
+                                }else{
+                                    Swal.fire(
+                                        'Exito!!',
+                                        'Logeado Correctamente',
+                                        'success'
+                                      );
+                                    setTimeout( function() { window.location.href = BASE_URL+"/inicio"; }, 2000 );
+                                   
+                                }
                                 
-                                Swal.fire(
-                                    'Exito!!',
-                                    'Logeado Correctamente',
-                                    'success'
-                                  );
-                                setTimeout( function() { window.location.href = BASE_URL+"/inicio"; }, 2000 );
                                
                                                        
                             }else{
+                                //credenciales incorrectas
                                 document.getElementById("form_login").reset();
                                 $("#alert_login").append('<div class="alert alert-danger alert-dismissible fade show" role="alert">'+
                                 respuesta.password+
@@ -59,24 +71,18 @@ document.getElementById("btn_Acceder").addEventListener("click",function(){
                                
                             }
 
-                            // if(respuesta.change == 0){
-    
-                            // }else{
-                           
-                            //     // window.location.href = BASE_URL+'/main/inicio';
-                            // }
                         }
                         
                         
                     })
                     .fail(function(error) {
-                        alert("Error en el ajax");
+                        
                     })
                     .always(function() {
                     });
                 }
                 catch(err) {
-                    alert("Error en el try");
+                    
                 }
             
            

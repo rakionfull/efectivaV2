@@ -1,4 +1,6 @@
 <?php
+use App\Models\MconfigPass;
+use App\Models\Muser;
 
 if(!function_exists('hashPass')){
   function hashPass($password){
@@ -7,8 +9,23 @@ if(!function_exists('hashPass')){
 }
 
 if(!function_exists('veriPass')){
-  function veriPass($passPost, $passDB){
-    return password_verify($passPost, $passDB);
+  function veriPass($passPost,$idPost){
+    $modelUser = new Muser();
+    $model = new MconfigPass();
+    $configuracion =  $model->getConfigPass();
+    $array_claves = $modelUser -> getPass($idPost);
+    $valor=false;
+    foreach ($array_claves as $key => $value) {
+     
+      if(!$valor){
+        // $valor = $value["pass_cl"];
+        $valor = password_verify($passPost, $value["pass_cl"]);
+        
+        
+      }
+    }
+   
+    return $valor;
   }
 }
 if(!function_exists('validacionPassword')){
@@ -18,10 +35,12 @@ if(!function_exists('validacionPassword')){
         
         return "Los campos son obligatorios";
       }
-      if (strlen($data["passw"]) < 8 && strlen($data["repassw"]) < 8)
+      $model = new MconfigPass();
+      $configuracion =  $model->getConfigPass();
+      if (strlen($data["passw"]) < $configuracion[0]['tama_min'] && strlen($data["repassw"]) < $configuracion[0]['tama_min'])
       {
     
-        return "Las claves deben tener un minimo de 8 caracteres";
+        return 'La contraseña debe contener como minimo '.$configuracion[0]['tama_min'].' caracteres';
       }
       if(!($data["passw"] == $data["repassw"])){
         return "Las contraseñas no coinciden";
@@ -33,33 +52,52 @@ if(!function_exists('validacionPassword')){
       $regex_number = '/[0-9]/';
       $regex_special = '/[!@#$%^&*()\-_=+{};:,<.>ยง~]/';
 
-    
-      if (preg_match_all($regex_lowercase, $password) < 1)
-			{
-				
-        return "La clave debe contener 1 May, 1 Min , 1 Núm y 1 Caract. especial";
-			}
+      $cadena = 'La contraseña debe contener ';
+      //armando el mensaje
+      if($configuracion[0]['letras'] == 1){
+        $cadena = $cadena . ' 1 May | 1 Min |';
+      }
+      if($configuracion[0]['numeros'] == 1){
+        $cadena = $cadena . ' 1 Num |';
+      }
+      if($configuracion[0]['caracteres'] == 1){
+        $cadena = $cadena . ' 1 Carac |';
+      }
+      //validacion con return
+
+      if($configuracion[0]['letras'] == 1){
+        if (preg_match_all($regex_lowercase, $password) < 1)
+        {
+          
+          return $cadena;
+        }
+      }
+      if($configuracion[0]['letras'] == 1){
+        if (preg_match_all($regex_uppercase, $password) < 1)
+        {
+          
+          return $cadena;
+        }
+      }
 	
-			if (preg_match_all($regex_uppercase, $password) < 1)
+		
+		if($configuracion[0]['numeros'] == 1){
+      if (preg_match_all($regex_number, $password) < 1)
 			{
 				
-				return "La clave debe contener 1 May, 1 Min , 1 Núm y 1 Caract. especial";
+				return $cadena;
 			}
-	
-		
-		
-		    if (preg_match_all($regex_number, $password) < 1)
-			{
-				
-				return "La clave debe contener 1 May, 1 Min , 1 Núm y 1 Caract. especial";
-			}
-		
-		
-			if (preg_match_all($regex_special, $password) < 1)
+    }
+		  
+		if($configuracion[0]['caracteres'] == 1){
+      if (preg_match_all($regex_special, $password) < 1)
 			{
 			
-				return "La clave debe contener 1 May, 1 Min , 1 Núm y 1 Caract. especial";
+				return $cadena;
 			}
+    }
+		
+			
     
     return 1;
   }

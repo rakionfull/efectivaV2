@@ -16,15 +16,21 @@ $session = session();
             <div class="row">
                             <div class="col-12">
                                 <div class="card">
-                                
+       
                                     <div class="card-body">
-                                 
-                                        <form  action="<?php echo base_url();?>/main/addConfigPass". method="post">
+                                        <?php 
+                                           
+                                                if($session->getFlashdata('error') != '')
+                                                {
+                                                echo $session->getFlashdata('error');;
+                                                }
+                                        ?>
+                                        <form  action="<?php echo base_url();?>/main/addConfigPass" method="post">
                                             <div class="row">
                                                 <div class="col-lg-6">
                                                     <div class="form-group">
                                                         <span> Durabilidad en dias (*):</span>
-                                                        <input type="number" id="duracion" name="duracion" class="form-control" value="<?=$data['duracion'] ?>">
+                                                        <input type="number" id="duracion" name="duracion" class="form-control" value="<?=$data->duracion ?>">
                                                         <?php if(isset($error->duracion)) echo'<div class="error">'.$error->duracion.'</div>';
                                                         ?>
                                                     </div>
@@ -32,7 +38,7 @@ $session = session();
                                                 <div class="col-lg-6">
                                                     <div class="form-group">
                                                         <span> Tiempo de sesion (*):</span>
-                                                        <input type="number" id="sesion" name="sesion" class="form-control" value="<?=$data['sesion'] ?>">
+                                                        <input type="number" id="sesion" name="sesion" class="form-control" value="<?=$data->sesion ?>">
                                                         <?php if(isset($error->sesion)) echo'<div class="error">'.$error->sesion.'</div>';
                                                         ?>
                                                     </div>
@@ -40,7 +46,7 @@ $session = session();
                                                 <div class="col-lg-6">
                                                     <div class="form-group">
                                                         <span> Tiempo de Inactividad (*):</span>
-                                                        <input type="number" id="inactividad" name="inactividad" class="form-control" value="<?=$data['inactividad'] ?>">
+                                                        <input type="number" id="inactividad" name="inactividad" class="form-control" value="<?=$data->inactividad ?>">
                                                         <?php if(isset($error->inactividad)) echo'<div class="error">'.$error->inactividad.'</div>';
                                                         ?>
                                                     </div>
@@ -48,7 +54,7 @@ $session = session();
                                                 <div class="col-lg-6">
                                                     <div class="form-group">
                                                         <span> Intentos de Logeo (*):</span>
-                                                        <input type="number" id="intentos" name="intentos" class="form-control" value="<?=$data['intentos'] ?>">
+                                                        <input type="number" id="intentos" name="intentos" class="form-control" value="<?=$data->intentos ?>">
                                                         <?php if(isset($error->intentos)) echo'<div class="error">'.$error->intentos.'</div>';
                                                         ?>
                                                     </div>
@@ -61,7 +67,7 @@ $session = session();
                                                 <div class="col-lg-6">
                                                     <div class="form-group">
                                                         <span> Tamaño Mínimo de la clave  (*):</span>
-                                                        <input type="number" id="tama_min" name="tama_min" class="form-control" value="<?=$data['tama_min'] ?>">
+                                                        <input type="number" id="tama_min" name="tama_min" class="form-control" value="<?=$data->tama_min ?>">
                                                         <?php if(isset($error->tama_min)) echo'<div class="error">'.$error->tama_min.'</div>';
                                                         ?>
                                                     </div>
@@ -69,7 +75,7 @@ $session = session();
                                                 <div class="col-lg-6">
                                                     <div class="form-group">
                                                         <span> Tamaño Máximo de la clave  (*):</span>
-                                                        <input type="number" id="tama_max" name="tama_max" class="form-control" value="<?=$data['tama_max'] ?>">
+                                                        <input type="number" id="tama_max" name="tama_max" class="form-control" value="<?=$data->tama_max ?>">
                                                         <?php if(isset($error->tama_max)) echo'<div class="error">'.$error->tama_max.'</div>';
                                                         ?>
                                                     </div>
@@ -77,7 +83,7 @@ $session = session();
                                                 <div class="col-lg-12 mb-3">
                                                     <div class="custom-control custom-switch mb-2" dir="ltr">
                                                     <?php 
-                                                        if(($data['letras']) == 1){
+                                                        if(($data->letras) == 1){
                                                             echo '<input type="checkbox" class="custom-control-input" id="letra_pass" name="letra_pass" checked>';
                                                             echo ' <label class="custom-control-label" for="letra_pass">Clave con letras</label>';
                                                         }else{
@@ -92,7 +98,7 @@ $session = session();
                                                 <div class="col-lg-12 mb-3">
                                                     <div class="custom-control custom-switch mb-2" dir="ltr">
                                                     <?php 
-                                                        if(($data['caracteres']) == 1){
+                                                        if(($data->caracteres) == 1){
                                                             echo '<input type="checkbox" class="custom-control-input" id="char_pass" name="char_pass" checked>';
                                                             echo ' <label class="custom-control-label" for="char_pass">Clave con caracteres especiales</label>';
                                                         }else{
@@ -107,7 +113,7 @@ $session = session();
                                                 <div class="col-lg-12 mb-3">
                                                     <div class="custom-control custom-switch mb-2" dir="ltr">
                                                     <?php 
-                                                        if(($data['numeros']) == 1){
+                                                        if(($data->numeros) == 1){
                                                             echo '<input type="checkbox" class="custom-control-input" id="num_pass" name="num_pass" checked>';
                                                             echo ' <label class="custom-control-label" for="num_pass">Clave con números</label>';
                                                         }else{

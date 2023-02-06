@@ -42,6 +42,8 @@ $routes->get('/', 'Home::index');
 $routes->get('/login', 'Auth::index');
 $routes->post('/login', 'Auth::index');
 $routes->get('/inicio', 'Main::inicio');
+$routes->get('/cambio_clave', 'Main::cambio_clave');
+$routes->post('/updateClave', 'Main::updateClave');
 $routes->post('/logout', 'Auth::logout');
 $routes->get('/change_pass', 'Auth::change_pass');
 $routes->post('/updatePass', 'Auth::updatePass');
@@ -49,7 +51,10 @@ $routes->get('auth/getNewCaptcha', 'Auth::getNewCaptcha');
 $routes->post('auth/validaCaptcha', 'Auth::validaCaptcha');
 
 // rutas panel principal
+
+
 $routes->get('/listUsers', 'Main::listUsers');
+$routes->get('main/getUsers', 'Main::getUsers');
 $routes->get('/createUser', 'Main::createUser');
 $routes->get('/modifyUser/(:num)', 'Main::modifyUser/$1');
 $routes->get('/deleteUser/(:num)', 'Main::deleteUser/$1');
@@ -58,7 +63,7 @@ $routes->post('/main/addConfigPass', 'Main::addConfigPass');
 $routes->post('/main/addUser', 'Main::addUser');
 $routes->post('/updateUser/(:num)', 'Main::updateUser/$1');
 $routes->get('perfiles', 'Main::perfiles');
-$routes->get('main/getPerfiles', 'Main::getPerfiles');
+$routes->get('main/getPerfiles/(:num)', 'Main::getPerfiles/$1');
 $routes->get('main/getDetPerfil/(:num)', 'Main::getDetPerfil/$1');
 $routes->post('/main/addPerfil', 'Main::addPerfil');
 $routes->post('/main/updatePerfil', 'Main::updatePerfil');

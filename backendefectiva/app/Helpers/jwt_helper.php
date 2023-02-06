@@ -1,10 +1,9 @@
 <?php
 
-use App\Models\Msesiones;
 use Config\Services;
 use Firebase\JWT\JWT;
 
-function getSignedJWTForUser(string $user,$id_user)
+function getSignedJWTForUser(string $user)
 {
     $issuedAtTime = time();
     // $tokenTimeToLive = getenv('JWT_TIME_TO_LIVE');
@@ -21,13 +20,15 @@ function getSignedJWTForUser(string $user,$id_user)
         'exp' => $tokenExpiration,
         "data" => array(
             'user' => $user,
-            'id' => $id_user,
         )
     ];
    
     $jwt = JWT::encode($payload, $pvtKey , 'HS256');
-    $model = new Msesiones();
-    $result = $model->saveSesion($payload,$id_user);
    
-    return $jwt;
+   
+    return $response = [
+        'jwt' =>$jwt,
+        'iat' => $issuedAtTime,
+        'exp' => $tokenExpiration,
+    ];
 }

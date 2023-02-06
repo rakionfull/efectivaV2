@@ -38,8 +38,8 @@ class Home extends BaseController
         try {
             $model = new Muser();
                 $response = [
-                    'msg' => 'estos son los usuarios',
-                    'datos' =>  $model->getUsers(),
+                    
+                    'data' =>  $model->getUsers(),
                 ];
                 return $this->respond($response, ResponseInterface::HTTP_OK);
         
@@ -85,11 +85,12 @@ class Home extends BaseController
             'email_us' => 'min_length[2]|max_length[50]|valid_email|is_unique[tb_users.email_us]',
             'usuario_us' => 'required|min_length[5]|max_length[50]|is_unique[tb_users.usuario_us]',
             'passw' => 'required|min_length[8]|validatePass[passw]',
+            'perfil_us' => 'required',
         ];
         $errors = [
             'docident_us' => [
                 'required' => 'Debe ingresar DNI',
-                'is_unique' => 'El campo {field} debe ser único'
+                'is_unique' => 'El campo DNI debe ser único'
             ],
             'nombres_us' => [
                 'required' => 'Debe ingresar Nombres',
@@ -99,14 +100,21 @@ class Home extends BaseController
                 'required' => 'Debe ingresar Apellido Paterno',
               
             ],
-            
+            'apepat_us' => [
+                'required' => 'Debe ingresar Apellido Paterno',
+              
+            ],
             'email_us' => [
                 'required' => 'Debe ingresar Correo',
-                'is_unique' => 'El campo {field} debe ser único'
+                'is_unique' => 'El campo correo debe ser único'
             ],
             'usuario_us' => [
                 'required' => 'Debe ingresar Usuario',
-                'is_unique' => 'El campo {field} debe ser único'
+                'is_unique' => 'El campo usuario debe ser único'
+            ],
+            'perfil_us' => [
+                'required' => 'Debe Seleccionar una opcion',
+                
             ],
             'passw' => [
                 'required' => 'Debe ingresar Contraseña',     
@@ -147,16 +155,66 @@ class Home extends BaseController
     }
     public function updateUser($id)
     {
+        
         // $rules = [
-        //      ];
-
+        //     'docident_us' => 'required|min_length[8]|max_length[8]',
+        //     'nombres_us' => 'required|min_length[2]|max_length[50]',
+        //     'apepat_us' => 'required|min_length[2]|max_length[50]',
+        //     'apemat_us' => 'required|min_length[2]|max_length[50]',
+        //     'email_us' => 'min_length[2]|max_length[50]|valid_email',
+        //     'usuario_us' => 'required|min_length[5]|max_length[50]',
+        //     // 'passw' => 'required|min_length[8]|validatePass[passw]',
+        //     'perfil_us' => 'required',
+        //     'estado_us' => 'required',
+        // ];
+        // $errors = [
+        //     'docident_us' => [
+        //         'required' => 'Debe ingresar DNI',
+                
+        //     ],
+        //     'nombres_us' => [
+        //         'required' => 'Debe ingresar Nombres',
+              
+        //     ],
+        //     'apemat_us' => [
+        //         'required' => 'Debe ingresar Apellido Paterno',
+              
+        //     ],
+        //     'apepat_us' => [
+        //         'required' => 'Debe ingresar Apellido Paterno',
+              
+        //     ],
+        //     'email_us' => [
+        //         'required' => 'Debe ingresar Correo',
+                
+        //     ],
+        //     'usuario_us' => [
+        //         'required' => 'Debe ingresar Usuario',
+                
+        //     ],
+        //     'perfil_us' => [
+        //         'required' => 'Debe Seleccionar una opcion',
+                
+        //     ],
+        //     'estado_us' => [
+        //         'required' => 'Debe Seleccionar una opcion',
+                
+        //     ],
+        //     // 'passw' => [
+        //     //     'required' => 'Debe ingresar Contraseña',     
+        //     //     'min_length' => 'La clave debe tener como minimo 8 carácteres',  
+        //     //     'validatePass' => 'La clave debe contener 1 May, 1 Min , 1 Núm y 1 Caract. especial',  
+        //     // ]
+        // ];
+        
         $input = $this->getRequestInput($this->request);
 
         // if (!$this->validateRequest($input, $rules)) {
-        //     return $this->getResponse(
-        //             $this->validator->getErrors(),
-        //             ResponseInterface::HTTP_OK
-        //         );
+        //     $error = [
+        //         'error' => 'valida',
+        //         'datos' => $this->validator->getErrors()
+        //     ];
+        //     return ($this->getResponse($error,ResponseInterface::HTTP_OK));
         // }
 
         $model = new Muser();
@@ -180,12 +238,12 @@ class Home extends BaseController
             ]
         );
     }
-    public function getPerfiles(){
+    public function getPerfiles($estado){
 
         try {
             $model = new Mperfil();
                 $response = [
-                    'data' =>  $model->getPerfiles()
+                    'data' =>  $model->getPerfiles($estado)
                 ];
                 return $this->respond($response, ResponseInterface::HTTP_OK);
         

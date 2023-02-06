@@ -65,7 +65,13 @@
               <div class="col-md-12" style="margin-top:0.5rem" id="alert_login">
                                         
               </div>
-             
+                  <?php 
+                                $session = session();
+                                    if($session->getFlashdata('error') != '')
+                                    {
+                                    echo $session->getFlashdata('error');;
+                                    }
+                                ?>
               <!-- <?php //echo base_url();?>/auth/validaCaptcha -->
                 <form  id="form_login" action="" method="post">
                         <div class="input-container">

@@ -9,9 +9,14 @@ class Mperfil extends Model
   
     
     //retorna todos los perfiles
-    public function getPerfiles(){
-
-        $query = $this->db->query("SELECT * FROM  tb_perfiles");
+    public function getPerfiles($estado){
+        $consulta = '';
+        if($estado==-1){
+            $consulta="SELECT * FROM  tb_perfiles";
+        }else{
+            $consulta ="SELECT * FROM  tb_perfiles where est_perfil={$estado}";
+        }
+        $query = $this->db->query($consulta);
         return $query->getResultArray();
     }
     //agregar el perfil
