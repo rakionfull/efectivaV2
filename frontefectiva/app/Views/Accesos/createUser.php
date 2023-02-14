@@ -47,7 +47,7 @@ $session = session();
                                                                 <option value="">Perfil de Usuario</option>
                                                                 <?php //var_dump($perfiles->data);
                                                                     foreach ($perfiles->data as $key => $value) {
-                                                                        echo'<option value='.$value->id_perfil.'>'.$value->desc_perfil.'</option>';
+                                                                        echo'<option value='.$value->id_perfil.'>'.$value->perfil.'</option>';
                                                                     }
                                                                 ?>
                                                                  
@@ -98,11 +98,18 @@ $session = session();
                                                 
                                             
                                            
-                                            <div class="col-lg-6 mb-2">
+                                                <div class="col-lg-6 mb-2">
                                                     <div class="form-group">
                                                        
                                                        <select name="id_empresa" id="id_empresa" class="form-control ">
-                                                                <option value="">Empresa</option>
+                                                             <?php 
+                                                                echo "<option value=''>Empresa</option>";
+                                                                foreach ($empresa as $key => $value) {
+                                                                 
+                                                                     echo "<option value='".$value->id."'>".$value->empresa."</option>";
+                                                                }
+                                                                 
+                                                                ?>
                                                        </select>
                                                        
                                                     </div>
@@ -111,7 +118,13 @@ $session = session();
                                                     <div class="form-group">
                                                        
                                                        <select name="id_puesto" id="id_puesto" class="form-control">
-                                                                <option value="">Posición/Puesto</option>
+                                                            <?php 
+                                                                echo "<option value=''>Posición/Puesto</option>";
+                                                                foreach ($posicion as $key => $value) {
+                                                                     echo "<option value='".$value->id."'>".$value->posicion_puesto."</option>";
+                                                                }
+                                                                 
+                                                                ?>
                                                        </select>
                                                        
                                                     </div>
@@ -120,7 +133,14 @@ $session = session();
                                                     <div class="form-group">
                                                        
                                                        <select name="id_area" id="id_area" class="form-control">
-                                                                <option value="">Área</option>
+                                                            <?php 
+                                                                echo "<option value=''>Área</option>";
+                                                                foreach ($area as $key => $value) {
+                                                                    
+                                                                    echo "<option value='".$value->id."'>".$value->area."</option>";
+                                                                }
+                                                                 
+                                                                ?>
                                                        </select>
                                                        
                                                     </div>
@@ -129,7 +149,15 @@ $session = session();
                                                     <div class="form-group">
                                                        
                                                        <select name="id_unidad" id="id_unidad" class="form-control">
-                                                                <option value="">Unidad</option>
+                                                                <?php 
+                                                                echo "<option value=''>Unidad</option>";
+                                                                foreach ($unidad as $key => $value) {
+                                                                  
+                                                                     echo "<option value='".$value->id."'>".$value->unidad."</option>";
+                                                                }
+                                                                 
+                                                                ?>
+                                                               
                                                        </select>
                                                        
                                                     </div>
@@ -163,4 +191,5 @@ $session = session();
                                 </div>
                             </div> <!-- end col -->
             </div> <!-- end row -->
+            <script src="<?=base_url('public/assets/js/acceso/createUser.js'); ?>"></script>
 <?=$this->endSection()?> 

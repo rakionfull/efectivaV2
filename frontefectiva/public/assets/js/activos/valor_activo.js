@@ -1,4 +1,6 @@
+
 var alerta_valorActivo = document.getElementById("alert_valorActivo");
+
 function LoadTableValorActivo() {
     if ($.fn.DataTable.isDataTable('#table_valorActivo')){
         
@@ -36,15 +38,23 @@ function LoadTableValorActivo() {
         autoWidth: false,
         // processing: true,
         lengthMenu:[5,10,25,50],
-        pageLength:5,
+        pageLength:10,
         clickToSelect:false,
-        ajax: BASE_URL+"/main/getValorActivo",
+        ajax: BASE_URL+"/activo/getValorActivo",
         aoColumns: [
             { "data": "id" },
             { "data": "valor" },
-            { "data": "estado" },
-            { "defaultContent": "<editValorActivo class='text-primary btn btn-opcionTabla' data-toggle='tooltip' data-placement='top' title='Editar' data-original-title='Editar'><i class='mdi mdi-pencil font-size-18'></i></editValorActivo>"+
-            "<deleteValorActivo class='text-danger btn btn-opcionTabla' data-toggle='tooltip' data-placement='top' title='Eliminar' data-original-title='Eliminar'><i class='mdi mdi-trash-can font-size-18'></i></deleteValorActivo>"
+            {  "data": "estado",
+                        
+            "mRender": function(data, type, value) {
+                if (data == '1') return  'Activo';
+                else return 'Inactivo'
+                  
+
+                }
+            },
+            { "defaultContent": "<editValorActivo class='text-primary btn btn-opcionTabla' data-toggle='tooltip' data-placement='top' title='Editar' data-original-title='Editar'><i class='fas fa-edit font-size-18'></i></editValorActivo>"+
+            "<deleteValorActivo class='text-danger btn btn-opcionTabla' data-toggle='tooltip' data-placement='top' title='Eliminar' data-original-title='Eliminar'><i class='far fa-trash-alt font-size-18'></i></deleteValorActivo>"
 
 },
         ],
@@ -61,8 +71,45 @@ function LoadTableValorActivo() {
         }
         
     })
-   
+    $("#table_valorActivo").DataTable().ajax.reload(null, true); 
 }
+
+//validamos
+async function validacionValorActivo(dato){
+
+    let result; /* Variable Resultado de Funcion */
+
+    // Validar existe
+        try {
+
+            const postData = {           
+                valor : dato
+            };
+
+            await $.ajax({
+                method: "POST",
+                url: $('#base_url').val()+"/activo/validarValorActivo",
+                data: postData,
+                dataType: "JSON"
+            })
+            .done(function(respuesta) {
+               
+                result = respuesta;
+            })
+            .fail(function(error) {
+                // alert("Se produjo el siguiente error: ".err);
+            })
+            .always(function() {
+            });
+        }
+        catch(err) {
+            // alert("Se produjo el siguiente error: ".err);
+        }
+    // /.Validar existe
+
+    return result; /* Retorno de Resultado */
+
+};
 
 document.getElementById("btnAgregar_ValorActivo").addEventListener("click",function(){
 
@@ -76,16 +123,17 @@ document.getElementById("btnAgregar_ValorActivo").addEventListener("click",funct
 
 
 // // boton de agregar Valor Activo
-document.getElementById("Agregar_valorActivo").addEventListener("click",function(){
+document.getElementById("Agregar_valorActivo").addEventListener("click",async function(){
     $nom_val=document.getElementById("nom_valor").value;
 
     $est_val=document.getElementById("est_valor").value;
     
     if($nom_val !=""  && $est_val != ""){
-       
+        if (!(await validacionValorActivo($nom_val))){
+                
                 const postData = { 
-                    valor:$nom_val,
-                    estado:$est_val,
+                    valor:$nom_val.trim(),
+                    estado:$est_val.trim(),
                     
                 };
                
@@ -93,7 +141,7 @@ document.getElementById("Agregar_valorActivo").addEventListener("click",function
 
                     $.ajax({
                         method: "POST",
-                        url: BASE_URL+"/main/addValorActivo",
+                        url: $('#base_url').val()+"/activo/addValorActivo",
                         data: postData,
                         dataType: "JSON"
                     })
@@ -123,7 +171,13 @@ document.getElementById("Agregar_valorActivo").addEventListener("click",function
                 catch(err) {
                     alert("Error en el try");
                 }
-            
+        }else{
+                Swal.fire({
+                         icon: 'error',
+                         title: 'Error',
+                         text: 'El valor ya se encuentra registrado'
+                       })
+          }
            
        
     }else{
@@ -176,7 +230,7 @@ document.getElementById("Modificar_valorActivo").addEventListener("click", funct
 
                     $.ajax({
                         method: "POST",
-                        url: BASE_URL+"/main/updateValorActivo",
+                        url: BASE_URL+"/activo/updateValorActivo",
                         data: postData,
                         dataType: "JSON"
                     })
@@ -217,4 +271,61 @@ document.getElementById("Modificar_valorActivo").addEventListener("click", funct
                })
   }
    
+});
+
+//eliminar Valor Activo
+$('#table_valorActivo tbody').on( 'click', 'deleteValorActivo', function(){
+     
+    //recuperando los datos
+    var table = $('#table_valorActivo').DataTable();
+    var regNum = table.rows( $(this).parents('tr') ).count().toString();
+    var regDat = table.rows( $(this).parents('tr') ).data().toArray();
+    const postData = { 
+        id:regDat[0]["id"],
+ 
+    };
+    
+    try {
+
+        $.ajax({
+            method: "POST",
+            url: $('#base_url').val()+"/activo/deleteValorActivo",
+            data: postData,
+            dataType: "JSON"
+        })
+
+     
+        .done(function(respuesta) {
+         console.log(respuesta);
+            if (respuesta.msg) 
+            {
+                
+                alerta_valorActivo.innerHTML = '<div class="alert alert-success alert-dismissible fade show" role="alert">'+
+                respuesta.msg+
+                '<button type="button" class="close" data-dismiss="alert" aria-label="Close">'+
+                    '<span aria-hidden="true">&times;</span>'+
+                    '</button>'+
+                '</div>';
+
+                $("#table_valorActivo").DataTable().ajax.reload(null, true); 
+               
+            }else{
+                alerta_valorActivo.innerHTML = '<div class="alert alert-danger alert-dismissible fade show" role="alert">'+
+                respuesta.error+
+                '<button type="button" class="close" data-dismiss="alert" aria-label="Close">'+
+                    '<span aria-hidden="true">&times;</span>'+
+                    '</button>'+
+                '</div>';
+            } 
+            
+        })
+        .fail(function(error) {
+            // alert("Error en el ajax");
+        })
+        .always(function() {
+        });
+    }
+    catch(err) {
+        // alert("Error en el try");
+    }
 });

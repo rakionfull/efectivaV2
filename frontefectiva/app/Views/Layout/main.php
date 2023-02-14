@@ -108,7 +108,9 @@ $session = session();?>
                                     <?php if($session->permisos[8]->view_det==1){ ?>
                                         <li><a href="<?=base_url('controles') ?>">Controles</a></li>
                                     <?php }?>
-                                       
+                                    <?php if($session->permisos[9]->view_det==1){ ?>
+                                        <li><a href="<?=base_url('controles') ?>">Planes de Acción</a></li>
+                                    <?php }?>
                                        
                                         
                                     </ul>
@@ -116,7 +118,29 @@ $session = session();?>
                                 </li>
                             <?php }?>
                             <?php if($session->permisos[2]->view_det==1){ ?>
-                         
+                                <li>
+                                    <a href="javascript: void(0);" class="has-arrow waves-effect">
+                                        <i class="fas fa-list-alt"></i>
+                                        <span>Evaluacion de Riesgos de Seguridad en Porrcesos de Negocio</span>
+                                    </a>
+                                    <ul class="sub-menu" aria-expanded="false">  
+                                    <?php if($session->permisos[10]->view_det==1){ ?>
+                                        <li><a href="<?=base_url('') ?>">Inventario y clasificación de activos</a></li>
+                                    <?php }?>
+                                    <?php if($session->permisos[11]->view_det==1){ ?>
+                                        <li><a href="<?=base_url('') ?>">Evaluación de Riesgos SI-C</a></li>
+                                    <?php }?>
+                                    <?php if($session->permisos[12]->view_det==1){ ?>
+                                        <li><a href="<?=base_url('') ?>">Registro de Controles</a></li>
+                                    <?php }?>
+                                    <?php if($session->permisos[13]->view_det==1){ ?>
+                                        <li><a href="<?=base_url('') ?>">Registro de Plan de acción</a></li>
+                                    <?php }?>
+                                       
+                                        
+                                    </ul>
+                                    
+                                </li>
                             <?php }?>
                           
                             

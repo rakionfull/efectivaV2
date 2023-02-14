@@ -1,5 +1,80 @@
 var alerta_unidades = document.getElementById("alert_unidades");
+
 function LoadTableUnidades() {
+
+        
+//cargando las empresas
+$.ajax({
+        method: "POST",
+        url: BASE_URL+"/activo/getEmpresasByActivo",
+        dataType: "JSON"
+    })
+    .done(function(respuesta) {
+       
+        if (respuesta) 
+        {
+            let datos = respuesta;
+              
+            $("#select_empresaUnidades").empty();
+            $("#select_empresaUnidades").append('<option value="" selected>Seleccione</option>');
+    
+            datos.data.forEach(dato => {
+                
+              
+                    $("#select_empresaUnidades").append('<option value='+dato["id"]+'>'+dato["empresa"]+'</option>');
+    
+               
+            });
+        } 
+        else
+        {  }
+    
+    })
+    .fail(function(error) {
+        alert("Se produjo el siguiente error: ".err);
+    })
+    .always(function() {
+    });        
+    
+//cargando las areas
+$.ajax({
+        method: "POST",
+        url: BASE_URL+"/activo/getAreasByActivo",
+        dataType: "JSON"
+    })
+    .done(function(respuesta) {
+       
+        if (respuesta) 
+        {
+            let datos = respuesta;
+          
+    
+            $("#select_areaUnidades").empty();
+            $("#select_areaUnidades").append('<option value="" selected>Seleccione</option>');
+    
+        
+    
+            datos.data.forEach(dato => {
+                
+            
+                    $("#select_areaUnidades").append('<option value='+dato["id"]+'>'+dato["area"]+'</option>');
+    
+                
+                
+            
+            });
+        } 
+        else
+        {  }
+    
+    })
+    .fail(function(error) {
+        alert("Se produjo el siguiente error: ".err);
+    })
+    .always(function() {
+    });        
+
+
     if ($.fn.DataTable.isDataTable('#table_unidades')){
         
         $('#table_unidades').DataTable().rows().remove();
@@ -28,29 +103,41 @@ function LoadTableUnidades() {
                 "previous": "Anterior"
             }
         },
-        // scrollY: "200px",
-        // fixedColumns:   {
-        //     heightMatch: 'none'
-        // },
-        responsive: true,
+        scrollX: true,
+        fixedColumns:   {
+            heightMatch: 'none'
+        },
+        responsive: false,
         autoWidth: false,
         // processing: true,
         lengthMenu:[5,10,25,50],
         pageLength:5,
         clickToSelect:false,
-        ajax: BASE_URL+"/main/getUnidades",
-        aoColumns: [
-            { "data": "id" },
+        ajax: BASE_URL+"/activo/getUnidades",
+        aoColumns: [            
+            { "data": "id" },            
             { "data": "unidad" },
-            { "data": "estado" },
-            { "defaultContent": "<editUnidades class='text-primary btn btn-opcionTabla' data-toggle='tooltip' data-placement='top' title='Editar' data-original-title='Editar'><i class='mdi mdi-pencil font-size-18'></i></editUnidades>"+
-            "<deleteUnidades class='text-danger btn btn-opcionTabla' data-toggle='tooltip' data-placement='top' title='Eliminar' data-original-title='Eliminar'><i class='mdi mdi-trash-can font-size-18'></i></deleteUnidades>"
+            { "data": "empresa" },
+            { "data": "area" },
+            {  "data": "estado",
+                        
+            "mRender": function(data, type, value) {
+                if (data == '1') return  'Activo';
+                else return 'Inactivo'
+                  
+
+                }
+            },
+            { "data": "idempresa" },
+            { "data": "idarea" },
+            { "defaultContent": "<editUnidades class='text-primary btn btn-opcionTabla' data-toggle='tooltip' data-placement='top' title='Editar' data-original-title='Editar'><i class='fas fa-edit font-size-18'></i></editUnidades>"+
+            "<deleteUnidad class='text-danger btn btn-opcionTabla' data-toggle='tooltip' data-placement='top' title='Eliminar' data-original-title='Eliminar'><i class='far fa-trash-alt font-size-18'></i></deleteUnidad>"
 
 },
         ],
         columnDefs: [
             {
-                // "targets": [ 0 ],
+                "targets": [ 5,6 ],
                 "visible": false,
                 "searchable": false
             },
@@ -71,45 +158,56 @@ document.getElementById("btnAgregar_Unidades").addEventListener("click",function
     document.getElementById("form_unidades").reset();
     document.getElementById("Agregar_Unidades").style.display = "block";
     document.getElementById("Modificar_Unidades").style.display = "none";
+    
 });
 
 // // boton de agregar Unidades
 document.getElementById("Agregar_Unidades").addEventListener("click",function(){
-    $nom_uni=document.getElementById("nom_unidades").value;
-
-    $est_uni=document.getElementById("est_unidades").value;
-    
-    if($nom_uni !=""  && $est_uni != ""){
+    $select_empresaUnidades=document.getElementById("select_empresaUnidades").value;    
+    $select_areaUnidades=document.getElementById("select_areaUnidades").value;
+    $nom_uni=document.getElementById("nom_uni").value;
+    $est_uni=document.getElementById("est_uni").value;
+        
+    if($select_empresaUnidades !="" && $select_areaUnidades !="" && $nom_uni !=""  && $est_uni != ""){
        
                 const postData = { 
+                    idempresa:$select_empresaUnidades,
+                    idarea:$select_areaUnidades,
                     unidad:$nom_uni,
                     estado:$est_uni,
                     
                 };
-               
+                
                 try {
 
                     $.ajax({
                         method: "POST",
-                        url: BASE_URL+"/main/addUnidades",
+                        url: BASE_URL+"/activo/addUnidades",
                         data: postData,
                         dataType: "JSON"
                     })
                     .done(function(respuesta) {
-                     
-                        if (respuesta) 
+                        if (respuesta.error==1) 
                         {
+                        
                             document.getElementById("form_unidades").reset();
+                         
                             $('#modal_unidades').modal('hide');
                             alerta_unidades.innerHTML = '<div class="alert alert-success alert-dismissible fade show" role="alert">'+
-                            'Unidad Registrada'+
+                            respuesta.msg+
                             '<button type="button" class="close" data-dismiss="alert" aria-label="Close">'+
                                 '<span aria-hidden="true">&times;</span>'+
                                 '</button>'+
                             '</div>';
                             $("#table_unidades").DataTable().ajax.reload(null, false); 
                            
-                        } 
+                        } else{
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Error',
+                                text: respuesta.msg
+                              })
+                        }
                         
                     })
                     .fail(function(error) {
@@ -138,10 +236,11 @@ document.getElementById("Agregar_Unidades").addEventListener("click",function(){
 //editar Empresa
 $('#table_unidades tbody').on( 'click', 'editUnidades', function(){
     $("#modal_unidades").modal("show");
-    document.getElementById("title-unidades").innerHTML = "Modificar Unidad";
+    document.getElementById("title-unidades").innerHTML = "Modificar";
     document.getElementById("form_unidades").reset();
     document.getElementById("Agregar_Unidades").style.display = "none";
     document.getElementById("Modificar_Unidades").style.display = "block";
+    
    
     //recuperando los datos
     var table = $('#table_unidades').DataTable();
@@ -150,32 +249,37 @@ $('#table_unidades tbody').on( 'click', 'editUnidades', function(){
     if (regNum == '0') {
         //console.log("error");
     }else{
-        document.getElementById("id_unidades").value=regDat[0]["id"];
-        document.getElementById("nom_unidades").value=regDat[0]["unidad"];
-        document.getElementById("est_unidades").value=regDat[0]["estado"];
+        document.getElementById("id_unidades").value=regDat[0]["id"]; 
+        document.getElementById("select_empresaUnidades").value=regDat[0]["idempresa"];        
+        document.getElementById("select_areaUnidades").value=regDat[0]["idarea"]; 
+        document.getElementById("nom_uni").value=regDat[0]["unidad"];                
+        document.getElementById("est_uni").value=regDat[0]["estado"];      
      
     }
 });
 //guardando la nueva info
 document.getElementById("Modificar_Unidades").addEventListener("click", function(){
     
-    $nom_uni=document.getElementById("nom_unidades").value;
-
-    $est_uni=document.getElementById("est_unidades").value;
+    $select_empresaUnidades=document.getElementById("select_empresaUnidades").value;    
+    $select_areaUnidades=document.getElementById("select_areaUnidades").value;
+    $nom_uni=document.getElementById("nom_uni").value;
+    $est_uni=document.getElementById("est_uni").value;
     
-    if($nom_uni !="" && $est_uni != ""){
+    if($select_empresaUnidades !="" && $select_areaUnidades !="" && $nom_uni !=""  && $est_uni != ""){
        
                 const postData = { 
                     id:document.getElementById("id_unidades").value,
+                    idempresa:$select_empresaUnidades,
+                    idarea:$select_areaUnidades,
                     unidad:$nom_uni,
-                    estado:$est_uni,
+                    estado:$est_uni,                    
                 };
               
                 try {
 
                     $.ajax({
                         method: "POST",
-                        url: BASE_URL+"/main/updateUnidades",
+                        url: BASE_URL+"/activo/updateUnidades",
                         data: postData,
                         dataType: "JSON"
                     })
@@ -197,13 +301,13 @@ document.getElementById("Modificar_Unidades").addEventListener("click", function
                         
                     })
                     .fail(function(error) {
-                        alert("Error en el ajax");
+                        // alert("Error en el ajax");
                     })
                     .always(function() {
                     });
                 }
                 catch(err) {
-                    alert("Error en el try");
+                    // alert("Error en el try");
                 }
             
            
@@ -216,4 +320,60 @@ document.getElementById("Modificar_Unidades").addEventListener("click", function
                })
   }
    
+});
+//eliminar Unidada
+$('#table_unidades tbody').on( 'click', 'deleteUnidad', function(){
+     
+    //recuperando los datos
+    var table = $('#table_unidades').DataTable();
+    var regNum = table.rows( $(this).parents('tr') ).count().toString();
+    var regDat = table.rows( $(this).parents('tr') ).data().toArray();
+    const postData = { 
+        id:regDat[0]["id"],
+ 
+    };
+    
+    try {
+
+        $.ajax({
+            method: "POST",
+            url: $('#base_url').val()+"/activo/deleteUnidad",
+            data: postData,
+            dataType: "JSON"
+        })
+
+     
+        .done(function(respuesta) {
+        //  console.log(respuesta);
+            if (respuesta.msg) 
+            {
+                
+                alerta_unidades.innerHTML = '<div class="alert alert-success alert-dismissible fade show" role="alert">'+
+                respuesta.msg+
+                '<button type="button" class="close" data-dismiss="alert" aria-label="Close">'+
+                    '<span aria-hidden="true">&times;</span>'+
+                    '</button>'+
+                '</div>';
+
+                $("#table_unidades").DataTable().ajax.reload(null, true); 
+               
+            }else{
+                alerta_unidades.innerHTML = '<div class="alert alert-danger alert-dismissible fade show" role="alert">'+
+                respuesta.error+
+                '<button type="button" class="close" data-dismiss="alert" aria-label="Close">'+
+                    '<span aria-hidden="true">&times;</span>'+
+                    '</button>'+
+                '</div>';
+            } 
+            
+        })
+        .fail(function(error) {
+            // alert("Error en el ajax");
+        })
+        .always(function() {
+        });
+    }
+    catch(err) {
+        // alert("Error en el try");
+    }
 });

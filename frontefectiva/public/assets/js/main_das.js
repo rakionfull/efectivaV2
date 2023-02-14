@@ -22,74 +22,87 @@ document.onmousemove = function(){
     contadorSesion(); //aqui cargamos la funcion de inactividad
 } 
 
-function contadorSesion() {
-   timeout = setTimeout(function () {
-        $.confirm({
-            title: 'Alerta de Inactividad!',
-            content: 'La sesión esta a punto de expirar.',
-            autoClose: 'expirar|10000',//cuanto tiempo necesitamos para cerrar la sess automaticamente
-            type: 'red',
-            icon: 'fa fa-spinner fa-spin',
-            buttons: {
-                expirar: {
-                    text: 'Cerrar Sesión',
-                    btnClass: 'btn-red',
-                    action: function () {
-                        salir();
+    function contadorSesion() {
+    timeout = setTimeout(function () {
+            $.confirm({
+                title: 'Alerta de Inactividad!',
+                content: 'La sesión esta a punto de expirar.',
+                autoClose: 'expirar|10000',//cuanto tiempo necesitamos para cerrar la sess automaticamente
+                type: 'red',
+                icon: 'fa fa-spinner fa-spin',
+                buttons: {
+                    expirar: {
+                        text: 'Cerrar Sesión',
+                        btnClass: 'btn-red',
+                        action: function () {
+                            salir();
+                        }
+                    },
+                    permanecer: function () {
+                        contadorSesion(); //reinicia el conteo
+                        clearTimeout(timeout); //reinicia el conteo
+                        $.alert('La Sesión ha sido reiniciada!'); //mensaje
+                        window.location.href = BASE_URL + "/inicio";
                     }
-                },
-                permanecer: function () {
-                    contadorSesion(); //reinicia el conteo
-                    clearTimeout(timeout); //reinicia el conteo
-                    $.alert('La Sesión ha sido reiniciada!'); //mensaje
-                    window.location.href = BASE_URL + "/inicio";
                 }
-            }
-        });
-    }, 900000);//3 segundos para no demorar tanto 
-}
+            });
+        }, 900000);//15 min para no demorar tanto  900000
+    }
 
-function salir() {
+    function salir() {
+            
+                        const postData = { 
+                        
+                        };
+                    
+                        try {
         
-                    const postData = { 
-                     
-                    };
-                  
-                    try {
-    
-                        $.ajax({
-                            method: "POST",
-                            url: BASE_URL+"/logout",
-                            data: postData,
-                            dataType: "JSON"
-                        })
-                        .done(function(respuesta) {
-                           
-                           if(respuesta.dato){
-                           
-                            setTimeout( function() { window.location.href = BASE_URL+"/login"; }, 2000 );
-                            Swal.fire(
-                                'Advertencia!!',
-                                'Deslogeado por Inactividad',
-                                'warning'
-                              );
-                           }
-                                   
-                                                  
-                        })
-                        .fail(function(error) {
-                            alert("Error en el ajax");
-                        })
-                        .always(function() {
-                        });
-                    }
-                    catch(err) {
-                        // alert("Error en el try");
-                    }
-                
-    
-       
-    
-    
+                            $.ajax({
+                                method: "POST",
+                                url: BASE_URL+"/logout",
+                                data: postData,
+                                dataType: "JSON"
+                            })
+                            .done(function(respuesta) {
+                            
+                            if(respuesta.dato){
+                            
+                            // setTimeout( function() { window.location.href = BASE_URL+"/login"; }, 2000 );
+                                // Swal.fire(
+                                //     'Advertencia!!',
+                                //     'Deslogeado por Inactividad',
+                                //     'warning'
+                                //   );
+                                Swal.fire({
+                                    title: "Advertencia!!",
+                                    text:  "Deslogeado por Inactividad",
+                                    icon: 'warning',
+                                    showCancelButton: false,
+                                    confirmButtonText: "Ok",
+                                    cancelButtonText: "Cancelar",
+                                })
+                                .then(resultado => {
+                                    if (resultado.value) {
+                                            window.location.href = BASE_URL+"/login"
+                                    } 
+                                });
+                            }
+                                    
+                                                    
+                            })
+                            .fail(function(error) {
+                                alert("Error en el ajax");
+                            })
+                            .always(function() {
+                            });
+                        }
+                        catch(err) {
+                            // alert("Error en el try");
+                        }
+                    
+        
+        
+        
+        
 
-}
+    }

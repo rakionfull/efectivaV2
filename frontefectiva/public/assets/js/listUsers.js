@@ -197,3 +197,35 @@ document.getElementById("select_estado").addEventListener("change",function(){
     $value=$('#select_estado').val();
     LoadTableUsers($value);
 });
+
+document.getElementById("descarga_users").addEventListener("click",function(){
+    event.preventDefault();
+    // console.log('liock en report');
+    const postData = { 
+
+    };
+    try {
+        $.ajax({
+            method: "POST",
+            url: $('#base_url').val()+"/main/reporteUsuarios",
+            data: postData,
+            dataType: "JSON"
+        })
+        .done(function(respuesta) {
+            // console.log(respuesta);
+            $url = $('#base_url').val()+'/public/assets/reportes/'+respuesta;
+            // console.log($url);
+            // document.getElementById(element.id).target = "_blank"
+            // $('#'+element.id).prop('href',$url);
+            location.href=$url;
+        })
+        .fail(function(error) {
+            // alert("Error en el ajax");
+        })
+        .always(function() {
+        });
+    }
+    catch(err) {
+        // alert("Error en el try");
+    }
+});

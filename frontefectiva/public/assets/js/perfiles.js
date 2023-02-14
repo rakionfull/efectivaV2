@@ -1,5 +1,41 @@
 
 var alerta = document.getElementById("alert_perfil");
+async function validacionPerfil(dato){
+
+    let result; /* Variable Resultado de Funcion */
+
+    // Validar existe
+        try {
+
+            const postData = {           
+                perfil : dato
+            };
+
+            await $.ajax({
+                method: "POST",
+                url: BASE_URL+"/main/validarPerfil",
+                data: postData,
+                dataType: "JSON"
+            })
+            .done(function(respuesta) {
+                console.log(respuesta);
+                result = respuesta;
+            })
+            .fail(function(error) {
+                // alert("Se produjo el siguiente error: ".err);
+            })
+            .always(function() {
+            });
+        }
+        catch(err) {
+            // alert("Se produjo el siguiente error: ".err);
+        }
+    // /.Validar existe
+
+    return result; /* Retorno de Resultado */
+
+};
+
 function LoadPerfiles($est){
 
     if ($.fn.DataTable.isDataTable('#table_perfiles')){
@@ -69,6 +105,23 @@ function LoadPerfiles($est){
 
             
         ],
+        buttons : [           
+            {
+                extend: 'selectAll',
+                text: "<svg width='1em' height='1em' viewBox='0 0 16 16' class='bi bi-check-square' fill='currentColor' xmlns='http://www.w3.org/2000/svg'><path fill-rule='evenodd' d='M14 1H2a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z'/><path fill-rule='evenodd' d='M10.97 4.97a.75.75 0 0 1 1.071 1.05l-3.992 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.236.236 0 0 1 .02-.022z'/></svg>",
+                className: 'botDatTab',
+            },
+
+            { extend: 'pageLength', className: 'botDatTab', },
+
+            {
+                extend: 'selectNone',
+                text: "<svg width='1em' height='1em' viewBox='0 0 16 16' class='bi bi-x-square' fill='currentColor' xmlns='http://www.w3.org/2000/svg'><path fill-rule='evenodd' d='M14 1H2a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z'/><path fill-rule='evenodd' d='M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z'/></svg>", 
+                className: 'botDatTab',
+            },
+            
+          
+        ],
         columnDefs: [
             {
                 "targets": [ 0 ],
@@ -83,116 +136,6 @@ function LoadPerfiles($est){
         
     });
     $("#table_perfiles").DataTable().ajax.reload(null, false); 
-}
-
-
-function LoadDetPerfil($id_perfil) {
-    if ($.fn.DataTable.isDataTable('#table_DetPerfil')){
-        
-        $('#table_DetPerfil').DataTable().rows().remove();
-        $('#table_DetPerfil').DataTable().destroy();
-    
-    }
-
-    var table = $('#table_DetPerfil').DataTable({
-        language: {
-            "decimal": "",
-            "emptyTable": "No hay información",
-            "info": "Mostrando _START_ a _END_ de _TOTAL_ Entradas",
-            "infoEmpty": "Mostrando 0 to 0 of 0 Entradas",
-            "infoFiltered": "(Filtrado de _MAX_ total entradas)",
-            "infoPostFix": "",
-            "thousands": ",",
-            "lengthMenu": "Mostrar _MENU_ Entradas",
-            "loadingRecords": "Cargando...",
-            "processing": "Procesando...",
-            "search": "Buscar:",
-            "zeroRecords": "Sin resultados encontrados",
-            "paginate": {
-                "first": "Primero",
-                "last": "Ultimo",
-                "next": "Siguiente",
-                "previous": "Anterior"
-            }
-        },
-        // scrollY: "200px",
-        // fixedColumns:   {
-        //     heightMatch: 'none'
-        // },
-        responsive: true,
-        autoWidth: false,
-        // processing: true,
-        lengthMenu:[5,10,25,50],
-        pageLength:5,
-        clickToSelect:false,
-        ajax: BASE_URL+"/main/getDetPerfil/"+$id_perfil,
-        aoColumns: [
-            { "data": "desc_mod" },
-            { "data": "desc_op" },
-            {  "data": "view_det",
-                        "bSortable": false,
-                        "mRender": function(data, type, value) {
-                            if (data == 1) {
-                                return  '<input  type="checkbox" id="view_'+value["id_det_per"]+'" onclick="changeView(this, event)" switch="none" checked/><label for="view_'+value["id_det_per"]+'" data-on-label="On"data-off-label="Off"></label>'
-                              
-                            }else{
-                                return  '<input type="checkbox" id="view_'+value["id_det_per"]+'" onclick="changeView(this, event)" switch="none" /><label for="view_'+value["id_det_per"]+'" data-on-label="On"data-off-label="Off"></label>'
-                              
-                            }
-                        }
-            },
-            {  "data": "create_det",
-                    "bSortable": false,
-                    "mRender": function(data, type, value) {
-                        if (data == 1) {
-                            return  '<input  type="checkbox" id="create_'+value["id_det_per"]+'" onclick="changeCreate(this, event)" switch="none" checked/><label for="create_'+value["id_det_per"]+'" data-on-label="On"data-off-label="Off"></label>'
-                        
-                        }else{
-                            return  '<input type="checkbox" id="create_'+value["id_det_per"]+'" onclick="changeCreate(this, event)" switch="none" /><label for="create_'+value["id_det_per"]+'" data-on-label="On"data-off-label="Off"></label>'
-                        
-                        }
-                    }
-            },
-            {  "data": "update_det",
-                    "bSortable": false,
-                    "mRender": function(data, type, value) {
-                        if (data == 1) {
-                            return  '<input  type="checkbox" id="update_'+value["id_det_per"]+'" onclick="changeUpdate(this, event)" switch="none" checked/><label for="update_'+value["id_det_per"]+'" data-on-label="On"data-off-label="Off"></label>'
-                        
-                        }else{
-                            return  '<input type="checkbox" id="update_'+value["id_det_per"]+'" onclick="changeUpdate(this, event)" switch="none" /><label for="update_'+value["id_det_per"]+'" data-on-label="On"data-off-label="Off"></label>'
-                        
-                        }
-                    }
-            },
-            {  "data": "delete_det",
-                "bSortable": false,
-                "mRender": function(data, type, value) {
-                    if (data == 1) {
-                        return  '<input  type="checkbox" id="delete_'+value["id_det_per"]+'" onclick="changeDelete(this, event)" switch="none" checked/><label for="delete_'+value["id_det_per"]+'" data-on-label="On"data-off-label="Off"></label>'
-                    
-                    }else{
-                        return  '<input type="checkbox" id="delete_'+value["id_det_per"]+'" onclick="changeDelete(this, event)" switch="none" /><label for="delete_'+value["id_det_per"]+'" data-on-label="On"data-off-label="Off"></label>'
-                    
-                    }
-                }
-            },
-            
-        ],
-        columnDefs: [
-            {
-                // "targets": [ 0 ],
-                "visible": false,
-                "searchable": false
-            },
-            
-        ],
-        'drawCallback': function () {
-            $( 'table_DetPerfil tbody tr td' ).css( 'padding', '1px 1px 1px 1px' );
-        }
-        
-    });
-    $("#table_DetPerfil").DataTable().ajax.reload(null, false); 
 }
 document.getElementById("btnAgregar_perfil").addEventListener("click",async function(){
                                 
@@ -210,7 +153,8 @@ document.getElementById("Agregar_Perfil").addEventListener("click",async functio
     $est_perfil=document.getElementById("est_perfil").value;
     
     if($nom_perfil !="" && $desc_perfil !="" && $est_perfil != ""){
-       
+        if (!(await validacionPerfil($nom_perfil))){
+            
                 const postData = { 
                     perfil:$nom_perfil,
                     desc_perfil:$desc_perfil,
@@ -252,7 +196,13 @@ document.getElementById("Agregar_Perfil").addEventListener("click",async functio
                     alert("Error en el try");
                 }
             
-           
+        }else{
+                Swal.fire({
+                         icon: 'error',
+                         title: 'Error',
+                         text: 'El perfil ya se encuentra registrado'
+                       })
+          }
        
     }else{
         Swal.fire({

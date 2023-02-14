@@ -20,6 +20,7 @@ use CodeIgniter\HTTP\Response;
 use CodeIgniter\HTTP\ResponseInterface;
 use CodeIgniter\RESTful\ResourceController;
 use App\Libraries\Capcha;
+
 use Exception;
 use ReflectionException;
 
@@ -32,7 +33,7 @@ class Home extends BaseController
     }
     public function dashboard(){
         $response = [
-            'msg' => 'Bienvenido a la aplicación de Efectiva',
+            'msg' => 'Bienvenido a eefectiva V2',
         ];
         return $this->respond($response, ResponseInterface::HTTP_OK);
 
@@ -87,7 +88,7 @@ class Home extends BaseController
             'nombres_us' => 'required|min_length[2]|max_length[50]',
             'apepat_us' => 'required|min_length[2]|max_length[50]',
             'apemat_us' => 'required|min_length[2]|max_length[50]',
-            'email_us' => 'min_length[2]|max_length[50]|valid_email|is_unique[tb_users.email_us]',
+            'email_us' => 'min_length[2]|max_length[50]|valid_email',
             'usuario_us' => 'required|min_length[5]|max_length[50]|is_unique[tb_users.usuario_us]',
             'passw' => 'required|min_length[8]|validatePass[passw]',
             'perfil_us' => 'required',
@@ -111,7 +112,7 @@ class Home extends BaseController
             ],
             'email_us' => [
                 'required' => 'Debe ingresar Correo',
-                'is_unique' => 'El campo correo debe ser único'
+                // 'is_unique' => 'El campo correo debe ser único'
             ],
             'usuario_us' => [
                 'required' => 'Debe ingresar Usuario',
@@ -130,7 +131,7 @@ class Home extends BaseController
         
         $input = $this->getRequestInput($this->request);
 
-        if (!$this->validateRequest($input, $rules, $errors)) {
+        if (!$this->validateRequest( $input['data'], $rules, $errors)) {
             $error = [
                 'error' => 'valida',
                 'datos' => $this->validator->getErrors()
@@ -143,13 +144,20 @@ class Home extends BaseController
         }
 
         $model = new Muser();
-        $result = $model->saveUser($input);
+        $modelPerfil = new Mperfil();
+        $result = $model->saveUser($input['data']);
         $id=$model->lastid();
         $datos = array(
-            'pass_cl' => hashPass($input['passw']),
+            'pass_cl' => hashPass($input['data']['passw']),
             'id_us' =>$id,
         );
+       
         $model->savePass($datos);
+        $perfil = $modelPerfil -> getPerfilById($input['data']['perfil_us']);
+        log_acciones(
+            'El usuario '.$input['username'].' ah creado el usuario: '.$input['data']['usuario_us'].' y se le asignó el perfil : '.$perfil->perfil
+            ,$input['terminal'],$input['ip'],$input['id'],$id,$input['username']);
+
         return $this->getResponse(
             [
                 'user' =>  $result
@@ -223,8 +231,19 @@ class Home extends BaseController
         // }
 
         $model = new Muser();
-        $result = $model->updateUser($input,$id);
-       
+        $modelPerfil = new Mperfil();
+
+        $perfilBefore = $modelPerfil -> getUserbyIdPerfil($id);
+
+        $result = $model->updateUser($input['data'],$id);
+
+        $perfilAfter = $modelPerfil -> getPerfilById($input['data']['perfil_us']);
+        $texto = '';
+        if($perfilBefore-> perfil != $perfilAfter-> perfil) $texto = ", Se modifico el perfil ".$perfilBefore -> perfil . " por ".$perfilAfter  -> perfil;
+        log_acciones(
+            'El usuario '.$input['username'].' ah modificado los datos del usuario: '.$input['data']['usuario_us'].$texto
+            ,$input['terminal'],$input['ip'],$input['id'],$id,$input['username']);
+
         return $this->getResponse(
             [
                 'user' =>  $result
@@ -238,8 +257,18 @@ class Home extends BaseController
 
     
         $model = new Muser();
-        $result = $model->updateEstadoUser($input);
-       
+        $result = $model->updateEstadoUser($input['data']);
+
+        $user =  $model->getUserbyId($input['data']['id_us']);
+
+        $estado = "Desabilitado";
+
+        if($input['data']['estado_us'] == 1) $estado = "Habilitado";
+
+        log_acciones(
+            'El usuario '.$input['username'].' a '.$estado.' al usuario: '.$user->usuario_us
+            ,$input['terminal'],$input['ip'],$input['id'],$input['data']['id_us'],$input['username']);
+            
         return $this->getResponse(
             [
                 'user' =>  $result
@@ -248,8 +277,17 @@ class Home extends BaseController
     }
     public function deleteUser($id){
         $model = new Muser();
+
+        $input = $this->getRequestInput($this->request);
+
+        $user =  $model->getUserbyId($id);
+
         $result = $model->deleteUser($id);
        
+        log_acciones(
+            'El usuario '.$input['username'].' ah eliminado al usuario : '.$user->usuario_us
+            ,$input['terminal'],$input['ip'],$input['id'],$id,$input['username']);
+
         return $this->getResponse(
             [
                 'user' =>  $result
@@ -277,6 +315,24 @@ class Home extends BaseController
 
            
     }
+    public function validarPerfil(){
+        try {
+            $model = new Mperfil();
+            $input = $this->getRequestInput($this->request);
+                $response = [
+                    'msg' =>  $model->validaPerfil($input['perfil']),
+                ];
+                return $this->respond($response, ResponseInterface::HTTP_OK);
+        
+        } catch (Exception $ex) {
+            return $this->getResponse(
+                    [
+                        'error' => $ex->getMessage(),
+                    ],
+                    ResponseInterface::HTTP_OK
+                );
+        }
+    }
     public function addPerfil()
     {
    
@@ -285,8 +341,45 @@ class Home extends BaseController
 
       
         $model = new Mperfil();
-        $result = $model->savePerfil($input);
-    
+        $result = $model->savePerfil($input['data']);
+        $modulos = $model->getAllModulos();
+        $opciones = $model->getAllOpciones();
+        $items = $model->getAllItems();
+        $idperfil = $model->lastIdPerfil();
+
+        //creo todas las opciones de modulos
+
+        foreach ($modulos as $key => $value) {
+            $data = [
+                'id_perfil' =>  $idperfil,
+                'tabla' =>  'tb_modulo',
+                'id' =>  $value['id_mod'],
+            ];
+            $model->saveDetPerfil($data);
+        }
+         //creo todas las opciones de submodulos
+         foreach ($opciones as $key => $value2) {
+            $data = [
+                'id_perfil' =>  $idperfil,
+                'tabla' =>  'tb_opcion',
+                'id' =>  $value2['id_op'],
+            ];
+            $model->saveDetPerfil($data);
+        }
+          //creo todas las opciones de opciones
+          foreach ($items as $key => $value3) {
+            $data = [
+                'id_perfil' =>  $idperfil,
+                'tabla' =>  'tb_item',
+                'id' =>  $value3['id_item'],
+            ];
+            $model->saveDetPerfil($data);
+        }
+
+        log_acciones(
+            'El usuario '.$input['username'].' ah creado el perfil : '.$input['data']['perfil']
+            ,$input['terminal'],$input['ip'],$input['id'],0,$input['username']);
+
         return $this->getResponse(
             [
                 'msg' =>  $result
@@ -315,12 +408,10 @@ class Home extends BaseController
     }
     public function deletePerfil()
     {
-   
-        
-        $input = $this->getRequestInput($this->request);
 
-      
+      try {
         $model = new Mperfil();
+        $input = $this->getRequestInput($this->request);
         $result = $model->deletePerfil($input);
     
         return $this->getResponse(
@@ -328,6 +419,15 @@ class Home extends BaseController
                 'msg' =>  $result
             ]
         );
+      } catch (Exception $ex) {
+        return $this->getResponse(
+            [
+                'error' => 'El perfil está asignado a usuario, no es posible eliminarlo',
+            ]
+        );
+      }
+        
+      
       
         
     }
@@ -423,8 +523,20 @@ class Home extends BaseController
 
       
         $model = new Mperfil();
-        $result = $model->updateDetPer($input,'view_det');
-    
+
+       
+
+        $detalle = $model->getDetPerById($input['data']['id_op']);
+
+        $opcion = $model->getPerfilOpcion($detalle-> tabla,$detalle->id);
+
+        $result = $model->updateDetPer($input['data'],'view_det');
+        $estado = 'Desactivo';
+        if($input['data']['estado']==1){$estado = 'Activo';}
+        //acion para guardar el log dle detealle perfil, opcion X agregada a perfil X
+        log_acciones(
+            'El usuario '.$input['username'].' '.$estado.' al perfil:'.$detalle->perfil.' : Ver en opcion '.$opcion->opcion
+            ,$input['terminal'],$input['ip'],$input['id'],0,$input['username']);
         return $this->getResponse(
             [
                 'msg' =>  $result
@@ -441,8 +553,18 @@ class Home extends BaseController
 
       
         $model = new Mperfil();
-        $result = $model->updateDetPer($input,'create_det');
-    
+       
+        $detalle = $model->getDetPerById($input['data']['id_op']);
+
+        $opcion = $model->getPerfilOpcion($detalle-> tabla,$detalle->id);
+
+        $result = $model->updateDetPer($input['data'],'create_det');
+        $estado = 'Desactivo';
+        if($input['data']['estado']==1){$estado = 'Activo';}
+        //acion para guardar el log dle detealle perfil, opcion X agregada a perfil X
+        log_acciones(
+            'El usuario '.$input['username'].' '.$estado.' al perfil:'.$detalle->perfil.' : Crear en opcion '.$opcion->opcion
+            ,$input['terminal'],$input['ip'],$input['id'],0,$input['username']);
         return $this->getResponse(
             [
                 'msg' =>  $result
@@ -459,8 +581,19 @@ class Home extends BaseController
 
       
         $model = new Mperfil();
-        $result = $model->updateDetPer($input,'update_det');
+       
     
+        $detalle = $model->getDetPerById($input['data']['id_op']);
+
+        $opcion = $model->getPerfilOpcion($detalle-> tabla,$detalle->id);
+
+        $result = $model->updateDetPer($input['data'],'update_det');
+        $estado = 'Desactivo';
+        if($input['data']['estado']==1){$estado = 'Activo';}
+        //acion para guardar el log dle detealle perfil, opcion X agregada a perfil X
+        log_acciones(
+            'El usuario '.$input['username'].' '.$estado.' al perfil:'.$detalle->perfil.' : Editar en opcion '.$opcion->opcion
+            ,$input['terminal'],$input['ip'],$input['id'],0,$input['username']);
         return $this->getResponse(
             [
                 'msg' =>  $result
@@ -477,678 +610,45 @@ class Home extends BaseController
 
       
         $model = new Mperfil();
-        $result = $model->updateDetPer($input,'delete_det');
+       
     
+        $detalle = $model->getDetPerById($input['data']['id_op']);
+
+        $opcion = $model->getPerfilOpcion($detalle-> tabla,$detalle->id);
+
+        $result = $model->updateDetPer($input['data'],'delete_det');
+        $estado = 'Desactivo';
+        if($input['data']['estado']==1){$estado = 'Activo';}
+        //acion para guardar el log dle detealle perfil, opcion X agregada a perfil X
+        log_acciones(
+            'El usuario '.$input['username'].' '.$estado.' al perfil:'.$detalle->perfil.' : Eliminar en  opcion '.$opcion->opcion
+            ,$input['terminal'],$input['ip'],$input['id'],0,$input['username']);
         return $this->getResponse(
             [
                 'msg' =>  $result
             ]
         );
       
+      
         
     }
-    public function getEmpresas(){
-
-        try {
-            $model = new Mempresa();
-                $response = [
-                    'data' =>  $model->getEmpresas()
-                ];
-                return $this->respond($response, ResponseInterface::HTTP_OK);
-        
-        } catch (Exception $ex) {
-            return $this->getResponse(
-                    [
-                        'error' => $ex->getMessage(),
-                    ],
-                    ResponseInterface::HTTP_OK
-                );
-        }
-
-           
-    }
-    public function getEmpresasByActivo(){
-
-        try {
-            $model = new Mempresa();
-                $response = [
-                    'data' =>  $model->getEmpresasByActivo()
-                ];
-                return $this->respond($response, ResponseInterface::HTTP_OK);
-        
-        } catch (Exception $ex) {
-            return $this->getResponse(
-                    [
-                        'error' => $ex->getMessage(),
-                    ],
-                    ResponseInterface::HTTP_OK
-                );
-        }
-
-           
-    }
-    public function addEmpresa()
+    public function dataUser()
     {
    
-        
-        $input = $this->getRequestInput($this->request);
-
-      
-        $model = new Mempresa();
-        $result = $model->saveEmpresa($input);
-    
-        return $this->getResponse(
-            [
-                'msg' =>  $result
-            ]
-        );
-      
-        
-    }
-    public function updateEmpresa()
-    {
-   
-        
-        $input = $this->getRequestInput($this->request);
-
-      
-        $model = new Mempresa();
-        $result = $model->updateEmpresa($input);
-    
-        return $this->getResponse(
-            [
-                'msg' =>  $result
-            ]
-        );
-      
-        
-    }
-    public function getAreas(){
-
-        try {
-            $model = new Marea();
-                $response = [
-                    'data' =>  $model->getAreas()
-                ];
-                return $this->respond($response, ResponseInterface::HTTP_OK);
-        
-        } catch (Exception $ex) {
-            return $this->getResponse(
-                    [
-                        'error' => $ex->getMessage(),
-                    ],
-                    ResponseInterface::HTTP_OK
-                );
-        }
-
-           
-    }
-    public function addArea()
-    {
-   
-        
-        $input = $this->getRequestInput($this->request);
-
-      
-        $model = new Marea();
-        $result = $model->saveArea($input);
-    
-        return $this->getResponse(
-            [
-                'msg' =>  $result
-            ]
-        );
-      
-        
-    }
-    public function updateArea()
-    {
-   
-        
-        $input = $this->getRequestInput($this->request);
-
-      
-        $model = new Marea();
-        $result = $model->updateArea($input);
-    
-        return $this->getResponse(
-            [
-                'msg' =>  $result
-            ]
-        );
-      
-        
-    }
-    public function getAreasEmpresa(){
-
-        try {
-            $model = new Marea();
-                $response = [
-                    'data' =>  $model->getAreasEmpresa()
-                ];
-                return $this->respond($response, ResponseInterface::HTTP_OK);
-        
-        } catch (Exception $ex) {
-            return $this->getResponse(
-                    [
-                        'error' => $ex->getMessage(),
-                    ],
-                    ResponseInterface::HTTP_OK
-                );
-        }
-
-           
-    }
-    public function addAreaEmpresa()
-    {
-   
-        
-        $input = $this->getRequestInput($this->request);
-
-      
-        $model = new Marea();
-        $result = $model->saveAreaEmpresa($input);
-    
-        return $this->getResponse(
-            [
-                'msg' =>  $result
-            ]
-        );
-      
-        
-    }
-    public function updateAreaEmpresa()
-    {
-   
-        
-        $input = $this->getRequestInput($this->request);
-
-      
-        $model = new Marea();
-        $result = $model->updateAreaEmpresa($input);
-    
-        return $this->getResponse(
-            [
-                'msg' =>  $result
-            ]
-        );
-      
-        
-    }
-    public function addConfigPass()
-    {
-        $rules = [
-            'duracion' => 'required|is_natural',
-            'sesion' => 'required|is_natural',
-            'inactividad' => 'required|is_natural',
-            'intentos' => 'required|is_natural',
-            'tama_min' => 'required|is_natural',
-            'tama_max' => 'required|is_natural',
-                       
-        ];
-        $errors = [
-            'duracion' => [
-                'required' => 'Debe ingresar valor',
-               
-            ],
-            'sesion' => [
-                'required' =>'Debe ingresar valor',
-              
-            ],
-            'inactividad' => [
-                'required' =>'Debe ingresar valor',
-              
-            ],
+        $model = new Muser();
             
-            'intentos' => [
-                'required' => 'Debe ingresar valor',
-             
-            ],
-            'tama_min' => [
-                'required' => 'Debe ingresar valor',
-             
-            ],
-            'tama_max' => [
-                'required' => 'Debe ingresar valor',
-             
-            ],
-        
             
-        ];
-        
-        $input = $this->getRequestInput($this->request);
-
-        if (!$this->validateRequest($input, $rules, $errors)) {
-            $error = [
-                'error' => 'valida',
-                'datos' => $this->validator->getErrors()
-            ];
-            return ($this->getResponse($error,ResponseInterface::HTTP_OK));
-          
-        }
-
-        $model = new MconfigPass();
-        $result = $model->updateConfigPass($input);
-        return $this->getResponse(
-            [
-                'msg' =>  $result
-            ]
-        );
-      
-        
-    }
-    public function getConfigPass(){
-
-        try {
-            $model = new MconfigPass();
-                $response = [
-                    'data' =>  $model->getConfigPass()
-                ];
-                return $this->respond($response, ResponseInterface::HTTP_OK);
-        
-        } catch (Exception $ex) {
-            return $this->getResponse(
+                return $this->getResponse(
                     [
-                        'error' => $ex->getMessage(),
-                    ],
-                    ResponseInterface::HTTP_OK
+                        'campos' =>  $model->getCamposUser(),
+                        'datos' =>  $model->getDatosUser(),
+                    ]
                 );
-        }
-
-           
-    }
-      //------------------------------------------------------------------------------
-
-      public function getValorActivo(){
-
-        try {
-            $model = new Mvaloractivo();
-                $response = [
-                    'data' =>  $model->getValorActivo()
-                ];
-                return $this->respond($response, ResponseInterface::HTTP_OK);
-        
-        } catch (Exception $ex) {
-            return $this->getResponse(
-                    [
-                        'error' => $ex->getMessage(),
-                    ],
-                    ResponseInterface::HTTP_OK
-                );
-        }
-
-           
+            
+            
+                
     }
 
-    public function addValorActivo()
-    {
-   
-        
-        $input = $this->getRequestInput($this->request);
 
-      
-        $model = new Mvaloractivo();
-        $result = $model->saveValorActivo($input);
-    
-        return $this->getResponse(
-            [
-                'msg' =>  $result
-            ]
-        );
-      
-        
-    }
-    public function updateValorActivo()
-    {
-   
-        
-        $input = $this->getRequestInput($this->request);
 
-      
-        $model = new Mvaloractivo();
-        $result = $model->updateValorActivo($input);
-    
-        return $this->getResponse(
-            [
-                'msg' =>  $result
-            ]
-        );
-      
-        
-    }
-
-    public function getTipoActivo(){
-
-        try {
-            $model = new Mtipoactivo();
-                $response = [
-                    'data' =>  $model->getTipoActivo()
-                ];
-                return $this->respond($response, ResponseInterface::HTTP_OK);
-        
-        } catch (Exception $ex) {
-            return $this->getResponse(
-                    [
-                        'error' => $ex->getMessage(),
-                    ],
-                    ResponseInterface::HTTP_OK
-                );
-        }
-
-           
-    }
-    public function addTipoActivo()
-    {
-   
-        
-        $input = $this->getRequestInput($this->request);
-
-      
-        $model = new Mtipoactivo();
-        $result = $model->saveTipoActivo($input);
-    
-        return $this->getResponse(
-            [
-                'msg' =>  $result
-            ]
-        );
-      
-        
-    }
-    public function updateTipoActivo()
-    {
-   
-        
-        $input = $this->getRequestInput($this->request);
-
-      
-        $model = new Mtipoactivo();
-        $result = $model->updateTipoActivo($input);
-    
-        return $this->getResponse(
-            [
-                'msg' =>  $result
-            ]
-        );
-      
-        
-    }
-
-    public function getClasInformacion(){
-
-        try {
-            $model = new MclasInformacion();
-                $response = [
-                    'data' =>  $model->getClasInformacion()
-                ];
-                return $this->respond($response, ResponseInterface::HTTP_OK);
-        
-        } catch (Exception $ex) {
-            return $this->getResponse(
-                    [
-                        'error' => $ex->getMessage(),
-                    ],
-                    ResponseInterface::HTTP_OK
-                );
-        }
-
-           
-    }
-    public function addClasInformacion()
-    {
-   
-        
-        $input = $this->getRequestInput($this->request);
-
-      
-        $model = new MclasInformacion();
-        $result = $model->saveClasInformacion($input);
-    
-        return $this->getResponse(
-            [
-                'msg' =>  $result
-            ]
-        );
-      
-        
-    }
-    public function updateClasInformacion()
-    {
-   
-        
-        $input = $this->getRequestInput($this->request);
-
-      
-        $model = new MclasInformacion();
-        $result = $model->updateClasInformacion($input);
-    
-        return $this->getResponse(
-            [
-                'msg' =>  $result
-            ]
-        );
-      
-        
-    }
-
-    public function getAspectoSeg(){
-
-        try {
-            $model = new MaspectoSeg();
-                $response = [
-                    'data' =>  $model->getAspectoSeg()
-                ];
-                return $this->respond($response, ResponseInterface::HTTP_OK);
-        
-        } catch (Exception $ex) {
-            return $this->getResponse(
-                    [
-                        'error' => $ex->getMessage(),
-                    ],
-                    ResponseInterface::HTTP_OK
-                );
-        }
-
-           
-    }
-    public function addAspectoSeg()
-    {
-           
-        $input = $this->getRequestInput($this->request);
-
-      
-        $model = new MaspectoSeg();
-        $result = $model->saveAspectoSeg($input);
-    
-        return $this->getResponse(
-            [
-                'msg' =>  $result
-            ]
-        );
-      
-        
-    }
-    public function updateAspectoSeg()
-    {
-           
-        $input = $this->getRequestInput($this->request);
-
-      
-        $model = new MaspectoSeg();
-        $result = $model->updateAspectoSeg($input);
-    
-        return $this->getResponse(
-            [
-                'msg' =>  $result
-            ]
-        );
-      
-        
-    }
-
-    public function getUnidades(){
-
-        try {
-            $model = new Munidades();
-                $response = [
-                    'data' =>  $model->getUnidades()
-                ];
-                return $this->respond($response, ResponseInterface::HTTP_OK);
-        
-        } catch (Exception $ex) {
-            return $this->getResponse(
-                    [
-                        'error' => $ex->getMessage(),
-                    ],
-                    ResponseInterface::HTTP_OK
-                );
-        }
-
-           
-    }
-    public function addUnidades()
-    {
-           
-        $input = $this->getRequestInput($this->request);
-
-      
-        $model = new Munidades();
-        $result = $model->saveUnidades($input);
-    
-        return $this->getResponse(
-            [
-                'msg' =>  $result
-            ]
-        );
-      
-        
-    }
-    public function updateUnidades()
-    {
-           
-        $input = $this->getRequestInput($this->request);
-
-      
-        $model = new Munidades();
-        $result = $model->updateUnidades($input);
-    
-        return $this->getResponse(
-            [
-                'msg' =>  $result
-            ]
-        );
-      
-        
-    }
-    
-    
-    public function getMacroproceso(){
-
-        try {
-            $model = new Mmacroprocesos();
-                $response = [
-                    'data' =>  $model->getMacroproceso()
-                ];
-                return $this->respond($response, ResponseInterface::HTTP_OK);
-        
-        } catch (Exception $ex) {
-            return $this->getResponse(
-                    [
-                        'error' => $ex->getMessage(),
-                    ],
-                    ResponseInterface::HTTP_OK
-                );
-        }
-
-           
-    }
-    public function addMacroproceso()
-    {
-           
-        $input = $this->getRequestInput($this->request);
-
-      
-        $model = new Mmacroprocesos();
-        $result = $model->saveMacroproceso($input);
-    
-        return $this->getResponse(
-            [
-                'msg' =>  $result
-            ]
-        );
-      
-        
-    }
-    public function updateMacroproceso()
-    {
-           
-        $input = $this->getRequestInput($this->request);
-
-      
-        $model = new Mmacroprocesos();
-        $result = $model->updateMacroproceso($input);
-    
-        return $this->getResponse(
-            [
-                'msg' =>  $result
-            ]
-        );
-      
-        
-    }
-
-    public function getProceso(){
-
-        try {
-            $model = new Mproceso();
-                $response = [
-                    'data' =>  $model->getProceso()
-                ];
-                return $this->respond($response, ResponseInterface::HTTP_OK);
-        
-        } catch (Exception $ex) {
-            return $this->getResponse(
-                    [
-                        'error' => $ex->getMessage(),
-                    ],
-                    ResponseInterface::HTTP_OK
-                );
-        }
-
-           
-    }
-    public function addProceso()
-    {
-           
-        $input = $this->getRequestInput($this->request);
-
-      
-        $model = new Mproceso();
-        $result = $model->saveProceso($input);
-    
-        return $this->getResponse(
-            [
-                'msg' =>  $result
-            ]
-        );
-      
-        
-    }
-    public function updateProceso()
-    {
-           
-        $input = $this->getRequestInput($this->request);
-
-      
-        $model = new Mproceso();
-        $result = $model->updateProceso($input);
-    
-        return $this->getResponse(
-            [
-                'msg' =>  $result
-            ]
-        );
-      
-        
-    }
 }

@@ -6,7 +6,13 @@ use CodeIgniter\Model;
 
 class MaspectoSeg extends Model
 {
+    public function validaAspectoSeg($data){
       
+        $query = $this->db->query("SELECT * FROM aspectos_seguridad where aspecto='{$data}'");
+        $query->getRow();
+        if( $query->getRow()) return true;
+        else return false;
+    } 
     public function getAspectoSeg(){
 
         $query = $this->db->query("SELECT * FROM aspectos_seguridad");
@@ -31,5 +37,18 @@ class MaspectoSeg extends Model
         where id = {$data['id']} ") ;
            
         return $query;
+    }
+    public function deleteAspectoSeg($data){
+      
+        
+        $query=$this->db->query("DELETE aspectos_seguridad 
+        where id = {$data} ") ;
+           
+        return $query;
+    }
+    public function getAspectoByActivo(){
+
+        $query = $this->db->query("SELECT * FROM aspectos_seguridad where estado='1'");
+        return $query->getResultArray();
     }
 }

@@ -1,4 +1,43 @@
 var alerta_clas_informacion = document.getElementById("alert_clas_informacion");
+
+//validamos
+async function validacionClasificacion_Info(){
+
+    let result; /* Variable Resultado de Funcion */
+
+    // Validar existe
+        try {
+
+            const postData = {           
+                clasificacion:document.getElementById("nom_informacion").value,
+                
+            };
+
+            await $.ajax({
+                method: "POST",
+                url: $('#base_url').val()+"/activo/validarClasInfo",
+                data: postData,
+                dataType: "JSON"
+            })
+            .done(function(respuesta) {
+               console.log(respuesta);
+                result = respuesta;
+            })
+            .fail(function(error) {
+                // alert("Se produjo el siguiente error: ".err);
+            })
+            .always(function() {
+            });
+        }
+        catch(err) {
+            // alert("Se produjo el siguiente error: ".err);
+        }
+    // /.Validar existe
+
+    return result; /* Retorno de Resultado */
+
+};
+
 function LoadTableClasificacion_informacion() {
     if ($.fn.DataTable.isDataTable('#table_clas_informacion')){
         
@@ -28,24 +67,33 @@ function LoadTableClasificacion_informacion() {
                 "previous": "Anterior"
             }
         },
-        // scrollY: "200px",
-        // fixedColumns:   {
-        //     heightMatch: 'none'
-        // },
-        responsive: true,
+        scrollX: true,
+        fixedColumns:   {
+            heightMatch: 'none'
+        },
+        responsive: false,
         autoWidth: false,
+
         // processing: true,
         lengthMenu:[5,10,25,50],
         pageLength:5,
         clickToSelect:false,
-        ajax: BASE_URL+"/main/getClasInformacion",
+        ajax: $('#base_url').val()+"/activo/getClasInformacion",
         aoColumns: [
             { "data": "id" },
             { "data": "clasificacion" },
             { "data": "descripcion" },
-            { "data": "estado" },
-            { "defaultContent": "<editClas_informacion class='text-primary btn btn-opcionTabla' data-toggle='tooltip' data-placement='top' title='Editar' data-original-title='Editar'><i class='mdi mdi-pencil font-size-18'></i></editClas_informacion>"+
-            "<deleteClas_informacion class='text-danger btn btn-opcionTabla' data-toggle='tooltip' data-placement='top' title='Eliminar' data-original-title='Eliminar'><i class='mdi mdi-trash-can font-size-18'></i></deleteClas_informacion>"
+            {  "data": "estado",
+                        
+            "mRender": function(data, type, value) {
+                if (data == '1') return  'Activo';
+                else return 'Inactivo'
+                  
+
+                }
+            },
+            { "defaultContent": "<editClas_informacion class='text-primary btn btn-opcionTabla' data-toggle='tooltip' data-placement='top' title='Editar' data-original-title='Editar'><i class='fas fa-edit font-size-18'></i></editClas_informacion>"+
+            "<deleteClas_informacion class='text-danger btn btn-opcionTabla' data-toggle='tooltip' data-placement='top' title='Eliminar' data-original-title='Eliminar'><i class='far fa-trash-alt font-size-18'></i></deleteClas_informacion>"
 
 },
         ],
@@ -75,13 +123,13 @@ document.getElementById("btnAgregar_Clas_informacion").addEventListener("click",
 });
 
 // // boton de agregar Clasificacion de la informacion
-document.getElementById("Agregar_clas_informacion").addEventListener("click",function(){
+document.getElementById("Agregar_clas_informacion").addEventListener("click",async function(){
     $nom_clas=document.getElementById("nom_informacion").value;
     $descripcion_clas=document.getElementById("descripcion_informacion").value;
     $est_clas=document.getElementById("est_clas_informacion").value;
     
     if($nom_clas !=""  && $descripcion_clas !="" && $est_clas !=""){
-       
+        if (!(await validacionClasificacion_Info())){
                 const postData = { 
                     clasificacion:$nom_clas,
                     descripcion:$descripcion_clas,
@@ -93,7 +141,7 @@ document.getElementById("Agregar_clas_informacion").addEventListener("click",fun
 
                     $.ajax({
                         method: "POST",
-                        url: BASE_URL+"/main/addClasInformacion",
+                        url: $('#base_url').val()+"/activo/addClasInformacion",
                         data: postData,
                         dataType: "JSON"
                     })
@@ -115,15 +163,21 @@ document.getElementById("Agregar_clas_informacion").addEventListener("click",fun
                         
                     })
                     .fail(function(error) {
-                        alert("Error en el ajax");
+                       
                     })
                     .always(function() {
                     });
                 }
                 catch(err) {
-                    alert("Error en el try");
+                   
                 }
-            
+        }else{
+                Swal.fire({
+                         icon: 'error',
+                         title: 'Error',
+                         text: 'La clasificación de la Información ya se encuentra registrado'
+                       })
+        }
            
        
     }else{
@@ -140,7 +194,7 @@ document.getElementById("Agregar_clas_informacion").addEventListener("click",fun
 //editar clasificacion informacion
 $('#table_clas_informacion tbody').on( 'click', 'editClas_informacion', function(){
     $("#modal_clas_informacion").modal("show");
-    document.getElementById("clas_informacion").innerHTML = "Modificar Clasificación de la información";
+    document.getElementById("title-clas_informacion").innerHTML = "Modificar Clasificación de la información";
     document.getElementById("form_clas_informacion").reset();
     document.getElementById("Agregar_clas_informacion").style.display = "none";
     document.getElementById("Modificar_clas_informacion").style.display = "block";
@@ -163,9 +217,7 @@ $('#table_clas_informacion tbody').on( 'click', 'editClas_informacion', function
 document.getElementById("Modificar_clas_informacion").addEventListener("click", function(){
     
     $nom_clas=document.getElementById("nom_informacion").value;
-
     $descripcion_clas=document.getElementById("descripcion_informacion").value;
-
     $est_clas=document.getElementById("est_clas_informacion").value;
 
     
@@ -175,14 +227,14 @@ document.getElementById("Modificar_clas_informacion").addEventListener("click", 
                     id:document.getElementById("id_clas").value,
                     clasificacion:$nom_clas,
                     descripcion:$descripcion_clas,
-                    est_clasificacion:$est_clas,
+                    estado:$est_clas,
                 };
-              
+                console.log(postData);
                 try {
 
                     $.ajax({
                         method: "POST",
-                        url: BASE_URL+"/main/updateClasificacion_informacion",
+                        url: $('#base_url').val()+"/activo/updateClasInformacion",
                         data: postData,
                         dataType: "JSON"
                     })
@@ -193,7 +245,7 @@ document.getElementById("Modificar_clas_informacion").addEventListener("click", 
                             document.getElementById("form_clas_informacion").reset();
                             $('#modal_clas_informacion').modal('hide');
                             alerta_clas_informacion.innerHTML = '<div class="alert alert-success alert-dismissible fade show" role="alert">'+
-                            'Clasificación de información Modificado'+
+                            'Modificado correctamente'+
                             '<button type="button" class="close" data-dismiss="alert" aria-label="Close">'+
                                 '<span aria-hidden="true">&times;</span>'+
                                 '</button>'+
@@ -204,13 +256,13 @@ document.getElementById("Modificar_clas_informacion").addEventListener("click", 
                         
                     })
                     .fail(function(error) {
-                        alert("Error en el ajax");
+                       
                     })
                     .always(function() {
                     });
                 }
                 catch(err) {
-                    alert("Error en el try");
+                  
                 }
             
            
@@ -224,3 +276,62 @@ document.getElementById("Modificar_clas_informacion").addEventListener("click", 
   }
    
 });
+//eliminar clasificaicon_info
+$('#table_clas_informacion tbody').on( 'click', 'deleteClas_informacion', function(){
+     
+    //recuperando los datos
+    
+    var table = $('#table_clas_informacion').DataTable();
+    var regNum = table.rows( $(this).parents('tr') ).count().toString();
+    var regDat = table.rows( $(this).parents('tr') ).data().toArray();
+    
+    const postData = { 
+        id:regDat[0]["id"],
+ 
+    };
+    
+    try {
+
+        $.ajax({
+            method: "POST",
+            url: $('#base_url').val()+"/activo/deleteClasInfo",
+            data: postData,
+            dataType: "JSON"
+        })
+
+     
+        .done(function(respuesta) {
+        //  console.log(respuesta);
+            if (respuesta.msg) 
+            {
+                
+                alerta_clas_informacion.innerHTML = '<div class="alert alert-success alert-dismissible fade show" role="alert">'+
+                respuesta.msg+
+                '<button type="button" class="close" data-dismiss="alert" aria-label="Close">'+
+                    '<span aria-hidden="true">&times;</span>'+
+                    '</button>'+
+                '</div>';
+
+                $("#table_clas_informacion").DataTable().ajax.reload(null, true); 
+               
+            }else{
+                alerta_clas_informacion.innerHTML = '<div class="alert alert-danger alert-dismissible fade show" role="alert">'+
+                respuesta.error+
+                '<button type="button" class="close" data-dismiss="alert" aria-label="Close">'+
+                    '<span aria-hidden="true">&times;</span>'+
+                    '</button>'+
+                '</div>';
+            } 
+            
+        })
+        .fail(function(error) {
+            // alert("Error en el ajax");
+        })
+        .always(function() {
+        });
+    }
+    catch(err) {
+        // alert("Error en el try");
+    }
+});
+

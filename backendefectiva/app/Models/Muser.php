@@ -16,11 +16,12 @@ class Muser extends Model
 
         $query=$this->db->query("INSERT INTO tb_users 
         (docident_us,nombres_us,apepat_us,apemat_us,email_us,
-        usuario_us,creacion_us,estado_us,change_pass,perfil_us) VALUES
+        usuario_us,creacion_us,estado_us,change_pass,perfil_us,idempresa,idposicion,idarea,idunidad) VALUES
         ('{$data['docident_us']}','{$data['nombres_us']}',
         '{$data['apepat_us']}','{$data['apemat_us']}',
         '{$data['email_us']}','{$data['usuario_us']}',
-        '{$creacion_us}','{$estado_us}','{$change_pass}','{$data['perfil_us']}'); ") ;
+        '{$creacion_us}','{$estado_us}','{$change_pass}','{$data['perfil_us']}',
+        '{$data['id_empresa']}','{$data['id_puesto']}','{$data['id_area']}','{$data['id_unidad']}'); ") ;
          
         return $query;
 
@@ -45,10 +46,11 @@ class Muser extends Model
     public function getUser($username){
 
         $Usuario = $this->db->query("SELECT TOP 1 * FROM  tb_users as TU INNER JOIN tb_historial_claves AS TH
-        on TU.id_us=TH.id_us WHERE TU.usuario_us= '{$username}' ORDER BY TH.id_cl DESC");
+        on TU.id_us=TH.id_us WHERE TU.usuario_us= '{$username}'  ORDER BY TH.id_cl DESC");
        
         return $Usuario->getRow();
     }
+   
     public function getPass($idPost){
 
         $query = $this->db->query("SELECT TOP 10 * FROM  tb_users as TU INNER JOIN tb_historial_claves AS TH
@@ -59,11 +61,17 @@ class Muser extends Model
     public function getUserbyId($id){
 
         $Usuario = $this->db->query("SELECT TOP 1 * FROM  tb_users as TU INNER JOIN tb_historial_claves AS TH
-        on TU.id_us=TH.id_us WHERE TU.id_us= '{$id}' ORDER BY TH.id_cl DESC");
+        on TU.id_us=TH.id_us WHERE TU.id_us= '{$id}' and estado_us='1' ORDER BY TH.id_cl DESC");
        
         return $Usuario->getRow();
     }
-    
+    public function getUserByDatos($username){
+
+        $Usuario = $this->db->query("SELECT TOP 1 * FROM  tb_users as TU INNER JOIN tb_historial_claves AS TH
+        on TU.id_us=TH.id_us WHERE TU.usuario_us= '{$username}' and estado_us='1'  ORDER BY TH.id_cl DESC");
+       
+        return $Usuario->getRow();
+    }
    
     public function changePass($data){
         // return $data;
@@ -90,7 +98,8 @@ class Muser extends Model
         $query=$this->db->query("UPDATE tb_users SET nombres_us = '{$data['nombres_us']}',
         apepat_us = '{$data['apepat_us']}',apemat_us= '{$data['apemat_us']}',perfil_us= '{$data['perfil_us']}',
         estado_us= '{$data['estado_us']}',
-        email_us= '{$data['email_us']}' ,actualizacion_us='{$actualizacion_us}'
+        email_us= '{$data['email_us']}' ,actualizacion_us='{$actualizacion_us}',idempresa='{$data['id_empresa']}',
+        idarea='{$data['id_area']}',idposicion='{$data['id_puesto']}',idunidad='{$data['id_unidad']}'
         where id_us = {$id} ") ;
            
         return $query;
@@ -133,5 +142,21 @@ class Muser extends Model
        
         return $Usuario;
     }
+
+    //reportes
+    public function getCamposUser(){
+        $consulta = "SELECT COLUMN_NAME
+        FROM Information_Schema.Columns
+        WHERE TABLE_NAME = 'tb_users'
+        ORDER BY COLUMN_NAME";
+        $Usuario = $this->db->query($consulta);
+        return $Usuario->getResultArray();
+    }
+    public function getDatosUser(){
+        $consulta = "SELECT  * FROM tb_users as TU inner join tb_perfiles as TP on TU.perfil_us=TP.id_perfil ";
+        $Usuario = $this->db->query($consulta);
+        return $Usuario->getResultArray();
+    }
+
 }
 

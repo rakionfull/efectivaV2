@@ -38,13 +38,21 @@ function LoadTableAspectoSeg() {
         lengthMenu:[5,10,25,50],
         pageLength:5,
         clickToSelect:false,
-        ajax: BASE_URL+"/main/getAspectoSeg",
+        ajax: $('#base_url').val()+"/activo/getAspectoSeg",
         aoColumns: [
             { "data": "id" },
             { "data": "aspecto" },
-            { "data": "estado" },
-            { "defaultContent": "<editAspectoSeg class='text-primary btn btn-opcionTabla' data-toggle='tooltip' data-placement='top' title='Editar' data-original-title='Editar'><i class='mdi mdi-pencil font-size-18'></i></editAspectoSeg>"+
-            "<deleteAspectoSeg class='text-danger btn btn-opcionTabla' data-toggle='tooltip' data-placement='top' title='Eliminar' data-original-title='Eliminar'><i class='mdi mdi-trash-can font-size-18'></i></deleteAspectoSeg>"
+            { "data": "estado",
+                        
+            "mRender": function(data, type, value) {
+                if (data == '1') return  'Activo';
+                else return 'Inactivo'
+                  
+
+                }
+            },
+            { "defaultContent": "<editAspectoSeg class='text-primary btn btn-opcionTabla' data-toggle='tooltip' data-placement='top' title='Editar' data-original-title='Editar'><i class='fas fa-edit font-size-18'></i></editAspectoSeg>"+
+            "<deleteAspectoSeg class='text-danger btn btn-opcionTabla' data-toggle='tooltip' data-placement='top' title='Eliminar' data-original-title='Eliminar'><i class='far fa-trash-alt font-size-18'></i></deleteAspectoSeg>"
 
 },
         ],
@@ -64,6 +72,43 @@ function LoadTableAspectoSeg() {
    
 }
 
+//validamos
+async function validacionApectoSeg(dato){
+
+    let result; /* Variable Resultado de Funcion */
+
+    // Validar existe
+        try {
+
+            const postData = {           
+                aspecto : dato
+            };
+
+            await $.ajax({
+                method: "POST",
+                url: $('#base_url').val()+"/activo/validarApectoSeg",
+                data: postData,
+                dataType: "JSON"
+            })
+            .done(function(respuesta) {
+               
+                result = respuesta;
+            })
+            .fail(function(error) {
+                // alert("Se produjo el siguiente error: ".err);
+            })
+            .always(function() {
+            });
+        }
+        catch(err) {
+            // alert("Se produjo el siguiente error: ".err);
+        }
+    // /.Validar existe
+
+    return result; /* Retorno de Resultado */
+
+};
+
 document.getElementById("btnAgregar_AspectoSeg").addEventListener("click",function(){
                                 
     $("#modal_aspectoSeg").modal("show");
@@ -75,13 +120,13 @@ document.getElementById("btnAgregar_AspectoSeg").addEventListener("click",functi
 
 
 // // boton de agregar Aspectos de Seguridad
-document.getElementById("Agregar_AspectoSeg").addEventListener("click",function(){
+document.getElementById("Agregar_AspectoSeg").addEventListener("click",async function(){
     $nom_asp=document.getElementById("nom_aspecto").value;
 
     $est_asp=document.getElementById("est_aspecto").value;
-    
+  
     if($nom_asp !=""  && $est_asp != ""){
-       
+        if (!(await validacionApectoSeg($nom_asp))){
                 const postData = { 
                     aspecto:$nom_asp,
                     estado:$est_asp,
@@ -92,7 +137,7 @@ document.getElementById("Agregar_AspectoSeg").addEventListener("click",function(
 
                     $.ajax({
                         method: "POST",
-                        url: BASE_URL+"/main/addAspectoSeg",
+                        url: $('#base_url').val()+"/activo/addAspectoSeg",
                         data: postData,
                         dataType: "JSON"
                     })
@@ -114,15 +159,21 @@ document.getElementById("Agregar_AspectoSeg").addEventListener("click",function(
                         
                     })
                     .fail(function(error) {
-                        alert("Error en el ajax");
+                        // alert("Error en el ajax");
                     })
                     .always(function() {
                     });
                 }
                 catch(err) {
-                    alert("Error en el try");
+                 
                 }
-            
+            }else{
+                Swal.fire({
+                         icon: 'error',
+                         title: 'Error',
+                         text: 'El aspecto de seguridad ya se encuentra registrado'
+                       })
+          }
            
        
     }else{
@@ -176,7 +227,7 @@ document.getElementById("Modificar_AspectoSeg").addEventListener("click", functi
 
                     $.ajax({
                         method: "POST",
-                        url: BASE_URL+"/main/updateAspectoSeg",
+                        url: $('#base_url').val()+"/activo/updateAspectoSeg",
                         data: postData,
                         dataType: "JSON"
                     })
@@ -217,4 +268,61 @@ document.getElementById("Modificar_AspectoSeg").addEventListener("click", functi
                })
   }
    
+});
+
+//eliminar aspecto de segudidad
+$('#table_aspectoSeg tbody').on( 'click', 'deleteAspectoSeg', function(){
+     
+    //recuperando los datos
+    var table = $('#table_aspectoSeg').DataTable();
+    var regNum = table.rows( $(this).parents('tr') ).count().toString();
+    var regDat = table.rows( $(this).parents('tr') ).data().toArray();
+    const postData = { 
+        id:regDat[0]["id"],
+ 
+    };
+    
+    try {
+
+        $.ajax({
+            method: "POST",
+            url: $('#base_url').val()+"/activo/deleteAspectoSeg",
+            data: postData,
+            dataType: "JSON"
+        })
+
+     
+        .done(function(respuesta) {
+        //  console.log(respuesta);
+            if (respuesta.msg) 
+            {
+                
+                alerta_aspectoSeg.innerHTML = '<div class="alert alert-success alert-dismissible fade show" role="alert">'+
+                respuesta.msg+
+                '<button type="button" class="close" data-dismiss="alert" aria-label="Close">'+
+                    '<span aria-hidden="true">&times;</span>'+
+                    '</button>'+
+                '</div>';
+
+                $("#table_aspectoSeg").DataTable().ajax.reload(null, true); 
+               
+            }else{
+                alerta_aspectoSeg.innerHTML = '<div class="alert alert-danger alert-dismissible fade show" role="alert">'+
+                respuesta.error+
+                '<button type="button" class="close" data-dismiss="alert" aria-label="Close">'+
+                    '<span aria-hidden="true">&times;</span>'+
+                    '</button>'+
+                '</div>';
+            } 
+            
+        })
+        .fail(function(error) {
+            // alert("Error en el ajax");
+        })
+        .always(function() {
+        });
+    }
+    catch(err) {
+        // alert("Error en el try");
+    }
 });

@@ -16,13 +16,7 @@ class Mcaptcha extends Model
     //guardando el captcha creado
     public function saveCaptcha($cap,$ip)
     {
-        // $data = array(
-        //     'captcha_time' => $cap['time'],
-        //     'ip_address' => $this->request->getIPAddress(),
-        //     'word' => $cap['word']
-        // );
-        // $query = $this->db->insert_string('captcha',$data);
-        // $this->db->query($query);
+    
         $query = $this->db->query("INSERT INTO captcha (captcha_time,ip_address,word) VALUES ('{$cap['time']}','{$ip}','{$cap['word']}')") ;
         // return $this->db->insert('users', $data);
         return $query;

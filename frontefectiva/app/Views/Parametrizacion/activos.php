@@ -28,7 +28,7 @@
                                             <li id="proceso"><a href="#/Proceso">Procesos</a></li>
                                        <?php }?>
                                        <?php if($session->permisos[19]->view_det==1){ ?>
-                                            <li ><a href="" >Posición/Puesto</a></li>
+                                            <li id="posicion_puesto"><a href="#/Posicion" >Posición/Puesto</a></li>
                                        <?php }?>
                                        <?php if($session->permisos[20]->view_det==1){ ?>
                                             <li id="aspectoSeg" ><a href="#/AspectoSeg">Aspecto de Seguridad</a></li>
@@ -37,16 +37,16 @@
                                             <li id="valor_activo" ><a href="#/Valor_activo" >Valor de Activo</a></li>
                                        <?php }?>
                                        <?php if($session->permisos[22]->view_det==1){ ?>
-                                            <li id="clasificacion_informacion" ><a href="#/Clasificacion_informacion" >Valoración de Activo</a></li>
+                                            <li id="valoracion_activo" ><a href="#/Valoracion_activo" >Valoración de Activo</a></li>
                                        <?php }?>
                                        <?php if($session->permisos[23]->view_det==1){ ?>
                                             <li  id="tipo_activo"><a href="#/Tipo_activo">Tipo de Activo</a></li>
                                        <?php }?>
                                        <?php if($session->permisos[24]->view_det==1){ ?>
-                                            <li  ><a href="" >Categoría de Activo</a></li>
+                                            <li  id="Categoria_activo"><a href="#/Categoria_activo" >Categoría de Activo</a></li>
                                        <?php }?>
                                        <?php if($session->permisos[25]->view_det==1){ ?>
-                                            <li ><a href="" >Ubicación de Activo</a></li>
+                                            <li id="ubicacion_activo" ><a href="#/Ubicacion_activo" >Ubicación de Activo</a></li>
                                        <?php }?>
                                     
                                        <?php if($session->permisos[26]->view_det==1){ ?>
@@ -101,7 +101,7 @@
                             <div class="card-body">
                         
                                 <div class="table-responsive">
-                                                <table id="table_empresa" class="table table-centered table-bordered datatable dt-responsive nowrap" data-page-length="5" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
+                                                <table id="table_empresa" class="table table-centered table-bordered datatable dt-responsive nowrap" data-page-length="10" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
                                                     <thead class="thead-light">
                                                         <tr>
                                                             <th>ID</th>                                                         
@@ -129,19 +129,12 @@
                                         <h4 class="card-title">Lista de Áreas</h4>
                                     </div>
                                 
+                                    
                                     <div class="col-md-4 offset-md-4">
                                 
-                                        <button type="button" id="btnAgregar_area" class="float-right btn btn-primary waves-effect waves-light"><i class=" fas fa-plus-circle align-middle mr-2 ml-2"></i> Añadir Área</button>
-                                   </div>
-                                    <div class="col-md-4 offset-md-4">
-                                
-                                        <button type="button" id="btnAgregar_area_empresa" class="float-right btn btn-primary waves-effect waves-light"><i class=" fas fa-plus-circle align-middle mr-2 ml-2"></i> Añadir Config</button>
+                                        <button type="button" id="btnAgregar_area_empresa" class="float-right btn btn-primary waves-effect waves-light"><i class=" fas fa-plus-circle align-middle mr-2 ml-2"></i> Agregar</button>
                                     </div>
-                                    <div class="col-md-4 offset-md-4">
-                                
-                                        <button type="button" id="btnBuscar_area" class="float-right btn btn-primary waves-effect waves-light"><i class=" fas fa-plus-circle align-middle mr-2 ml-2"></i> Buscar</button>
-                                    </div>
-                                    <div class="col-md-12" style="margin-top:0.5rem" id="alert_area">
+                                    <div class="col-md-12" style="margin-top:0.5rem" id="alert_area_empresa">
                                         
                                     </div>
                                 </div>
@@ -155,12 +148,15 @@
                             </div>
                             <div class="card-body">
                         
-                                <div class="table-responsive">
-                                                <table id="table_area" class="table table-centered table-bordered datatable dt-responsive nowrap" data-page-length="5" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
+                            <div class="table-responsive">
+                                                <table id="table_area_empresa" class="table table-centered table-bordered datatable dt-responsive nowrap" data-page-length="10" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
                                                     <thead class="thead-light">
                                                         <tr>
-                                                            <th>Id</th>                                                         
-                                                            <th>Area</th>
+                                                            <th>Id</th>  
+                                                            <th>Id</th>   
+                                                            <th>Id</th>                                                          
+                                                            <th>Área</th>
+                                                            <th>Empresa</th>
                                                             <th>Estado</th>
                                                             <th style="width: 120px;">Mantenimiento</th>
                                                         </tr>
@@ -179,7 +175,7 @@
                    <!--------------------------------------------------------------------------------------------------------->  
 
                    <div  id="apartUnidades"  class="opcion" style="display:none">
-                        <div class="card">
+                    <div class="card">
                             <div class="card-body ">
                                 <div class="row align-items-center">
                                     <div class="col-md-4">
@@ -188,7 +184,7 @@
                                 
                                     <div class="col-md-4 offset-md-4">
                                 
-                                        <button type="button" id="btnAgregar_Unidades" class="float-right btn btn-primary waves-effect waves-light"><i class=" fas fa-plus-circle align-middle mr-2 ml-2"></i> Añadir Aspecto</button>
+                                        <button type="button" id="btnAgregar_Unidades" class="float-right btn btn-primary waves-effect waves-light"><i class=" fas fa-plus-circle align-middle mr-2 ml-2"></i> Agregar </button>
                                    </div>
                                     
                                     <div class="col-md-12" style="margin-top:0.5rem" id="alert_unidades">
@@ -206,12 +202,16 @@
                             <div class="card-body">
                         
                                 <div class="table-responsive">
-                                                <table id="table_unidades" class="table table-centered table-bordered datatable dt-responsive nowrap" data-page-length="5" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
+                                                <table id="table_unidades" class="table table-centered table-bordered datatable dt-responsive nowrap" data-page-length="10" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
                                                     <thead class="thead-light">
                                                         <tr>
                                                             <th>Id</th>                                                         
                                                             <th>Unidad</th>
+                                                            <th>Empresa</th>
+                                                            <th>Área</th>
                                                             <th>Estado</th>
+                                                            <th>idempresa</th>
+                                                            <th>idarea</th>
                                                             <th style="width: 120px;">Mantenimiento</th>
                                                         </tr>
                                                     </thead>
@@ -236,7 +236,7 @@
                                 
                                     <div class="col-md-4 offset-md-4">
                                 
-                                        <button type="button" id="btnAgregar_Macroproceso" class="float-right btn btn-primary waves-effect waves-light"><i class=" fas fa-plus-circle align-middle mr-2 ml-2"></i> Añadir Macroproceso</button>
+                                        <button type="button" id="btnAgregar_Macroproceso" class="float-right btn btn-primary waves-effect waves-light"><i class=" fas fa-plus-circle align-middle mr-2 ml-2"></i> Agregar </button>
                                    </div>
                                     
                                     <div class="col-md-12" style="margin-top:0.5rem" id="alert_macroproceso">
@@ -254,12 +254,18 @@
                             <div class="card-body">
                         
                                 <div class="table-responsive">
-                                                <table id="table_macroproceso" class="table table-centered table-bordered datatable dt-responsive nowrap" data-page-length="5" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
+                                                <table id="table_macroproceso" class="table table-centered table-bordered datatable dt-responsive nowrap" data-page-length="10" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
                                                     <thead class="thead-light">
                                                         <tr>
                                                             <th>Id</th>                                                         
                                                             <th>Macroproceso</th>
+                                                            <th>Empresa</th>
+                                                            <th>Área</th>
+                                                            <th>Unidades</th>
                                                             <th>Estado</th>
+                                                            <th>idempresa</th>
+                                                            <th>idarea</th>
+                                                            <th>idunidad</th>
                                                             <th style="width: 120px;">Mantenimiento</th>
                                                         </tr>
                                                     </thead>
@@ -285,7 +291,7 @@
                                     
                                         <div class="col-md-4 offset-md-4">
                                     
-                                            <button type="button" id="btnAgregar_Proceso" class="float-right btn btn-primary waves-effect waves-light"><i class=" fas fa-plus-circle align-middle mr-2 ml-2"></i> Añadir Proceso</button>
+                                            <button type="button" id="btnAgregar_Proceso" class="float-right btn btn-primary waves-effect waves-light"><i class=" fas fa-plus-circle align-middle mr-2 ml-2"></i> Agregar </button>
                                     </div>
                                         
                                         <div class="col-md-12" style="margin-top:0.5rem" id="alert_proceso">
@@ -303,12 +309,20 @@
                                 <div class="card-body">
                             
                                     <div class="table-responsive">
-                                                    <table id="table_proceso" class="table table-centered table-bordered datatable dt-responsive nowrap" data-page-length="5" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
+                                                    <table id="table_proceso" class="table table-centered table-bordered datatable dt-responsive nowrap" data-page-length="10" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
                                                         <thead class="thead-light">
                                                             <tr>
                                                                 <th>Id</th>                                                         
                                                                 <th>Proceso</th>
+                                                                <th>Empresa</th>
+                                                                <th>Área</th>
+                                                                <th>Unidades</th>
+                                                                <th>Macroprocesos</th>
                                                                 <th>Estado</th>
+                                                                <th>idempresa</th>
+                                                                <th>idarea</th>
+                                                                <th>idunidad</th>
+                                                                <th>idmaccroproceso</th>
                                                                 <th style="width: 120px;">Mantenimiento</th>
                                                             </tr>
                                                         </thead>
@@ -352,11 +366,66 @@
                                 <div class="card-body">
                             
                                     <div class="table-responsive">
-                                                    <table id="table_aspectoSeg" class="table table-centered table-bordered datatable dt-responsive nowrap" data-page-length="5" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
+                                                    <table id="table_aspectoSeg" class="table table-centered table-bordered datatable dt-responsive nowrap" data-page-length="10" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
                                                         <thead class="thead-light">
                                                             <tr>
                                                                 <th>Id</th>                                                         
                                                                 <th>Aspecto</th>
+                                                                <th>Estado</th>
+                                                                <th style="width: 120px;">Mantenimiento</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                        
+                                                            
+                                                        
+                                                        </tbody>
+                                                    </table>
+                                    </div>
+                                </div>
+                                
+                            </div>
+                    </div>
+
+                    <div  id="apartPosicion"  class="opcion" style="display:none">
+                            <div class="card">
+                                <div class="card-body ">
+                                    <div class="row align-items-center">
+                                        <div class="col-md-4">
+                                            <h4 class="card-title">Posición/Puesto</h4>
+                                        </div>
+                                    
+                                        <div class="col-md-4 offset-md-4">
+                                    
+                                            <button type="button" id="btnAgregar_Posicion" class="float-right btn btn-primary waves-effect waves-light"><i class=" fas fa-plus-circle align-middle mr-2 ml-2"></i> Añadir Aspecto</button>
+                                    </div>
+                                        
+                                        <div class="col-md-12" style="margin-top:0.5rem" id="alert_posicion">
+                                            
+                                        </div>
+                                    </div>
+                                    <?php 
+                                        $session = session();
+                                            if($session->getFlashdata('error') != '')
+                                            {
+                                            echo $session->getFlashdata('error');;
+                                            }
+                                        ?>
+                                </div>
+                                <div class="card-body">
+                            
+                                    <div class="table-responsive">
+                                                    <table id="table_posicion" class="table table-centered table-bordered datatable dt-responsive nowrap" data-page-length="10" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
+                                                        <thead class="thead-light">
+                                                            <tr>
+                                                                <th>Id</th>                                                         
+                                                                <th>Posicion/Puesto</th>
+                                                                <th>idEmpresa</th>
+                                                                <th>Empresa</th>
+                                                                <th>idarea</th>
+                                                                <th>Área</th>
+                                                                <th>idunidad</th>
+                                                                <th>Unidades</th>
                                                                 <th>Estado</th>
                                                                 <th style="width: 120px;">Mantenimiento</th>
                                                             </tr>
@@ -405,7 +474,7 @@
                             <div class="card-body">
                         
                                 <div class="table-responsive">
-                                                <table id="table_valorActivo" class="table table-centered table-bordered datatable dt-responsive nowrap" data-page-length="5" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
+                                                <table id="table_valorActivo" class="table table-centered table-bordered datatable dt-responsive nowrap" data-page-length="10" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
                                                     <thead class="thead-light">
                                                         <tr>
                                                             <th>ID</th>                                                         
@@ -454,7 +523,7 @@
                             <div class="card-body">
                         
                                 <div class="table-responsive">
-                                                <table id="table_tipo_activo" class="table table-centered table-bordered datatable dt-responsive nowrap" data-page-length="5" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
+                                                <table id="table_tipo_activo" class="table table-centered table-bordered datatable dt-responsive nowrap" data-page-length="10" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
                                                     <thead class="thead-light">
                                                         <tr>
                                                             <th>ID</th>      
@@ -504,7 +573,7 @@
                             <div class="card-body">
                         
                                 <div class="table-responsive">
-                                                <table id="table_clas_informacion" class="table table-centered table-bordered datatable dt-responsive nowrap" data-page-length="5" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
+                                                <table id="table_clas_informacion" class="table table-centered table-bordered datatable dt-responsive nowrap" data-page-length="10" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
                                                     <thead class="thead-light">
                                                         <tr>
                                                             <th>ID</th>      
@@ -526,7 +595,177 @@
                         </div>
                     </div>
                     
-    <!--------------------------------------------------------------------------------------------------------->      
+                    <!-- valoracion de activo -->
+                    <div  id="apartValActivo"  class="opcion" style="display:none">
+                        <div class="card">
+                            <div class="card-body ">
+                                <div class="row align-items-center">
+                                    <div class="col-md-4">
+                                        <h4 class="card-title">Valoracion de Activo</h4>
+                                    </div>
+                                
+                                    <div class="col-md-4 offset-md-4">
+                                
+                                        <button type="button" id="btnAgregar_valActivo" class="float-right btn btn-primary waves-effect waves-light"><i class=" fas fa-plus-circle align-middle mr-2 ml-2"></i> Añadir</button>
+                                    </div>
+                                    <div class="col-md-12" style="margin-top:0.5rem" id="alert_valActivo">
+                                        
+                                    </div>
+                                </div>
+                                <?php 
+                                    $session = session();
+                                        if($session->getFlashdata('error') != '')
+                                        {
+                                        echo $session->getFlashdata('error');;
+                                        }
+                                    ?>
+                            </div>
+                            <div class="card-body">
+                        
+                                <div class="table-responsive">
+                                                <table id="table_valActivo" class="table table-centered table-bordered datatable dt-responsive nowrap" data-page-length="10" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
+                                                    <thead class="thead-light">
+                                                        <tr>
+                                                            <th>ID</th>   
+                                                            <th>idAspecto1</th>                                                      
+                                                            <th>Aspecto</th>
+                                                            <th>Valoracion</th>
+                                                            <th>idAspecto2</th>
+                                                            <th>Aspecto</th>
+                                                           
+                                                            <th>Valoracion</th>
+                                                            <th>idAspecto3</th>
+                                                            <th>Aspecto</th>
+                                                           
+                                                            <th>Valoracion</th>
+                                                            <th>Valor</th>
+                                                            <th>idValor</th>
+                                                           
+                                                            <th style="width: 80px;">Mantenimiento</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                    
+                                                        
+                                                    
+                                                    </tbody>
+                                                </table>
+                                </div>
+                            </div>
+                            
+                        
+                        </div>
+                    </div>
+                    <!-- Categoria de activo -->
+                    <div  id="apartCatActivo"  class="opcion" style="display:none">
+                        <div class="card">
+                            <div class="card-body ">
+                                <div class="row align-items-center">
+                                    <div class="col-md-4">
+                                        <h4 class="card-title">Categoria de Activo</h4>
+                                    </div>
+                                
+                                    <div class="col-md-4 offset-md-4">
+                                
+                                        <button type="button" id="btnAgregar_catActivo" class="float-right btn btn-primary waves-effect waves-light"><i class=" fas fa-plus-circle align-middle mr-2 ml-2"></i> Añadir</button>
+                                    </div>
+                                    <div class="col-md-12" style="margin-top:0.5rem" id="alert_catActivo">
+                                        
+                                    </div>
+                                </div>
+                                <?php 
+                                    $session = session();
+                                        if($session->getFlashdata('error') != '')
+                                        {
+                                        echo $session->getFlashdata('error');;
+                                        }
+                                    ?>
+                            </div>
+                            <div class="card-body">
+                        
+                                <div class="table-responsive">
+                                                <table id="table_cat_activo" class="table table-centered table-bordered datatable dt-responsive nowrap" data-page-length="10" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
+                                                    <thead class="thead-light">
+                                                        <tr>
+                                                            <th>ID</th>   
+                                                            <th>Categoría</th>                                                      
+                                                            <th>Tipo</th>
+                                                            <th>idtipo</th>
+                                                            <th>Estado</th>
+                                                                                                                     
+                                                            <th style="width: 80px;">Mantenimiento</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                    
+                                                        
+                                                    
+                                                    </tbody>
+                                                </table>
+                                </div>
+                            </div>
+                            
+                        
+                        </div>
+                    </div>
+
+                    <div  id="apartUbiActivo"  class="opcion" style="display:none">
+                            <div class="card">
+                                <div class="card-body ">
+                                    <div class="row align-items-center">
+                                        <div class="col-md-4">
+                                            <h4 class="card-title">Ubicación de Activo</h4>
+                                        </div>
+                                    
+                                        <div class="col-md-4 offset-md-4">
+                                    
+                                            <button type="button" id="btnAgregar_UbiActivo" class="float-right btn btn-primary waves-effect waves-light"><i class=" fas fa-plus-circle align-middle mr-2 ml-2"></i> Añadir</button>
+                                    </div>
+                                        
+                                        <div class="col-md-12" style="margin-top:0.5rem" id="alert_UbiActivo">
+                                            
+                                        </div>
+                                    </div>
+                                    <?php 
+                                        $session = session();
+                                            if($session->getFlashdata('error') != '')
+                                            {
+                                            echo $session->getFlashdata('error');;
+                                            }
+                                        ?>
+                                </div>
+                                <div class="card-body">
+                            
+                                    <div class="table-responsive">
+                                                    <table id="table_ubi_activo" class="table table-centered table-bordered datatable dt-responsive nowrap" data-page-length="10" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
+                                                        <thead class="thead-light">
+                                                            <tr>
+                                                                <th>Id</th>                                                         
+                                                                <th>Continente</th>
+                                                                <th>idcontinente</th>
+                                                                <th>Pais</th>
+                                                                <th>idpais</th>
+                                                                <th>Ciudad</th>
+                                                                <th>idciudad</th>
+                                                                <th>Direccion</th>
+                                                                <th>Descripcion</th>
+                                                                <th>Estado</th>
+                                                                <th style="width: 120px;">Mantenimiento</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                        
+                                                            
+                                                        
+                                                        </tbody>
+                                                    </table>
+                                    </div>
+                                </div>
+                                
+                            </div>
+                    </div>
+                    
+                    <!--------------------------------------------------------------------------------------------------------->      
             </div>
               
                
@@ -550,7 +789,7 @@
                                                 <div class="col-lg-12">
                                                     <div class="form-group">
                                                         <span>Nombre de la Empresa: </span>
-                                                        <input type="text" class="form-control form-control-sm" id="nom_empresa"  onkeyup="this.value = this.value.toUpperCase();" onKeyPress="return soloLetra(event);">
+                                                        <input type="text" class="form-control form-control-sm" id="nom_empresa"  onKeyPress="return soloLetra(event);">
                                                     </div>
                                                 </div>
                                       
@@ -581,55 +820,7 @@
                     </div>
 
                 </div>
-                <div class="modal fade" id="modal_area" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                |   <div class="modal-dialog modal-lg" role="document">
-                         <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="title-area"></h5>
-                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
-                            </div>
-                            <div class="modal-body">
-                                <form action="" id="form_area" class="in-line">
-                                    <input type="hidden" id="id_area">
-                                    
-                                    <div class="col-12-lg">
-                                        <div class="row">
-                                                <div class="col-lg-12">
-                                                    <div class="form-group">
-                                                        <span>Nombre del Area: </span>
-                                                        <input type="text" class="form-control form-control-sm" id="nom_area"  onkeyup="this.value = this.value.toUpperCase();" onKeyPress="return soloLetra(event);">
-                                                    </div>
-                                                </div>
-                                      
-                                                
-                                                <div class="col-lg-12">
-                                                    <div class="form-group">
-                                                        <span>Estado: </span>
-                                                        <select name="" id="est_area" class="form-control form-control-sm">
-                                                        <option value="">Seleccione</option>
-                                                        <option value="1">Activo</option>
-                                                        <option value="2">Inactivo</option>
-                                                        </select>
-                                                    </div>
-                                                </div>
-                                                
-                                        </div>
-                                    </div>
-                                </form>  
-                                
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-primary" id="Agregar_area">Agregar</button>
-                                <button type="button" class="btn btn-primary" id="Modificar_area">Guardar</button>
-                                <button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
-                            
-                            </div>
-                        </div>
-                    </div>
-
-                </div>
+               
                 <div class="modal fade" id="modal_area_empresa" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                 |   <div class="modal-dialog modal-lg" role="document">
                          <div class="modal-content">
@@ -640,9 +831,7 @@
                                     </button>
                             </div>
                             <div class="modal-body">
-                                        <div class="col-md-12" style="margin-top:0.5rem" id="alert_area_empresa">
-                                        
-                                        </div>
+                                      
                                 <form action="" id="form_area_empresa" class="in-line">
                                     <input type="hidden" id="id_area_empresa">
                                     
@@ -656,14 +845,16 @@
                                                         </select>
                                                     </div>
                                                 </div>
+
+                                                
                                                 <div class="col-lg-12">
                                                     <div class="form-group">
-                                                        <span>Área</span>
-                                                        <select name="" id="select_area" class="form-control form-control-sm">
-                                                        
-                                                        </select>
+                                                        <span>Nombre del Area: </span>
+                                                        <input type="text" class="form-control form-control-sm" id="nom_area"   onKeyPress="return soloLetra(event);">
                                                     </div>
                                                 </div>
+
+                                                
                                       
                                                 
                                                 <div class="col-lg-12">
@@ -687,82 +878,10 @@
                                 <button type="button" class="btn btn-primary" id="Modificar_area_empresa">Guardar</button>
                                 <button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
                             
-                            </div>
-                            <div class="modal-body">
-                                <div class="table-responsive">
-                                                <table id="table_area_empresa" class="table table-centered table-bordered datatable dt-responsive nowrap" data-page-length="5" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
-                                                    <thead class="thead-light">
-                                                        <tr>
-                                                            <th>Id</th>  
-                                                            <th>Id</th>   
-                                                            <th>Id</th>                                                          
-                                                            <th>Empresa</th>
-                                                            <th>Área</th>
-                                                            <th>Estado</th>
-                                                            <th style="width: 120px;">Mantenimiento</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                    
-                                                        
-                                                    
-                                                    </tbody>
-                                                </table>
+                            
                                 </div>
-                            </div>
-                        </div>
-                    </div>
-
-                </div>
-                <div class="modal fade" id="modal_busca_area" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                |   <div class="modal-dialog modal-lg" role="document">
-                         <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title">Búsqueda</h5>
-                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
-                            </div>
                             <div class="modal-body">
-                                <form action="" id="form_empresa" class="in-line">
-                                    <input type="hidden" id="">
-                                    
-                                    <div class="col-12-lg">
-                                        <div class="row">
-                                                <div class="col-lg-6">
-                                                    <div class="form-group">
-                                                        <span>Área</span>
-                                                        <select name="" id="select_area" class="form-control form-control-sm">
-                                                        
-                                                        </select>
-                                                    </div>
-                                                </div>
-                                                <div class="col-lg-6">
-                                                    <button type="button" class="btn btn-primary" id="Buscar_area">Buscar</button>
-                                                </div>
-                                                
-                                               
-                                                
-                                        </div>
-                                    </div>
-                                </form>  
                                 
-                            </div
-                           
-                                           
-                            <div class="modal-body">
-                                <div class="table-responsive">
-                                                <table id="table_area_empresa" class="table table-centered table-bordered datatable dt-responsive nowrap" data-page-length="5" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
-                                                    <thead class="thead-light">
-                                                        <tr>
-                                                            <th>Id</th>  
-                                                            <th>Id</th>   
-                                                            <th>Id</th>                                                          
-                                                            <th>Empresa</th>
-                                                            <th>Área</th>
-                                                            <th>Estado</th>
-                                                            <th style="width: 120px;">Mantenimiento</th>
-                                                        </tr>
                                                     </thead>
                                                     <tbody>
                                                     
@@ -776,6 +895,8 @@
                     </div>
 
                 </div>
+
+               
                 <!------------------------------------------------------------------------------->
 
                 
@@ -793,21 +914,21 @@
                                 <form action="" id="form_aspectoSeg" class="in-line">
                                     <input type="hidden" id="id_aspecto">
                                     
-                                    <div class="col-12-lg">
+                                    <div class="col-lg-12">
                                         <div class="row">
-                                                <div class="col-lg-12">
+                                                <div class="col-lg-6">
                                                     <div class="form-group">
-                                                        <span>Nombre del Aspecto de Seguridad: </span>
-                                                        <input type="text" class="form-control form-control-sm" id="nom_aspecto"  onkeyup="this.value = this.value.toUpperCase();" onKeyPress="return soloLetra(event);">
+                                                        
+                                                        <input type="text" class="form-control form-control-sm" placeholder='Aspecto' id="nom_aspecto" onKeyPress="return soloLetra(event);">
                                                     </div>
                                                 </div>
                                       
                                                 
-                                                <div class="col-lg-12">
+                                                <div class="col-lg-6">
                                                     <div class="form-group">
-                                                        <span>Estado: </span>
+                                                       
                                                         <select name="" id="est_aspecto" class="form-control form-control-sm">
-                                                        <option value="">Seleccione</option>
+                                                        <option value="">Estado</option>
                                                         <option value="1">Activo</option>
                                                         <option value="2">Inactivo</option>
                                                         </select>
@@ -830,8 +951,8 @@
 
                 </div>
 
-                <!-- modal para Aspectos de Seguridad -->
-                <div class="modal fade" id="modal_unidades" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+               <!-- modal para Unidades -->
+               <div class="modal fade" id="modal_unidades" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                 |   <div class="modal-dialog modal-lg" role="document">
                          <div class="modal-content">
                             <div class="modal-header">
@@ -846,10 +967,31 @@
                                     
                                     <div class="col-12-lg">
                                         <div class="row">
+                                                
+                                                    <div class="col-lg-12">
+                                                    <div class="form-group">
+                                                        <span>Empresa: </span>
+                                                        <select name="" id="select_empresaUnidades" class="form-control form-control-sm">
+                                                       
+                                                        </select>
+                                                    </div>
+                                                    
+                                                </div>
+                                                
+
                                                 <div class="col-lg-12">
                                                     <div class="form-group">
-                                                        <span>Nombre del Aspecto de Seguridad: </span>
-                                                        <input type="text" class="form-control form-control-sm" id="nom_unidades"  onkeyup="this.value = this.value.toUpperCase();" onKeyPress="return soloLetra(event);">
+                                                        <span>Área: </span>
+                                                        <select name="" id="select_areaUnidades" class="form-control form-control-sm">
+                                                       
+                                                        </select>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-lg-12">
+                                                    <div class="form-group">
+                                                        <span>Unidad: </span>
+                                                        <input type="text" class="form-control form-control-sm" id="nom_uni"  onKeyPress="return soloLetra(event);">
                                                     </div>
                                                 </div>
                                       
@@ -857,7 +999,7 @@
                                                 <div class="col-lg-12">
                                                     <div class="form-group">
                                                         <span>Estado: </span>
-                                                        <select name="" id="est_unidades" class="form-control form-control-sm">
+                                                        <select name="" id="est_uni" class="form-control form-control-sm">
                                                         <option value="">Seleccione</option>
                                                         <option value="1">Activo</option>
                                                         <option value="2">Inactivo</option>
@@ -881,6 +1023,7 @@
 
                 </div>
 
+
                 <!-- modal para Valor Activo -->
                 <div class="modal fade" id="modal_valorActivo" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                 |   <div class="modal-dialog modal-lg" role="document">
@@ -897,19 +1040,19 @@
                                     
                                     <div class="col-12-lg">
                                         <div class="row">
-                                                <div class="col-lg-12">
+                                                <div class="col-lg-6">
                                                     <div class="form-group">
-                                                        <span>Nombre del Valor: </span>
-                                                        <input type="text" class="form-control form-control-sm" id="nom_valor"  onkeyup="this.value = this.value.toUpperCase();" onKeyPress="return soloLetra(event);">
+                                                      
+                                                        <input type="text" class="form-control form-control-sm" id="nom_valor" placeholder="Valor" >
                                                     </div>
                                                 </div>
                                       
                                                 
-                                                <div class="col-lg-12">
+                                                <div class="col-lg-6">
                                                     <div class="form-group">
-                                                        <span>Estado: </span>
+                                                        
                                                         <select name="" id="est_valor" class="form-control form-control-sm">
-                                                        <option value="">Seleccione</option>
+                                                        <option value="">Estado</option>
                                                         <option value="1">Activo</option>
                                                         <option value="2">Inactivo</option>
                                                         </select>
@@ -948,10 +1091,41 @@
                                     
                                     <div class="col-12-lg">
                                         <div class="row">
-                                                <div class="col-lg-12">
+                                                
+                                            
+                                                    <div class="col-lg-12">
+                                                        <div class="form-group">
+                                                            <span>Empresa: </span>
+                                                            <select name="" id="select_empresaMacro" class="form-control form-control-sm">
+                                                        
+                                                            </select>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-lg-12">
+                                                        <div class="form-group">
+                                                            <span>Área: </span>
+                                                            <select name="" id="select_areaMacro" class="form-control form-control-sm">
+                                                        
+                                                            </select>
+                                                        </div>
+                                                    </div>
+
+                                                    
+                                                    <div class="col-lg-12">
+                                                        <div class="form-group">
+                                                            <span>Unidad: </span>
+                                                            <select name="" id="select_unidadesMacro" class="form-control form-control-sm">
+                                                        
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    
+                                        
+                                            <div class="col-lg-12">
                                                     <div class="form-group">
                                                         <span>Nombre del Macroproceso: </span>
-                                                        <input type="text" class="form-control form-control-sm" id="nom_macroproceso"  onkeyup="this.value = this.value.toUpperCase();" onKeyPress="return soloLetra(event);">
+                                                        <input type="text" class="form-control form-control-sm" id="nom_macroproceso"   onKeyPress="return soloLetra(event);">
                                                     </div>
                                                 </div>
                                       
@@ -982,7 +1156,7 @@
                     </div>
 
                 </div>
-        
+
                 <!-- modal para Procesos -->
                 <div class="modal fade" id="modal_proceso" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                 |   <div class="modal-dialog modal-lg" role="document">
@@ -999,10 +1173,49 @@
                                     
                                     <div class="col-12-lg">
                                         <div class="row">
+
+                                                <div class="col-lg-12">
+                                                                <div class="form-group">
+                                                                    <span>Empresa: </span>
+                                                                    <select name="" id="select_empresaPro" class="form-control form-control-sm">
+                                                                    <!--  -->
+                                                                    </select>
+                                                                </div>
+                                                                
+                                                            </div>
+
+                                                            <div class="col-lg-12">
+                                                                <div class="form-group">
+                                                                    <span>Área: </span>
+                                                                    <select name="" id="select_areaPro" class="form-control form-control-sm">
+                                                                
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="col-lg-12">
+                                                                <div class="form-group">
+                                                                    <span>Unidad: </span>
+                                                                    <select name="" id="select_unidadesPro" class="form-control form-control-sm">
+                                                                
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="col-lg-12">
+                                                                <div class="form-group">
+                                                                    <span>Macroproceso: </span>
+                                                                    <select name="" id="select_MacroprocesosPro" class="form-control form-control-sm">
+                                                                
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+
+
                                                 <div class="col-lg-12">
                                                     <div class="form-group">
                                                         <span>Nombre del Proceso: </span>
-                                                        <input type="text" class="form-control form-control-sm" id="nom_proceso"  onkeyup="this.value = this.value.toUpperCase();" onKeyPress="return soloLetra(event);">
+                                                        <input type="text" class="form-control form-control-sm" id="nom_pro"  onKeyPress="return soloLetra(event);">
                                                     </div>
                                                 </div>
                                       
@@ -1010,7 +1223,7 @@
                                                 <div class="col-lg-12">
                                                     <div class="form-group">
                                                         <span>Estado: </span>
-                                                        <select name="" id="est_proceso" class="form-control form-control-sm">
+                                                        <select name="" id="est_pro" class="form-control form-control-sm">
                                                         <option value="">Seleccione</option>
                                                         <option value="1">Activo</option>
                                                         <option value="2">Inactivo</option>
@@ -1033,7 +1246,6 @@
                     </div>
 
                 </div>
-
                 <!-- modal para Tipo Activo -->
                 <div class="modal fade" id="modal_tipo_activo" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                 |   <div class="modal-dialog modal-lg" role="document">
@@ -1050,19 +1262,19 @@
                                     
                                     <div class="col-12-lg">
                                         <div class="row">
-                                                <div class="col-lg-12">
+                                                <div class="col-lg-6">
                                                     <div class="form-group">
-                                                        <span>Nombre del Valor: </span>
-                                                        <input type="text" class="form-control form-control-sm" id="nom_tipo"  onkeyup="this.value = this.value.toUpperCase();" onKeyPress="return soloLetra(event);">
+                                                      
+                                                        <input type="text" placeholder="Tipo de Activo" class="form-control form-control-sm" id="nom_tipo" onKeyPress="return soloLetra(event);">
                                                     </div>
                                                 </div>
                                       
                                                 
-                                                <div class="col-lg-12">
+                                                <div class="col-lg-6">
                                                     <div class="form-group">
-                                                        <span>Estado: </span>
+                                                       
                                                         <select name="" id="est_tipo" class="form-control form-control-sm">
-                                                        <option value="">Seleccione</option>
+                                                        <option value="">Estado</option>
                                                         <option value="1">Activo</option>
                                                         <option value="2">Inactivo</option>
                                                         </select>
@@ -1101,31 +1313,32 @@
                                 <form action="" id="form_clas_informacion" class="in-line">
                                     <input type="hidden" id="id_clas">
                                     
-                                    <div class="col-12-lg">
+                                    <div class="col-lg-12">
                                         <div class="row">
-                                                <div class="col-lg-12">
+                                                <div class="col-lg-6">
                                                     <div class="form-group">
-                                                        <span>Nombre de la Clasificacion: </span>
-                                                        <input type="text" class="form-control form-control-sm" id="nom_informacion"  onkeyup="this.value = this.value.toUpperCase();" onKeyPress="return soloLetra(event);">
+                                                     
+                                                        <input type="text" placeholder="Clasificación" class="form-control form-control-sm" id="nom_informacion" onKeyPress="return soloLetra(event);">
                                                     </div>
                                                 </div>
-                                                <div class="col-lg-12">
+                                                <div class="col-lg-6">
                                                     <div class="form-group">
-                                                            <span>Descripcion de la Clasificacion: </span>
-                                                            <input type="text" class="form-control form-control-sm" id="descripcion_informacion"  onkeyup="this.value = this.value.toUpperCase();" onKeyPress="return soloLetra(event);">
-                                                        </div>
-                                      
-                                                
-                                                <div class="col-lg-12">
-                                                    <div class="form-group">
-                                                        <span>Estado: </span>
+                                                       
                                                         <select name="" id="est_clas_informacion" class="form-control form-control-sm">
-                                                        <option value="">Seleccione</option>
+                                                        <option value="">Estado</option>
                                                         <option value="1">Activo</option>
                                                         <option value="2">Inactivo</option>
                                                         </select>
                                                     </div>
                                                 </div>
+                                                <div class="col-lg-12">
+                                                        <div class="form-group">
+                                                            <textarea class="form-control form-control-sm" id="descripcion_informacion"  cols="30" rows="5"></textarea>
+                                                            
+                                                        </div>
+                                      
+                                                </div>
+                                               
                                                 
                                         </div>
                                     </div>
@@ -1142,7 +1355,322 @@
                     </div>
 
                 </div>
-        
+                 <!-- modal para Posicion/Puesto -->
+                <div class="modal fade" id="modal_posicion" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                |   <div class="modal-dialog modal-lg" role="document">
+                         <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="title-posicion"></h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                            </div>
+                            <div class="modal-body">
+                                <form action="" id="form_posicion" class="in-line">
+                                    <input type="hidden" id="id_posicion">
+                                    
+                                    <div class="col-lg-12">
+                                        <div class="row">
+                                                <div class="col-lg-6">
+                                                    <div class="form-group">
+                                                       
+                                                        <select name="" id="id_empresa_pos" class="form-control form-control-sm">
+                                                        <option value="">Empresa</option>
+                                                       
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-6">
+                                                    <div class="form-group">
+                                                       
+                                                        <select name="" id="id_area_pos" class="form-control form-control-sm">
+                                                        <option value="">Area</option>
+                                                       
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-12">
+                                                    <div class="form-group">
+                                                       
+                                                        <select name="" id="id_unidad_pos" class="form-control form-control-sm">
+                                                        <option value="">Unidad</option>
+                                                       
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-6">
+                                                    <div class="form-group">
+                                                        
+                                                        <input type="text" class="form-control form-control-sm" placeholder='Posición/Puesto' id="nom_posicion" onKeyPress="return soloLetra(event);">
+                                                    </div>
+                                                </div>
+                                      
+                                                
+                                                <div class="col-lg-6">
+                                                    <div class="form-group">
+                                                       
+                                                        <select name="" id="est_posicion" class="form-control form-control-sm">
+                                                            <option value="">Estado</option>
+                                                            <option value="1">Activo</option>
+                                                            <option value="2">Inactivo</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                
+                                        </div>
+                                    </div>
+                                </form>  
+                                
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-primary" id="Agregar_Posicion">Agregar</button>
+                                <button type="button" class="btn btn-primary" id="Modificar_Posicion">Guardar</button>
+                                <button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
+                            
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                   <!-- modal valoracion de activo-->
+                <div class="modal fade" id="modal_valActivo" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                |   <div class="modal-dialog modal-lg" role="document">
+                         <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="title-valActivo"></h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                            </div>
+                            <div class="modal-body">
+                                <form action="" id="form_valActivo" class="in-line">
+                                    <input type="hidden" id="id_valActivo">
+                                    
+                                    <div class="col-lg-12">
+                                        <div class="row">
+                                                <div class="col-lg-6">
+                                                    <div class="form-group">
+                                                       
+                                                        <select name="" id="id_aspecto1" class="form-control form-control-sm">
+                                                        <option value="">Aspecto</option>
+                                                       
+                                                        </select>
+                                                    </div>
+                                                    
+                                                </div>
+                                                <div class="col-lg-6">
+                                                    <div class="form-group">
+                                                        
+                                                        <input type="text" class="form-control form-control-sm" placeholder='Valoración' id="nom_val1">
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-6">
+                                                    <div class="form-group">
+                                                       
+                                                        <select name="" id="id_aspecto2" class="form-control form-control-sm">
+                                                        <option value="">Aspecto</option>
+                                                       
+                                                        </select>
+                                                    </div>
+                                                    
+                                                </div>
+                                                <div class="col-lg-6">
+                                                    <div class="form-group">
+                                                        
+                                                        <input type="text" class="form-control form-control-sm" placeholder='Valoración' id="nom_val2">
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-6">
+                                                    <div class="form-group">
+                                                       
+                                                        <select name="" id="id_aspecto3" class="form-control form-control-sm">
+                                                        <option value="">Aspecto</option>
+                                                       
+                                                        </select>
+                                                    </div>
+                                                    
+                                                </div>
+                                                <div class="col-lg-6">
+                                                    <div class="form-group">
+                                                        
+                                                        <input type="text" class="form-control form-control-sm" placeholder='Valoración' id="nom_val3">
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-12">
+                                                    <div class="form-group">
+                                                       
+                                                        <select name="" id="id_valor_val" class="form-control form-control-sm">
+                                                        <option value="">Valor</option>
+                                                       
+                                                        </select>
+                                                    </div>
+                                                    
+                                                </div>
+                                                <!-- <div class="col-lg-6">
+                                                    <div class="form-group">
+                                                       
+                                                        <select name="" id="est_val" class="form-control form-control-sm">
+                                                            <option value="">Estado</option>
+                                                            <option value="1">Activo</option>
+                                                            <option value="2">Inactivo</option>
+                                                        </select>
+                                                    </div>
+                                                </div> -->
+                                                
+                                        </div>
+                                    </div>
+                                </form>  
+                                
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-primary" id="Agregar_valActivo">Agregar</button>
+                                <button type="button" class="btn btn-primary" id="Modificar_valActivo">Guardar</button>
+                                <button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
+                            
+                            </div>
+                        </div>
+                    </div>
+                </div>
+          <!-- modal para Categoria Activo -->
+                <div class="modal fade" id="modal_cat_activo" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                |   <div class="modal-dialog modal-lg" role="document">
+                         <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="title-cat_activo"></h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                            </div>
+                            <div class="modal-body">
+                                <form action="" id="form_cat_activo" class="in-line">
+                                    <input type="hidden" id="id_cat_activo">
+                                    
+                                    <div class="col-lg-12">
+                                        <div class="row">
+                                                <div class="col-lg-6">
+                                                    <div class="form-group">
+                                                       
+                                                        <select name="" id="idvalor_catActivo" class="form-control form-control-sm">
+                                                       
+                                                        </select>
+                                                </div>
+                                                </div>
+                                                <div class="col-lg-6">
+                                                    <div class="form-group">
+                                                       
+                                                        <select name="" id="est_catActivo" class="form-control form-control-sm">
+                                                        <option value="">Estado</option>
+                                                        <option value="1">Activo</option>
+                                                        <option value="2">Inactivo</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                
+                                                <div class="col-lg-12">
+                                                    <div class="form-group">
+                                                      
+                                                        <input type="text" placeholder="Categoría" class="form-control form-control-sm" id="nom_categoria" onKeyPress="return soloLetra(event);">
+                                                    </div>
+                                                </div>
+                                      
+                                                
+                                                
+                                                
+                                        </div>
+                                    </div>
+                                </form>  
+                                
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-primary" id="Agregar_cat_activo">Agregar</button>
+                                <button type="button" class="btn btn-primary" id="Modificar_cat_activo">Guardar</button>
+                                <button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
+                            
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                 <!-- modal para Categoria Activo -->
+                 <div class="modal fade" id="modal_ubi_activo" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                |   <div class="modal-dialog modal-lg" role="document">
+                         <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="title-ubi_activo"></h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                            </div>
+                            <div class="modal-body">
+                                <form action="" id="form_ubi_activo" class="in-line">
+                                    <input type="hidden" id="id_ubi_activo">
+                                    
+                                    <div class="col-lg-12">
+                                        <div class="row">
+                                                <div class="col-lg-6">
+                                                    <div class="form-group">
+                                                       
+                                                        <select name="" id="idcontinente" class="form-control form-control-sm">
+                                                            <option value="">Continente</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-6">
+                                                    <div class="form-group">
+                                                       
+                                                        <select name="" id="idpais" class="form-control form-control-sm">
+                                                            <option value="">Pais</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-6">
+                                                    <div class="form-group">
+                                                       
+                                                        <select name="" id="idciudad" class="form-control form-control-sm">
+                                                            <option value="">Ciudad</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-6">
+                                                    <div class="form-group">
+                                                      
+                                                        <input type="text" placeholder="Dirección" class="form-control form-control-sm" id="direccion_ubi">
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-6">
+                                                    <div class="form-group">
+                                                      
+                                                        <input type="text" placeholder="Descripcion del lugar" class="form-control form-control-sm" id="desc_ubi">
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-6">
+                                                    <div class="form-group">
+                                                       
+                                                        <select name="" id="est_ubi_activo" class="form-control form-control-sm">
+                                                        <option value="">Estado</option>
+                                                        <option value="1">Activo</option>
+                                                        <option value="2">Inactivo</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                              
+                                                
+                                        </div>
+                                    </div>
+                                </form>  
+                                
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-primary" id="Agregar_ubi_activo">Agregar</button>
+                                <button type="button" class="btn btn-primary" id="Modificar_ubi_activo">Guardar</button>
+                                <button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
+                            
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            
         <!------------------------------------------------------------------------------->
         <script src="<?=base_url('public/assets/js/activos/activos.js'); ?>"></script>
         <script src="<?=base_url('public/assets/js/activos/empresa.js'); ?>"></script>
@@ -1154,5 +1682,8 @@
         <script src="<?=base_url('public/assets/js/activos/unidades.js'); ?>"></script>
         <script src="<?=base_url('public/assets/js/activos/macroproceso.js'); ?>"></script>
         <script src="<?=base_url('public/assets/js/activos/proceso.js'); ?>"></script>
-
+        <script src="<?=base_url('public/assets/js/activos/posicion.js'); ?>"></script>
+        <script src="<?=base_url('public/assets/js/activos/valoracion_activo.js'); ?>"></script>
+        <script src="<?=base_url('public/assets/js/activos/cat_activo.js'); ?>"></script>
+        <script src="<?=base_url('public/assets/js/activos/ubi_activo.js'); ?>"></script>
 <?=$this->endSection()?> 

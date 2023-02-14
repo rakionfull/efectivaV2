@@ -36,15 +36,23 @@ function LoadTableTipo_activo() {
         autoWidth: false,
         // processing: true,
         lengthMenu:[5,10,25,50],
-        pageLength:5,
+        pageLength:10,
         clickToSelect:false,
-        ajax: BASE_URL+"/main/getTipoActivo",
+        ajax: $('#base_url').val()+"/activo/getTipoActivo",
         aoColumns: [
             { "data": "id" },
             { "data": "tipo" },
-            { "data": "estado" },
-            { "defaultContent": "<editTipo_activo class='text-primary btn btn-opcionTabla' data-toggle='tooltip' data-placement='top' title='Editar' data-original-title='Editar'><i class='mdi mdi-pencil font-size-18'></i></editTipo_activo>"+
-            "<deleteTipo_activo class='text-danger btn btn-opcionTabla' data-toggle='tooltip' data-placement='top' title='Eliminar' data-original-title='Eliminar'><i class='mdi mdi-trash-can font-size-18'></i></deleteTipo_activo>"
+            { "data": "estado",
+                        
+            "mRender": function(data, type, value) {
+                if (data == '1') return  'Activo';
+                else return 'Inactivo'
+                  
+
+                }
+            },
+            { "defaultContent": "<editTipo_activo class='text-primary btn btn-opcionTabla' data-toggle='tooltip' data-placement='top' title='Editar' data-original-title='Editar'><i class='fas fa-edit font-size-18'></i></editTipo_activo>"+
+            "<deleteTipo_activo class='text-danger btn btn-opcionTabla' data-toggle='tooltip' data-placement='top' title='Eliminar' data-original-title='Eliminar'><i class='far fa-trash-alt font-size-18'></i></deleteTipo_activo>"
 
 },
         ],
@@ -64,6 +72,43 @@ function LoadTableTipo_activo() {
    
 }
 
+//validamos
+async function validacionTipoActivo(dato){
+
+    let result; /* Variable Resultado de Funcion */
+
+    // Validar existe
+        try {
+
+            const postData = {           
+                tipo:dato,
+            };
+
+            await $.ajax({
+                method: "POST",
+                url: $('#base_url').val()+"/activo/validarTipoActivo",
+                data: postData,
+                dataType: "JSON"
+            })
+            .done(function(respuesta) {
+               
+                result = respuesta;
+            })
+            .fail(function(error) {
+                // alert("Se produjo el siguiente error: ".err);
+            })
+            .always(function() {
+            });
+        }
+        catch(err) {
+            // alert("Se produjo el siguiente error: ".err);
+        }
+    // /.Validar existe
+
+    return result; /* Retorno de Resultado */
+
+};
+
 
 document.getElementById("btnAgregar_Tipo_activo").addEventListener("click",function(){
                                 
@@ -75,13 +120,15 @@ document.getElementById("btnAgregar_Tipo_activo").addEventListener("click",funct
 });
 
             // boton de agregar Tipo Activo
-document.getElementById("Agregar_tipo_activo").addEventListener("click",function(){
+document.getElementById("Agregar_tipo_activo").addEventListener("click",async function(){
     $nom_tip=document.getElementById("nom_tipo").value;
 
     $est_tip=document.getElementById("est_tipo").value;
     
     if($nom_tip !=""  && $est_tip != ""){
        
+        if (!(await validacionTipoActivo($nom_tip))){
+           
                 const postData = { 
                     tipo:$nom_tip,
                     estado:$est_tip,
@@ -92,7 +139,7 @@ document.getElementById("Agregar_tipo_activo").addEventListener("click",function
 
                     $.ajax({
                         method: "POST",
-                        url: BASE_URL+"/main/addTipoActivo",
+                        url: $('#base_url').val()+"/activo/addTipoActivo",
                         data: postData,
                         dataType: "JSON"
                     })
@@ -103,7 +150,7 @@ document.getElementById("Agregar_tipo_activo").addEventListener("click",function
                             document.getElementById("form_tipo_activo").reset();
                             $('#modal_tipo_activo').modal('hide');
                             alerta_tipo_activo.innerHTML = '<div class="alert alert-success alert-dismissible fade show" role="alert">'+
-                            'Tipo Activo Registrado'+
+                            'Tipo Activo Registrado Correctamente'+
                             '<button type="button" class="close" data-dismiss="alert" aria-label="Close">'+
                                 '<span aria-hidden="true">&times;</span>'+
                                 '</button>'+
@@ -114,15 +161,21 @@ document.getElementById("Agregar_tipo_activo").addEventListener("click",function
                         
                     })
                     .fail(function(error) {
-                        alert("Error en el ajax");
+                      
                     })
                     .always(function() {
                     });
                 }
                 catch(err) {
-                    alert("Error en el try");
+                  
                 }
-            
+        }else{
+                Swal.fire({
+                         icon: 'error',
+                         title: 'Error',
+                         text: 'El tipo de activo ya se encuentra registrado'
+                       })
+        }
            
        
     }else{
@@ -140,7 +193,7 @@ document.getElementById("Agregar_tipo_activo").addEventListener("click",function
                 //editar Tipo de activo
 $('#table_tipo_activo tbody').on( 'click', 'editTipo_activo', function(){
     $("#modal_tipo_activo").modal("show");
-    document.getElementById("tipo_activo").innerHTML = "Modificar Tipo de Activo";
+    document.getElementById("title-tipo_activo").innerHTML = "Modificar Tipo de Activo";
     document.getElementById("form_tipo_activo").reset();
     document.getElementById("Agregar_tipo_activo").style.display = "none";
     document.getElementById("Modificar_tipo_activo").style.display = "block";
@@ -161,10 +214,10 @@ $('#table_tipo_activo tbody').on( 'click', 'editTipo_activo', function(){
 //guardando la nueva info
 document.getElementById("Modificar_tipo_activo").addEventListener("click", function(){
     
-    $nom_tip=document.getElementById("tipo_activo").value;
+    $nom_tip=document.getElementById("nom_tipo").value;
 
     $est_tip=document.getElementById("est_tipo").value;
-    
+   
     if($nom_tip !="" && $est_tip != ""){
        
                 const postData = { 
@@ -177,7 +230,7 @@ document.getElementById("Modificar_tipo_activo").addEventListener("click", funct
 
                     $.ajax({
                         method: "POST",
-                        url: BASE_URL+"/main/updateTipoActivo",
+                        url: $('#base_url').val()+"/activo/updateTipoActivo",
                         data: postData,
                         dataType: "JSON"
                     })
@@ -216,6 +269,64 @@ document.getElementById("Modificar_tipo_activo").addEventListener("click", funct
                  title: 'Error',
                  text: 'Faltan Datos'
                })
-  }
+     }
    
+});
+//eliminar tipo_activo
+$('#table_tipo_activo tbody').on( 'click', 'deleteTipo_activo', function(){
+     
+    //recuperando los datos
+    
+    var table = $('#table_tipo_activo').DataTable();
+    var regNum = table.rows( $(this).parents('tr') ).count().toString();
+    var regDat = table.rows( $(this).parents('tr') ).data().toArray();
+    
+    const postData = { 
+        id:regDat[0]["id"],
+ 
+    };
+    
+    try {
+
+        $.ajax({
+            method: "POST",
+            url: $('#base_url').val()+"/activo/deleteTipoActivo",
+            data: postData,
+            dataType: "JSON"
+        })
+
+     
+        .done(function(respuesta) {
+        //  console.log(respuesta);
+            if (respuesta.msg) 
+            {
+                
+                alerta_tipo_activo.innerHTML = '<div class="alert alert-success alert-dismissible fade show" role="alert">'+
+                respuesta.msg+
+                '<button type="button" class="close" data-dismiss="alert" aria-label="Close">'+
+                    '<span aria-hidden="true">&times;</span>'+
+                    '</button>'+
+                '</div>';
+
+                $("#table_tipo_activo").DataTable().ajax.reload(null, true); 
+               
+            }else{
+                alerta_tipo_activo.innerHTML = '<div class="alert alert-danger alert-dismissible fade show" role="alert">'+
+                respuesta.error+
+                '<button type="button" class="close" data-dismiss="alert" aria-label="Close">'+
+                    '<span aria-hidden="true">&times;</span>'+
+                    '</button>'+
+                '</div>';
+            } 
+            
+        })
+        .fail(function(error) {
+            // alert("Error en el ajax");
+        })
+        .always(function() {
+        });
+    }
+    catch(err) {
+        // alert("Error en el try");
+    }
 });

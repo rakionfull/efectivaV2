@@ -43,7 +43,9 @@ $routes->get('/login', 'Auth::index');
 $routes->post('/login', 'Auth::index');
 $routes->get('/inicio', 'Main::inicio');
 $routes->get('/cambio_clave', 'Main::cambio_clave');
+$routes->get('/reseteo_pass/(:num)', 'Main::reseteo_pass/$1');
 $routes->post('/updateClave', 'Main::updateClave');
+$routes->post('/updateClave2/(:num)', 'Main::updateClave2/$id');
 $routes->post('/logout', 'Auth::logout');
 $routes->get('/change_pass', 'Auth::change_pass');
 $routes->post('/updatePass', 'Auth::updatePass');
@@ -70,6 +72,7 @@ $routes->get('main/getPerfiles/(:any)', 'Main::getPerfiles/$1');
 $routes->get('main/detPerfil/(:num)', 'Main::detPerfil/$1');
 
 $routes->post('/main/addPerfil', 'Main::addPerfil');
+$routes->post('/main/validarPerfil', 'Main::validarPerfil');
 $routes->post('/main/updatePerfil', 'Main::updatePerfil');
 $routes->get('/main/deletePerfil/(:num)', 'Main::deletePerfil/$1');
 $routes->post('/main/updateView', 'Main::updateView');
@@ -77,53 +80,183 @@ $routes->post('/main/updateCreate', 'Main::updateCreate');
 $routes->post('/main/updateUpdate', 'Main::updateUpdate');
 $routes->post('/main/updateDelete', 'Main::updateDelete');
 
+//reportes
+
+$routes->post('/main/reporteUsuarios', 'Main::reporteUsuarios');
 
 // rutas para paremetrizacion
 $routes->get('/activos', 'Main::activos');
 $routes->get('/riesgos', 'Main::riesgos');
 $routes->get('/controles', 'Main::controles');
-$routes->get('main/getEmpresas', 'Main::getEmpresas');
-$routes->get('main/getEmpresasByActivo', 'Main::getEmpresasByActivo');
-$routes->post('/main/addEmpresa', 'Main::addEmpresa');
-$routes->post('/main/updateEmpresa', 'Main::updateEmpresa');
+$routes->get('activo/getEmpresas', 'Activo::getEmpresas');
+$routes->post('activo/getEmpresasByActivo', 'Activo::getEmpresasByActivo');
+$routes->post('/activo/addEmpresa', 'Activo::addEmpresa');
+$routes->post('/activo/updateEmpresa', 'Activo::updateEmpresa');
+$routes->post('/activo/deleteEmpresa', 'Activo::deleteEmpresa');
 
 //rutas para areas
-$routes->get('main/getAreas', 'Main::getAreas');
-$routes->post('/main/addArea', 'Main::addArea');
-$routes->post('/main/updateArea', 'Main::updateArea');
-$routes->get('main/getAreasEmpresa', 'Main::getAreasEmpresa');
-$routes->post('/main/addAreaEmpresa', 'Main::addAreaEmpresa');
-$routes->post('/main/updateAreaEmpresa', 'Main::updateAreaEmpresa');
+$routes->get('activo/getArea', 'Activo::getArea');
+$routes->post('activo/getAreasByActivo', 'Activo::getAreasByActivo');
+$routes->post('/activo/addArea', 'Activo::addArea');
+$routes->post('/activo/deleteArea', 'Activo::deleteArea');
+$routes->post('/activo/updateArea', 'Activo::updateArea');
+$routes->get('activo/getAreasEmpresa', 'Activo::getAreasEmpresa');
+$routes->post('/activo/addAreaEmpresa', 'Activo::addAreaEmpresa');
+$routes->post('/activo/updateAreaEmpresa', 'Activo::updateAreaEmpresa');
+
+//valo activo
+$routes->post('activo/getValorActivoByActivo', 'Activo::getValorActivoByActivo');
+$routes->get('activo/getValorActivo', 'Activo::getValorActivo');
+$routes->post('/activo/validarValorActivo', 'Activo::validarValorActivo');
+$routes->post('/activo/addValorActivo', 'Activo::addValorActivo');
+$routes->post('/activo/updateValorActivo', 'Activo::updateValorActivo');
+$routes->post('/activo/deleteValorActivo', 'Activo::deleteValorActivo');
+
+//tipo activo
+$routes->post('activo/getTipoActivoByActivo', 'Activo::getTipoActivoByActivo');
+$routes->get('activo/getTipoActivo', 'Activo::getTipoActivo');
+$routes->post('/activo/validarTipoActivo', 'Activo::validarTipoActivo');
+$routes->post('/activo/addTipoActivo', 'Activo::addTipoActivo');
+$routes->post('/activo/updateTipoActivo', 'Activo::updateTipoActivo');
+$routes->post('/activo/deleteTipoActivo', 'Activo::deleteTipoActivo');
+
+//clasificaicon de activo
+$routes->get('activo/getClasInformacion', 'Activo::getClasInformacion');
+$routes->post('/activo/validarClasInfo', 'Activo::validarClasInfo');
+$routes->post('/activo/addClasInformacion', 'Activo::addClasInformacion');
+$routes->post('/activo/updateClasInformacion', 'Activo::updateClasInformacion');
+$routes->post('/activo/deleteClasInfo', 'Activo::deleteClasInfo');
+
+//aspecto de seguridad
+$routes->post('activo/getAspectoByActivo', 'Activo::getAspectoByActivo');
+$routes->get('activo/getAspectoSeg', 'Activo::getAspectoSeg');
+$routes->post('/activo/validarApectoSeg', 'Activo::validarApectoSeg');
+$routes->post('/activo/addAspectoSeg', 'Activo::addAspectoSeg');
+$routes->post('/activo/updateAspectoSeg', 'Activo::updateAspectoSeg');
+$routes->post('/activo/deleteAspectoSeg', 'Activo::deleteAspectoSeg');
+
+//posicion y puesto
+$routes->get('activo/getPosicion', 'Activo::getPosicion');
+
+$routes->post('/activo/validarPosicion', 'Activo::validarPosicion');
+$routes->post('activo/getPosicionByActivo', 'Activo::getPosicionByActivo');
+$routes->post('/activo/addPosicion', 'Activo::addPosicion');
+$routes->post('/activo/updatePosicion', 'Activo::updatePosicion');
+$routes->post('/activo/deletePosicion', 'Activo::deletePosicion');
+
+// Unidades
+$routes->get('activo/getUnidades', 'Activo::getUnidades');
+$routes->post('/activo/addUnidades', 'Activo::addUnidades');
+$routes->post('/activo/updateUnidades', 'v::updateUnidades');
+$routes->post('activo/getUnidadByActivo', 'Activo::getUnidadByActivo');
+$routes->post('/activo/deleteUnidad', 'Activo::deleteUnidad');
+
+$routes->get('activo/getEmpresaAreaUnidades', 'Main::getEmpresaAreaUnidades');
+
+//maroproceso
+
+$routes->get('activo/getMacroproceso', 'Activo::getMacroproceso');
+$routes->post('/activo/addMacroproceso', 'Activo::addMacroproceso');
+$routes->post('/activo/updateMacroproceso', 'Activo::updateMacroproceso');
+$routes->post('/activo/deleteMacroproceso', 'Activo::deleteMacroproceso');
+$routes->post('activo/getMacroprocesoByActivo', 'Activo::getMacroprocesoByActivo');
 
 
-$routes->get('main/getValorActivo', 'Main::getValorActivo');
-$routes->post('/main/addValorActivo', 'Main::addValorActivo');
-$routes->post('/main/updateValorActivo', 'Main::updateValorActivo');
+//proceso
+$routes->get('activo/getProceso', 'Activo::getProceso');
+$routes->post('/activo/addProceso', 'Activo::addProceso');
+$routes->post('/activo/updateProceso', 'Activo::updateProceso');
+$routes->post('activo/getProcesoByActivo', 'Activo::getProcesoByActivo');
+$routes->post('/activo/deleteProceso', 'Activo::deleteProceso');
+//valoracion de activo
+$routes->get('activo/getValActivo', 'Activo::getValActivo');
+$routes->post('/activo/validarValActivo', 'Activo::validarValActivo');
+$routes->post('/activo/addValActivo', 'Activo::addValActivo');
+$routes->post('/activo/updateValActivo', 'Activo::updateValActivo');
+$routes->post('/activo/deleteValActivo', 'Activo::deleteValActivo');
 
-$routes->get('main/getTipoActivo', 'Main::getTipoActivo');
-$routes->post('/main/addTipoActivo', 'Main::addTipoActivo');
-$routes->post('/main/updateTipoActivo', 'Main::updateTipoActivo');
+//Categoria de activo
+$routes->get('activo/getCatActivo', 'Activo::getCatActivo');
+$routes->post('/activo/validarCatActivo', 'Activo::validarCatActivo');
+$routes->post('/activo/addCatActivo', 'Activo::addCatActivo');
+$routes->post('/activo/updateCatActivo', 'Activo::updateCatActivo');
+$routes->post('/activo/deleteCatActivo', 'Activo::deleteCatActivo');
 
 
-$routes->get('main/getClasInformacion', 'Main::getClasInformacion');
-$routes->post('/main/addClasInformacion', 'Main::addClasInformacion');
-$routes->post('/main/updateClasInformacion', 'Main::updateClasInformacion');
+//Ubicacion de activo
+$routes->get('activo/getUbiActivo', 'Activo::getUbiActivo');
+$routes->post('/activo/addUbiActivo', 'Activo::addUbiActivo');
+$routes->post('/activo/updateUbiActivo', 'Activo::updateUbiActivo');
+$routes->post('/activo/deleteUbiActivo', 'Activo::deleteUbiActivo');
 
-$routes->get('main/getAspectoSeg', 'Main::getAspectoSeg');
-$routes->post('/main/addAspectoSeg', 'Main::addAspectoSeg');
-$routes->post('/main/updateAspectoSeg', 'Main::updateAspectoSeg');
+//traer continentes paises ciudades
+$routes->post('activo/getContinente', 'Activo::getContinente');
+$routes->post('activo/getPais', 'Activo::getPais');
+$routes->post('activo/getCiudad', 'Activo::getCiudad');
 
-$routes->get('main/getUnidades', 'Main::getUnidades');
-$routes->post('/main/addUnidades', 'Main::addUnidades');
-$routes->post('/main/updateUnidades', 'Main::updateUnidades');
 
-$routes->get('main/getMacroproceso', 'Main::getMacroproceso');
-$routes->post('/main/addMacroproceso', 'Main::addMacroproceso');
-$routes->post('/main/updateMacroproceso', 'Main::updateMacroproceso');
+// Rutas para tipo de riesgos
+$routes->get('/riesgos', 'Main::riesgos');
+$routes->get('/main/showTipoRiesgo/(:num)','TipoRiesgoController::showTipoRiesgo/$1');
+$routes->get('/main/getTipoRiesgos', 'TipoRiesgoController::getTipoRiesgos');
+$routes->post('/main/addTipoRiesgo', 'TipoRiesgoController::addTipoRiesgo');
+$routes->post('/main/updateTipoRiesgo', 'TipoRiesgoController::updateTipoRiesgo');
+$routes->delete('/main/deleteTipoRiesgo/(:num)', 'TipoRiesgoController::deleteTipoRiesgo/$1');
 
-$routes->get('main/getProceso', 'Main::getProceso');
-$routes->post('/main/addProceso', 'Main::addProceso');
-$routes->post('/main/updateProceso', 'Main::updateProceso');
+// Rutas para probabilidad de riesgos
+$routes->get('/main/getProbabilidadRiesgo/(:num)','ProbabilidadRiesgoController::getProbabilidadRiesgo/$1');
+$routes->get('/main/showProbabilidadRiesgo/(:num)','ProbabilidadRiesgoController::showProbabilidadRiesgo/$1');
+$routes->post('/main/addProbabilidadRiesgo1','ProbabilidadRiesgoController::addProbabilidadRiesgo1');
+$routes->post('/main/updateProbabilidadRiesgo1','ProbabilidadRiesgoController::updateProbabilidadRiesgo1');
+$routes->post('/main/addProbabilidadRiesgo2','ProbabilidadRiesgoController::addProbabilidadRiesgo2');
+$routes->post('/main/updateProbabilidadRiesgo2','ProbabilidadRiesgoController::updateProbabilidadRiesgo2');
+$routes->delete('/main/deleteProbabilidadRiesgo/(:num)', 'ProbabilidadRiesgoController::deleteProbabilidadRiesgo/$1');
+
+// Rutas para impacto de riesgos
+$routes->get('/main/getImpactoRiesgo/(:num)','ImpactoRiesgoController::getImpactoRiesgo/$1');
+$routes->get('/main/showImpactoRiesgo/(:num)','ImpactoRiesgoController::showImpactoRiesgo/$1');
+$routes->post('/main/addImpactoRiesgo1','ImpactoRiesgoController::addImpactoRiesgo1');
+$routes->post('/main/updateImpactoRiesgo1','ImpactoRiesgoController::updateImpactoRiesgo1');
+$routes->post('/main/addImpactoRiesgo2','ImpactoRiesgoController::addImpactoRiesgo2');
+$routes->post('/main/updateImpactoRiesgo2','ImpactoRiesgoController::updateImpactoRiesgo2');
+$routes->delete('/main/deleteImpactoRiesgo/(:num)', 'ImpactoRiesgoController::deleteImpactoRiesgo/$1');
+
+// Rutas para nivel de riesgos
+$routes->get('/main/getNivelRiesgo','NivelRiesgoController::getNivelRiesgo');
+$routes->get('/main/showNivelRiesgo/(:num)','NivelRiesgoController::showNivelRiesgo/$1');
+$routes->post('/main/addNivelRiesgo','NivelRiesgoController::addNivelRiesgo');
+$routes->post('/main/updateNivelRiesgo/(:num)','NivelRiesgoController::updateNivelRiesgo/$1');
+$routes->delete('/main/deleteNivelRiesgo/(:num)', 'NivelRiesgoController::deleteNivelRiesgo/$1');
+
+// Rutas para tipo de amenaza
+$routes->get('/main/getTiposAmenaza','TipoAmenazaController::getTiposAmenaza');
+$routes->get('/main/showTipoAmenaza/(:num)','TipoAmenazaController::showTipoAmenaza/$1');
+$routes->post('/main/addTipoAmenaza','TipoAmenazaController::addTipoAmenaza');
+$routes->post('/main/updateTipoAmenaza/(:num)','TipoAmenazaController::updateTipoAmenaza/$1');
+$routes->delete('/main/deleteTipoAmenaza/(:num)', 'TipoAmenazaController::deleteTipoAmenaza/$1');
+
+// Rutas para desc de amenaza
+$routes->get('/main/getDescAmenaza','DescripcionAmenazaController::getDescAmenaza');
+$routes->get('/main/showDescAmenaza/(:num)','DescripcionAmenazaController::showDescAmenaza/$1');
+$routes->post('/main/addDescAmenaza','DescripcionAmenazaController::addDescAmenaza');
+$routes->post('/main/updateDescAmenaza/(:num)','DescripcionAmenazaController::updateDescAmenaza/$1');
+$routes->delete('/main/deleteDescAmenaza/(:num)', 'DescripcionAmenazaController::deleteDescAmenaza/$1');
+
+// Rutas para categoria vulnerabilidad
+$routes->get('/main/getCategoriasVulnerabilidad','CategoriasVulnerabilidadController::getCategoriasVulnerabilidad');
+$routes->get('/main/showCategoriasVulnerabilidad/(:num)','CategoriasVulnerabilidadController::showCategoriasVulnerabilidad/$1');
+$routes->post('/main/addCategoriasVulnerabilidad','CategoriasVulnerabilidadController::addCategoriasVulnerabilidad');
+$routes->post('/main/updateCategoriasVulnerabilidad/(:num)','CategoriasVulnerabilidadController::updateCategoriasVulnerabilidad/$1');
+$routes->delete('/main/deleteCategoriasVulnerabilidad/(:num)', 'CategoriasVulnerabilidadController::deleteCategoriasVulnerabilidad/$1');
+
+// Rutas para desc vulnerabilidad
+$routes->get('/main/getDescVulnerabilidad','DescriptionVulnerabilidadController::getDescVulnerabilidad');
+$routes->get('/main/showDescVulnerabilidad/(:num)','DescriptionVulnerabilidadController::showDescVulnerabilidad/$1');
+$routes->post('/main/addDescVulnerabilidad','DescriptionVulnerabilidadController::addDescVulnerabilidad');
+$routes->post('/main/updateDescVulnerabilidad/(:num)','DescriptionVulnerabilidadController::updateDescVulnerabilidad/$1');
+$routes->delete('/main/deleteDescVulnerabilidad/(:num)', 'DescriptionVulnerabilidadController::deleteDescVulnerabilidad/$1');
+
+
 /*
  * --------------------------------------------------------------------
  * Additional Routing

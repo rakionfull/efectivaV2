@@ -12,13 +12,22 @@
                                
                             </div>
                             <div class="row mt-2 d-flex justify-content-between">
-                                <div class="col-md-6">
+                                <div class="col-md-2">
                                 <?php if($session->permisos[3]->create_det==1){ ?>
                                     <a href="<?=base_url('createUser'); ?>" class="float-left btn btn-primary waves-effect waves-light"><i class=" fas fa-plus-circle align-middle ml-2"></i>  Agregar</a>
                                 <?php } ?>
                                  
                                </div>
-                               <div class="col-md-4">
+                               <div class="col-md-2">
+                                <?php if($session->permisos[3]->create_det==1){ ?>
+                                    
+                                    <a href="" id="descarga_users" class="descarga" download>
+                                        <img src="<?=base_url('public/images/excel.png') ?>" alt="" height='30' witdh='30'>
+                                    </a>
+                                <?php } ?>
+                                 
+                               </div>
+                               <div class="col-md-8">
                                     <div class="row g-3 d-flex justify-content-end">
                                         <div class="col-auto">
                                             <label for="inputPassword6" class="col-form-label">Estado</label>

@@ -26,14 +26,8 @@ $session = session();?>
                                                     </div>
                                                 </div>
                                                 <div class="col-lg-6 mb-2 ">
-                                                  
-                                                        <div class="form-group">
-                                                            <div class="input-group-append">
-                                                            <input type="text" id="passw" name="passw" placeholder="Contraseña" class="form-control" value="">
-                                                            
-                                                                <!-- <button id="show_password" class="btn btn-primary" type="button" title="Mostrar Clave"> <span class="fa fa-eye-slash icon"></span> </button> -->
-                                                            </div>
-                                                        </div>
+                                                    <a href="<?php echo base_url('reseteo_pass/'.$user->id_us);?>" class="btn btn-primary btn-sm">Resetear Contraseña</a>
+                                                    
                                                        
                                                 </div>
                                                 <div class="col-lg-6 mb-2">
@@ -44,8 +38,8 @@ $session = session();?>
                                                                 <?php //var_dump($perfiles->data);
                                                                     foreach ($perfiles->data as $key => $value) {
                                                                         if($user->perfil_us == $value->id_perfil)
-                                                                        echo'<option value='.$value->id_perfil.' selected>'.$value->desc_perfil.'</option>';
-                                                                        else  echo'<option value='.$value->id_perfil.' >'.$value->desc_perfil.'</option>';
+                                                                        echo'<option value='.$value->id_perfil.' selected>'.$value->perfil.'</option>';
+                                                                        else  echo'<option value='.$value->id_perfil.' >'.$value->perfil.'</option>';
                                                                     }
                                                                 ?>
                                                                  
@@ -100,7 +94,14 @@ $session = session();?>
                                                     <div class="form-group">
                                                        
                                                        <select name="id_empresa" id="id_empresa" class="form-control ">
-                                                                <option value="">Empresa</option>
+                                                             <?php 
+                                                                echo "<option value=''>Empresa</option>";
+                                                                foreach ($empresa as $key => $value) {
+                                                                    if($value->id == $user->idempresa ) echo "<option value='".$value->id."' selected>".$value->empresa."</option>";
+                                                                    else echo "<option value='".$value->id."'>".$value->empresa."</option>";
+                                                                }
+                                                                 
+                                                                ?>
                                                        </select>
                                                        
                                                     </div>
@@ -109,7 +110,14 @@ $session = session();?>
                                                     <div class="form-group">
                                                        
                                                        <select name="id_puesto" id="id_puesto" class="form-control">
-                                                                <option value="">Posición/Puesto</option>
+                                                            <?php 
+                                                                echo "<option value=''>Posición/Puesto</option>";
+                                                                foreach ($posicion as $key => $value) {
+                                                                    if($value->id == $user->idposicion ) echo "<option value='".$value->id."' selected>".$value->posicion_puesto."</option>";
+                                                                    else echo "<option value='".$value->id."'>".$value->posicion_puesto."</option>";
+                                                                }
+                                                                 
+                                                                ?>
                                                        </select>
                                                        
                                                     </div>
@@ -118,7 +126,14 @@ $session = session();?>
                                                     <div class="form-group">
                                                        
                                                        <select name="id_area" id="id_area" class="form-control">
-                                                                <option value="">Área</option>
+                                                            <?php 
+                                                                echo "<option value=''>Área</option>";
+                                                                foreach ($area as $key => $value) {
+                                                                    if($value->id == $user->idarea ) echo "<option value='".$value->id."' selected>".$value->area."</option>";
+                                                                    else echo "<option value='".$value->id."'>".$value->area."</option>";
+                                                                }
+                                                                 
+                                                                ?>
                                                        </select>
                                                        
                                                     </div>
@@ -127,7 +142,15 @@ $session = session();?>
                                                     <div class="form-group">
                                                        
                                                        <select name="id_unidad" id="id_unidad" class="form-control">
-                                                                <option value="">Unidad</option>
+                                                                <?php 
+                                                                echo "<option value=''>Unidad</option>";
+                                                                foreach ($unidad as $key => $value) {
+                                                                    if($value->id == $user->idunidad ) echo "<option value='".$value->id."' selected>".$value->unidad."</option>";
+                                                                    else echo "<option value='".$value->id."'>".$value->unidad."</option>";
+                                                                }
+                                                                 
+                                                                ?>
+                                                               
                                                        </select>
                                                        
                                                     </div>
@@ -168,6 +191,9 @@ $session = session();?>
                                     </form> 
                                     </div>
                                 </div>
+                               
                             </div> <!-- end col -->
             </div> <!-- end row -->
+            <script src="<?=base_url('public/assets/js/updateUser.js'); ?>"></script>
+            <script src="<?=base_url('public/assets/js/acceso/createUser.js'); ?>"></script>
 <?=$this->endSection()?> 

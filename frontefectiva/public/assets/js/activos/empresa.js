@@ -38,13 +38,21 @@ function LoadTableEmpresa() {
         lengthMenu:[5,10,25,50],
         pageLength:5,
         clickToSelect:false,
-        ajax: BASE_URL+"/main/getEmpresas",
+        ajax: BASE_URL+"/activo/getEmpresas",
         aoColumns: [
             { "data": "id" },
             { "data": "empresa" },
-            { "data": "estado" },
-            { "defaultContent": "<editEmpresa class='text-primary btn btn-opcionTabla' data-toggle='tooltip' data-placement='top' title='Editar' data-original-title='Editar'><i class='mdi mdi-pencil font-size-18'></i></editEmpresa>"+
-            "<deleteEmpresa class='text-danger btn btn-opcionTabla' data-toggle='tooltip' data-placement='top' title='Eliminar' data-original-title='Eliminar'><i class='mdi mdi-trash-can font-size-18'></i></deleteEmpresa>"
+            {  "data": "estado",
+                        
+            "mRender": function(data, type, value) {
+                if (data == '1') return  'Activo';
+                else return 'Inactivo'
+                  
+
+                }
+            },
+            { "defaultContent": "<editEmpresa class='text-primary btn btn-opcionTabla' data-toggle='tooltip' data-placement='top' title='Editar' data-original-title='Editar'><i class='fas fa-edit font-size-18'></i></editEmpresa>"+
+            "<deleteEmpresa class='text-danger btn btn-opcionTabla' data-toggle='tooltip' data-placement='top' title='Eliminar' data-original-title='Eliminar'><i class='far fa-trash-alt font-size-18'></i></deleteEmpresa>"
 
 },
         ],
@@ -90,35 +98,41 @@ document.getElementById("Agregar_Empresa").addEventListener("click",function(){
 
                     $.ajax({
                         method: "POST",
-                        url: BASE_URL+"/main/addEmpresa",
+                        url: BASE_URL+"/activo/addEmpresa",
                         data: postData,
                         dataType: "JSON"
                     })
                     .done(function(respuesta) {
-                     
-                        if (respuesta) 
+                       // console.log(respuesta);
+                        if (respuesta.error==1) 
                         {
                             document.getElementById("form_empresa").reset();
                             $('#modal_empresa').modal('hide');
-                            alerta_empresa.innerHTML = '<div class="alert alert-success alert-dismissible fade show" role="alert">'+
-                            'Empresa Registrada'+
+                            alerta_empresa.innerHTML = '<div class="alert alert-success alert-dismissible fade show" role="alert">'
+                            +  respuesta.msg +
                             '<button type="button" class="close" data-dismiss="alert" aria-label="Close">'+
                                 '<span aria-hidden="true">&times;</span>'+
                                 '</button>'+
                             '</div>';
                             $("#table_empresa").DataTable().ajax.reload(null, false); 
                            
-                        } 
+                        } else{
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Error',
+                                text: respuesta.msg
+                              })
+                        }
                         
                     })
                     .fail(function(error) {
-                        alert("Error en el ajax");
+                       
                     })
                     .always(function() {
                     });
                 }
                 catch(err) {
-                    alert("Error en el try");
+                   
                 }
             
            
@@ -174,7 +188,7 @@ document.getElementById("Modificar_Empresa").addEventListener("click", function(
 
                     $.ajax({
                         method: "POST",
-                        url: BASE_URL+"/main/updateEmpresa",
+                        url: BASE_URL+"/activo/updateEmpresa",
                         data: postData,
                         dataType: "JSON"
                     })
@@ -196,13 +210,13 @@ document.getElementById("Modificar_Empresa").addEventListener("click", function(
                         
                     })
                     .fail(function(error) {
-                        alert("Error en el ajax");
+                       
                     })
                     .always(function() {
                     });
                 }
                 catch(err) {
-                    alert("Error en el try");
+                   
                 }
             
            
@@ -215,4 +229,60 @@ document.getElementById("Modificar_Empresa").addEventListener("click", function(
                })
   }
    
+});
+//eliminar Empresa
+$('#table_empresa tbody').on( 'click', 'deleteEmpresa', function(){
+     
+    //recuperando los datos
+    var table = $('#table_empresa').DataTable();
+    var regNum = table.rows( $(this).parents('tr') ).count().toString();
+    var regDat = table.rows( $(this).parents('tr') ).data().toArray();
+    const postData = { 
+        id:regDat[0]["id"],
+ 
+    };
+    
+    try {
+
+        $.ajax({
+            method: "POST",
+            url: $('#base_url').val()+"/activo/deleteEmpresa",
+            data: postData,
+            dataType: "JSON"
+        })
+
+     
+        .done(function(respuesta) {
+        //  console.log(respuesta);
+            if (respuesta.msg) 
+            {
+                
+                alerta_empresa.innerHTML = '<div class="alert alert-success alert-dismissible fade show" role="alert">'+
+                respuesta.msg+
+                '<button type="button" class="close" data-dismiss="alert" aria-label="Close">'+
+                    '<span aria-hidden="true">&times;</span>'+
+                    '</button>'+
+                '</div>';
+
+                $("#table_empresa").DataTable().ajax.reload(null, true); 
+               
+            }else{
+                alerta_empresa.innerHTML = '<div class="alert alert-danger alert-dismissible fade show" role="alert">'+
+                respuesta.error+
+                '<button type="button" class="close" data-dismiss="alert" aria-label="Close">'+
+                    '<span aria-hidden="true">&times;</span>'+
+                    '</button>'+
+                '</div>';
+            } 
+            
+        })
+        .fail(function(error) {
+            // alert("Error en el ajax");
+        })
+        .always(function() {
+        });
+    }
+    catch(err) {
+        // alert("Error en el try");
+    }
 });

@@ -23,6 +23,8 @@ window.addEventListener("hashchange", () => {
             document.getElementById("empresa").className = "activado";
             LoadTableEmpresa();
             
+            
+            
         window.location.hash = '#';   
         break;
         
@@ -38,23 +40,8 @@ window.addEventListener("hashchange", () => {
         });
         document.getElementById("apartArea").style.display = "block";
         document.getElementById("area").className = "activado";
-        LoadTableArea();
-
-        window.location.hash = '#';   
-        break;
-
-        case "#/AspectoSeg":
-          
-        for(let i=0; i<document.getElementsByClassName("opcion").length; i++)
-        {
-            document.getElementsByClassName("opcion")[i].style.display = "none";
-        }
-        document.querySelectorAll(".menu li").forEach(element => {
-            element.classList.remove("activado");
-        });
-        document.getElementById("apartAspectoSeg").style.display = "block";
-        document.getElementById("aspectoSeg").className = "activado";
-        LoadTableAspectoSeg();
+        LoadTableAreaEmpresa();
+        
 
         window.location.hash = '#';   
         break;
@@ -71,6 +58,87 @@ window.addEventListener("hashchange", () => {
         document.getElementById("apartUnidades").style.display = "block";
         document.getElementById("unidades").className = "activado";
         LoadTableUnidades();
+        
+
+        window.location.hash = '#';   
+        break;
+
+        case "#/Macroproceso":
+            
+           
+            for(let i=0; i<document.getElementsByClassName("opcion").length; i++)
+            {
+                document.getElementsByClassName("opcion")[i].style.display = "none";
+
+                // $(".menu li").removeClass("activado");
+            }
+           
+            document.querySelectorAll(".menu li").forEach(element => {
+                element.classList.remove("activado");
+            });
+            document.getElementById("apartMacroproceso").style.display = "block";
+            document.getElementById("macroproceso").className = "activado";
+            LoadTableMacroproceso();
+            
+            
+        window.location.hash = '#';   
+        break;
+                
+        case "#/Proceso":
+            
+           
+            for(let i=0; i<document.getElementsByClassName("opcion").length; i++)
+            {
+                document.getElementsByClassName("opcion")[i].style.display = "none";
+
+                // $(".menu li").removeClass("activado");
+            }
+           
+            document.querySelectorAll(".menu li").forEach(element => {
+                element.classList.remove("activado");
+            });
+            document.getElementById("apartProceso").style.display = "block";
+            document.getElementById("proceso").className = "activado";
+            LoadTableProceso();
+            
+            
+        window.location.hash = '#';   
+        break;
+        
+        case "#/Posicion":
+            
+           
+            for(let i=0; i<document.getElementsByClassName("opcion").length; i++)
+            {
+                document.getElementsByClassName("opcion")[i].style.display = "none";
+
+                // $(".menu li").removeClass("activado");
+            }
+           
+            document.querySelectorAll(".menu li").forEach(element => {
+                element.classList.remove("activado");
+            });
+            document.getElementById("apartPosicion").style.display = "block";
+            document.getElementById("posicion_puesto").className = "activado";
+            LoadTablePosicion();
+            cargarDatosPosicion();
+            
+            
+        window.location.hash = '#';   
+        break;
+        
+        case "#/AspectoSeg":
+          
+        for(let i=0; i<document.getElementsByClassName("opcion").length; i++)
+        {
+            document.getElementsByClassName("opcion")[i].style.display = "none";
+        }
+        document.querySelectorAll(".menu li").forEach(element => {
+            element.classList.remove("activado");
+        });
+        document.getElementById("apartAspectoSeg").style.display = "block";
+        document.getElementById("aspectoSeg").className = "activado";
+        LoadTableAspectoSeg();
 
         window.location.hash = '#';   
         break;
@@ -108,6 +176,67 @@ window.addEventListener("hashchange", () => {
         window.location.hash = '#';   
         break;
 
+        case "#/Categoria_activo":
+            
+           
+            for(let i=0; i<document.getElementsByClassName("opcion").length; i++)
+            {
+                document.getElementsByClassName("opcion")[i].style.display = "none";
+
+                // $(".menu li").removeClass("activado");
+            }
+           
+            document.querySelectorAll(".menu li").forEach(element => {
+                element.classList.remove("activado");
+            });
+            document.getElementById("apartCatActivo").style.display = "block";
+            document.getElementById("Categoria_activo").className = "activado";
+            LoadTableCatActivo();
+            cargarDatosCatActivo();
+        window.location.hash = '#';   
+        break;
+        
+        case "#/Ubicacion_activo":
+            
+           
+            for(let i=0; i<document.getElementsByClassName("opcion").length; i++)
+            {
+                document.getElementsByClassName("opcion")[i].style.display = "none";
+
+                // $(".menu li").removeClass("activado");
+            }
+           
+            document.querySelectorAll(".menu li").forEach(element => {
+                element.classList.remove("activado");
+            });
+            document.getElementById("apartUbiActivo").style.display = "block";
+            document.getElementById("ubicacion_activo").className = "activado";
+            LoadTableUbiActivo();
+            cargarDatosContinentes();
+            
+        window.location.hash = '#';   
+        break;
+        
+        case "#/Valoracion_activo":
+            
+           
+            for(let i=0; i<document.getElementsByClassName("opcion").length; i++)
+            {
+                document.getElementsByClassName("opcion")[i].style.display = "none";
+
+                // $(".menu li").removeClass("activado");
+            }
+           
+            document.querySelectorAll(".menu li").forEach(element => {
+                element.classList.remove("activado");
+            });
+            document.getElementById("apartValActivo").style.display = "block";
+            document.getElementById("valoracion_activo").className = "activado";
+            LoadTableValActivo();
+            cargarDatosValActivo();
+        window.location.hash = '#';   
+        break;
+        
         case "#/Clasificacion_informacion":
             
        
@@ -124,47 +253,7 @@ window.addEventListener("hashchange", () => {
 
         window.location.hash = '#';   
         break;
-        
-        case "#/Macroproceso":
-            
-           
-            for(let i=0; i<document.getElementsByClassName("opcion").length; i++)
-            {
-                document.getElementsByClassName("opcion")[i].style.display = "none";
 
-                // $(".menu li").removeClass("activado");
-            }
-           
-            document.querySelectorAll(".menu li").forEach(element => {
-                element.classList.remove("activado");
-            });
-            document.getElementById("apartMacroproceso").style.display = "block";
-            document.getElementById("macroproceso").className = "activado";
-            LoadTableMacroproceso();
-            
-        window.location.hash = '#';   
-        break;
-        
-        case "#/Proceso":
-            
-           
-            for(let i=0; i<document.getElementsByClassName("opcion").length; i++)
-            {
-                document.getElementsByClassName("opcion")[i].style.display = "none";
-
-                // $(".menu li").removeClass("activado");
-            }
-           
-            document.querySelectorAll(".menu li").forEach(element => {
-                element.classList.remove("activado");
-            });
-            document.getElementById("apartProceso").style.display = "block";
-            document.getElementById("proceso").className = "activado";
-            LoadTableProceso();
-            
-        window.location.hash = '#';   
-        break;
-        
        }    
 
 });

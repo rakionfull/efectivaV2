@@ -16,12 +16,20 @@ document.getElementById("btn_Logout").addEventListener("click",function(){
                     .done(function(respuesta) {
                        
                        if(respuesta.dato){
-                        Swal.fire(
-                            'Exito!!',
-                            'Has Deslogeado Correctamente',
-                            'success'
-                          );
-                        setTimeout( function() { window.location.href = BASE_URL+"/login"; }, 2000 );
+                        Swal.fire({
+                            title: "Exito!!",
+                            text:  "Deslogeo normal por sistema",
+                            icon: 'success',
+                            showCancelButton: false,
+                            confirmButtonText: "Ok",
+                            cancelButtonText: "Cancelar",
+                        })
+                        .then(resultado => {
+                            if (resultado.value) {
+                                    window.location.href = BASE_URL+"/login"
+                            } 
+                        });
+                        //setTimeout( function() { window.location.href = BASE_URL+"/login"; }, 2000 );
                        }
                                
                                               

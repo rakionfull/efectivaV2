@@ -17,28 +17,7 @@
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.js"></script>
   
  <script>
-    function getNewCaptcha() {
-      event.preventDefault() 
-      $.ajax({
-          url: "<?=base_url('auth/getNewCaptcha');?>",
-          beforeSend : function () {
-            $ (' .loading ') .show ();
-            $('#captImg').html('');
-          },
-          success:function (response) {
-           
-            $('#captImg').html(response);
-            $ (' .loading ') .fadeOut ( "slow" );
-          }
-      })
-  }
-  window.addEventListener('click', function(e){
-      if (document.getElementById('pass').contains(e.target) || document.getElementById('softkeys').contains(e.target)){
-          document.getElementById("softkeys").style.display="block";
-    } else{
-      document.getElementById("softkeys").style.display="none";
-    }
-  })
+    
  </script>
    
     <title>Login</title>
@@ -102,28 +81,9 @@
                                 <button id="show_password" class="btn btn-primary" type="button" title="Mostrar Clave"> <span class="fa fa-eye-slash icon"></span> </button>
                           </div>
                         </div>
-                        <div class="softkeys" id="softkeys" style="display:none" data-target="input[name='pass']"></div>
-                        <div class="captcha-box">
-                            <div class="loading" style="display:none">
-                                <div  class = "content" > 
-                                    <img style="width:50px" src = " <?php  echo  base_url (). '/public/images/loading.gif' ;  ?> " /> 
-                                </div> 
-                            </div>
-                          <span id="captImg"><?php echo $captcha;?></span>
-                            <button class="btn btn-primary" onclick="getNewCaptcha()"><i class="fa fa-refresh text-white"></i></button>
-                        </div>
-                        <div class="input-container">
-                            <input
-                                type="text"
-                                id="captcha"
-                                name="captcha"
-                                class="text-input"
-                                autocomplete="off"
-                                placeholder=""
-                                oninput="this.value = this.value.replace(/[^a-zA-Z0-9]/,'')"
-                            />
-                            <label class="label" for="captcha" >Código de Seguridad</label>
-                        </div>
+                        <!-- <div class="softkeys" id="softkeys" style="display:none" data-target="input[name='pass']"></div> -->
+                        
+                        
                         <div class="col-lg-12">
                           <button type="" id="btn_Acceder" class="btn btn-primary" style="width:100%">Acceder</button>
                         </div>
@@ -153,67 +113,67 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" integrity="sha512-xh6O/CkQoPOWDdYTDqeRdPCVd1SpvCA9XXcUnZS2FmJNp1coAFzvtCN9BmamE+4aHK8yyUHUSCcJHgXloTyT2A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js" integrity="sha512-aVKKRRi/Q/YV+4mjoKBsE4x3H+BkegoM/em46NNlCqNTmUYADjBbeNefNxYV7giUp0VxICtqdrbqU7iVaeZNXA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
-    <script src="<?=base_url('public/assets/js/main.js')?>" crossorigin="anonymous"></script>
-    <script src="<?=base_url('public/assets/js/login.js')?>" crossorigin="anonymous"></script>
+    <script src="<?=base_url('public/assets/js/login/main.js')?>" crossorigin="anonymous"></script>
+    <script src="<?=base_url('public/assets/js/login/login.js')?>" crossorigin="anonymous"></script>
    <script src="<?=base_url('public/assets/js/show_pass.js')?>" crossorigin="anonymous"></script>
-   <script src="<?=base_url('public/assets/js/softkeys-0.0.1.js')?>" crossorigin="anonymous"></script>
+   <!-- <script src="<?=base_url('public/assets/js/softkeys-0.0.1.js')?>" crossorigin="anonymous"></script> -->
    <script>
-            $(document).ready(function(){
-                $('.softkeys').softkeys({
-                    target : $('.softkeys').data('target'),
-                    layout : [
-                        [
-                            ['`','~'],
-                            ['1','!'],
-                            ['2','@'],
-                            ['3','#'],
-                            ['4','$'],
-                            ['5','%'],
-                            ['6','^'],
-                            ['7','&amp;'],
-                            ['8','*'],
-                            ['9','('],
-                            ['0',')'],
-                            ['-', '_'],
-                            ['=','+'],
-                            'delete'
-                        ],
-                        [
-                            'q','w','e','r','t','y','u','i','o','p',
-                            ['[','{'],
-                            [']','}']
-                        ],
-                        [
-                            'capslock',
-                            'a','s','d','f','g','h','j','k','l',
-                            [';',':'],
-                            ["'",'&quot;'],
-                            ['\\','|']
-                        ],
-                        [
-                            'shift',
-                            'z','x','c','v','b','n','m',
-                            [',','&lt;'],
-                            ['.','&gt;'],
-                            ['/','?'],
-                            ['@']
-                        ]
-                    ]
-                });
-            });
+            // $(document).ready(function(){
+            //     $('.softkeys').softkeys({
+            //         target : $('.softkeys').data('target'),
+            //         layout : [
+            //             [
+            //                 ['`','~'],
+            //                 ['1','!'],
+            //                 ['2','@'],
+            //                 ['3','#'],
+            //                 ['4','$'],
+            //                 ['5','%'],
+            //                 ['6','^'],
+            //                 ['7','&amp;'],
+            //                 ['8','*'],
+            //                 ['9','('],
+            //                 ['0',')'],
+            //                 ['-', '_'],
+            //                 ['=','+'],
+            //                 'delete'
+            //             ],
+            //             [
+            //                 'q','w','e','r','t','y','u','i','o','p',
+            //                 ['[','{'],
+            //                 [']','}']
+            //             ],
+            //             [
+            //                 'capslock',
+            //                 'a','s','d','f','g','h','j','k','l',
+            //                 [';',':'],
+            //                 ["'",'&quot;'],
+            //                 ['\\','|']
+            //             ],
+            //             [
+            //                 'shift',
+            //                 'z','x','c','v','b','n','m',
+            //                 [',','&lt;'],
+            //                 ['.','&gt;'],
+            //                 ['/','?'],
+            //                 ['@']
+            //             ]
+            //         ]
+            //     });
+            // });
         </script>
    <script type="text/javascript">
 
-    var _gaq = _gaq || [];
-    _gaq.push(['_setAccount', 'UA-36251023-1']);
-    _gaq.push(['_setDomainName', 'jqueryscript.net']);
-    _gaq.push(['_trackPageview']);
+    // var _gaq = _gaq || [];
+    // _gaq.push(['_setAccount', 'UA-36251023-1']);
+    // _gaq.push(['_setDomainName', 'jqueryscript.net']);
+    // _gaq.push(['_trackPageview']);
 
-    (function() {
-      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-    })();
+    // (function() {
+    //   var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    //   ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    //   var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    // })();
 
   </script>
   

@@ -7,7 +7,13 @@ use CodeIgniter\Model;
 class Mempresa extends Model
 {
   
-    
+    public function validaEmpresa($data){
+        
+        $query = $this->db->query("SELECT * FROM empresa where  empresa='{$data['empresa']}'");
+        $query->getRow();
+        if( $query->getRow()) return true;
+        else return false;
+    }
     //retorna todos los perfiles
     public function getEmpresas(){
 
@@ -37,6 +43,14 @@ class Mempresa extends Model
         estado = '{$data['estado']}'
         where id = {$data['id']} ") ;
            
+        return $query;
+    }
+    public function deleteEmpresa($data){
+        
+            
+        $query=$this->db->query("DELETE empresa 
+        where id = {$data} ") ;
+        
         return $query;
     }
 }

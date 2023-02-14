@@ -29,7 +29,7 @@ class BaseController extends Controller
      * @var CLIRequest|IncomingRequest
      */
     protected $request;
-    protected $helpers = ['tools','jwt'];
+    protected $helpers = ['tools','jwt','log'];
     /**
      * An array of helpers to be loaded automatically upon
      * class instantiation. These helpers will be available
